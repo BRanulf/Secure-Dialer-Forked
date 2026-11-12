@@ -182,6 +182,8 @@ fun GeneralSettings(
             // 7. ADVANCED TOOLS
             SettingsSearchItem("Advanced Tools Settings", "Call recording, callback reminders, call notes & fake call simulator", "Advanced Tools", 7, Icons.Default.AutoAwesome),
             SettingsSearchItem("Call Recording & Local Audio Storage", "Enable in-call recording controls and view saved local call audio recordings", "Advanced Tools", 7, Icons.Default.Mic),
+            SettingsSearchItem("Root Call Recording Engine", "Switch between the standard recorder and system-level root call recording", "Advanced Tools", 7, Icons.Default.Security),
+            SettingsSearchItem("Answering Machine & Auto Answer", "Auto-answer after a delay, play a greeting and record the caller message", "Advanced Tools", 7, Icons.Default.Voicemail),
             SettingsSearchItem("Scheduled Callback Reminders Dashboard", "Dashboard for viewing and setting scheduled call alarms and reminders", "Advanced Tools", 7, Icons.Default.Schedule),
             SettingsSearchItem("Call Notes & Memos", "Create, view, and search notes linked to specific phone numbers", "Advanced Tools", 7, Icons.Default.NoteAlt),
             SettingsSearchItem("Fake Call Simulator", "Schedule simulated incoming phone calls with custom caller name & timer", "Advanced Tools", 7, Icons.Default.PhoneInTalk),

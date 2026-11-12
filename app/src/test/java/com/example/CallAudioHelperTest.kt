@@ -5,6 +5,8 @@ import android.content.Context
 import android.media.AudioManager
 import androidx.test.core.app.ApplicationProvider
 import com.example.util.CallAudioHelper
+import com.example.util.CallAudioRecorder
+import com.example.util.RecordingEngine
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +25,25 @@ class CallAudioHelperTest {
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        CallAudioRecorder.setSelectedEngine(context, RecordingEngine.STANDARD)
         CallAudioHelper.reset()
+    }
+
+    @Test
+    fun testRootEngineNeverPreparesSpeaker() {
+        CallAudioRecorder.setSelectedEngine(context, RecordingEngine.ROOT)
+        try {
+            val result = CallAudioHelper.prepareSpeakerForRecording(
+                context = context,
+                inCallService = null,
+                currentAudioState = null
+            )
+            assertFalse("Root recording must never auto-switch to speaker", result)
+            assertFalse(CallAudioHelper.isAudioAdjusted)
+        } finally {
+            CallAudioRecorder.setSelectedEngine(context, RecordingEngine.STANDARD)
+            CallAudioHelper.reset()
+        }
     }
 
     @Test

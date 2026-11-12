@@ -5,6 +5,7 @@
 
 package com.example
 
+import android.Manifest
 import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
@@ -37,6 +38,7 @@ import com.example.data.AppDatabase
 import com.example.model.AppSetting
 import com.example.model.CallRecording
 import com.example.ui.components.getCurrentLocale
+import com.example.util.AnsweringMachineManager
 import com.example.util.CallAudioHelper
 import com.example.util.CallAudioRecorder
 import com.example.util.DynamicIslandOverlayManager
@@ -249,7 +251,14 @@ class MyInCallService : InCallService() {
     private fun startInCallForeground(notification: Notification) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val isRecording = CallAudioRecorder.isRecording.value
+                val hasMicPermission = androidx.core.content.ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.RECORD_AUDIO
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                val isRecording = hasMicPermission && (
+                        CallAudioRecorder.isRecording.value ||
+                                AnsweringMachineManager.isActive.value
+                        )
                 val fgsType = if (isRecording) {
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
                 } else {
@@ -286,6 +295,7 @@ class MyInCallService : InCallService() {
     }
 
     override fun onDestroy() {
+        AnsweringMachineManager.cancelAutoAnswer()
         unregisterScreenOffReceiver()
         stopRinging()
         releaseAllWakeLocks()
@@ -371,6 +381,7 @@ class MyInCallService : InCallService() {
             override fun onStateChanged(c: Call, state: Int) {
                 super.onStateChanged(c, state)
                 if (state == Call.STATE_RINGING) wasRinging = true
+                AnsweringMachineManager.onCallStateChanged(c)
 
                 if (state == Call.STATE_ACTIVE || state == Call.STATE_DISCONNECTED) {
                     unregisterScreenOffReceiver()
@@ -416,6 +427,8 @@ class MyInCallService : InCallService() {
     override fun onCallRemoved(call: Call) {
         super.onCallRemoved(call)
         stopRinging()
+        AnsweringMachineManager.onCallStateChanged(call)
+        AnsweringMachineManager.cancelAutoAnswer(call)
         CallManager.removeCall(call)
         FlashLightManager.stopFlashing(this)
         nm.cancel(NOTIFICATION_ID_INCOMING)
@@ -507,6 +520,7 @@ class MyInCallService : InCallService() {
                     FlashLightManager.startFlashing(this)
                     startRinging()
                     showIncomingCallNotification(call, isCallWaiting = false)
+                    AnsweringMachineManager.scheduleAutoAnswer(this, call)
 
                     // INDUSTRY-STANDARD INCOMING CALL PRESENTATION (Google Phone / Samsung One UI / iOS):
                     // Determine if the user is actively interacting with the device or if it is sleeping/locked.
@@ -752,15 +766,22 @@ class MyInCallService : InCallService() {
     }
 
     private fun toggleCallRecordingFromNotification() {
+        if (AnsweringMachineManager.isActive.value) {
+            // The answering machine owns this call. Hand it back to the user rather
+            // than starting a competing recorder; the message recorded so far is saved.
+            AnsweringMachineManager.takeOver(this)
+            return
+        }
         val isRec = CallAudioRecorder.isRecording.value
         val prefs = getSharedPreferences("dialer_prefs", Context.MODE_PRIVATE)
         val chimeEnabled = prefs.getBoolean("recording_chime_enabled", false)
         val autoTune = prefs.getBoolean("auto_tune_recording_volume", true)
+        val rootEngine = CallAudioRecorder.isRootEngineSelected(this)
 
         if (isRec) {
             RecordingFeedbackHelper.triggerRecordingStopFeedback(this, chimeEnabled)
             val result = CallAudioRecorder.stopRecording()
-            if (autoTune) {
+            if (autoTune && !rootEngine) {
                 CallAudioHelper.restoreAudioState(this, this)
             }
             val file = result.file
@@ -789,7 +810,7 @@ class MyInCallService : InCallService() {
             }
         } else {
             RecordingFeedbackHelper.triggerRecordingStartFeedback(this, chimeEnabled)
-            if (autoTune) {
+            if (autoTune && !rootEngine) {
                 CallAudioHelper.prepareSpeakerForRecording(this, this, CallManager.audioState.value)
             }
             val number = CallManager.callerNumber.value.ifEmpty { "Unknown" }

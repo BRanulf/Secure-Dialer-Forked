@@ -26,6 +26,18 @@ class DialerApplication : Application() {
                 SQLiteDatabase.loadLibs(this@DialerApplication)
                 AppDatabase.warmUpAsync(this@DialerApplication)
             } catch (_: Throwable) {}
+
+            // Warm the cached root status once per process if the user previously
+            // granted root and has a root-powered feature enabled. A previously
+            // granted su request does not show a prompt again on normal root managers.
+            try {
+                val prefs = getSharedPreferences("dialer_prefs", MODE_PRIVATE)
+                val wantsRoot = com.example.util.CallAudioRecorder.isRootEngineSelected(this@DialerApplication) ||
+                        prefs.getBoolean("is_answering_machine_enabled", false)
+                if (wantsRoot && com.example.util.RootShell.wasGrantedBefore(this@DialerApplication)) {
+                    com.example.util.RootShell.ensureAccess(this@DialerApplication, prepare = true)
+                }
+            } catch (_: Throwable) {}
         }
     }
 }

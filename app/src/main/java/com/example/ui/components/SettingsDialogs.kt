@@ -98,7 +98,10 @@ fun exportRecordingToDownloads(context: android.content.Context, filePath: Strin
             val resolver = attributionContext.contentResolver
             val contentValues = android.content.ContentValues().apply {
                 put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-                put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "audio/mp4")
+                put(
+                    android.provider.MediaStore.MediaColumns.MIME_TYPE,
+                    com.example.util.CallAudioRecorder.mimeTypeFor(file)
+                )
                 put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS)
             }
             val uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)

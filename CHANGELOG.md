@@ -2,6 +2,18 @@
 
 All notable changes, fixes, and release milestones for Secure Dialer are documented here.
 
+## [Forked]
+
+### Root-Powered Call Recording & Local Answering Machine
+- **Selectable Recording Engine**: Added a Standard / Root (system) engine switch under Advanced Tools → Call Recording. The original MediaRecorder engine remains the default and fully functional; the root engine adds a system-level AudioRecord path and automatically falls back to Standard when the device/ROM cannot expose call audio.
+- **System-Level Audio Capture**: The root engine records the call audio channel through a small `app_process` helper running as UID 0 (with an in-process app-op fallback). Root recordings are stored as 16 kHz PCM WAV and work with the existing player, sharing, export, vault, and recovery flows.
+- **Local Answering Machine**: Optional auto-answer after a configurable delay (default 30 seconds), or immediately from a new button on the incoming-call screen. The microphone is muted, the caller's side is recorded, and the message is saved to the normal recordings list.
+- **Greeting Audio**: Choose a greeting file in Settings, or place an audio file named `answering_machine_greeting.*` / `answering_machine.*` / `greeting.*` / `answer_machine.*` (or the only audio file) in the project root before building. Built-in English and Simplified Chinese greetings are included as fallbacks.
+- **Uplink Greeting Injection**: The greeting is decoded to 16 kHz mono PCM and played by a root `AudioTrack` helper into the AOSP in-call music uplink (`incall_music_uplink` / `Telephony Tx`, `AUDIO_OUTPUT_FLAG_INCALL_MUSIC`). Vendor mixer controls (`Incall_Music` via `tinymix`) remain as a fallback for older devices. The root recorder no longer switches the call to speakerphone; standard-engine recordings retain their existing speaker auto-tune behavior.
+- **Device Notes**: Android exposes no public API for injecting audio into a carrier call. Root behavior varies by device, ROM, root manager, and audio policy; Only been successfully tested on the OnePlus Ace 5 (PKG110) running Lineage OS 23 and Project Infinity X 4.1; when no uplink route is available the answering machine still records the caller and notifies that the greeting could not be routed.
+
+---
+
 ## [1.8.0] - 2026-11-03
 
 ### WhatsApp Multi-Account & Contacts Integration

@@ -1,9 +1,78 @@
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.secrets)
+}
+
+/**
+ * Collects an optional greeting audio file dropped in the project root and exposes it
+ * (plus the bundled localized fallbacks) as generated raw resources.
+ *
+ * Supported root filenames: answering_machine_greeting.* / answering_machine.* /
+ * greeting.* / answer_machine.* (or a single audio file at the project root).
+ */
+abstract class GenerateAnsweringMachineGreetingTask : DefaultTask() {
+  @get:InputFiles
+  @get:PathSensitive(PathSensitivity.NAME_ONLY)
+  abstract val candidateAudioFiles: ConfigurableFileCollection
+
+  @get:InputFile
+  abstract val fallbackEnglish: RegularFileProperty
+
+  @get:InputFile
+  abstract val fallbackChinese: RegularFileProperty
+
+  @get:OutputDirectory
+  abstract val outputDirectory: DirectoryProperty
+
+  @TaskAction
+  fun generate() {
+    val supported = setOf("wav", "mp3", "m4a", "aac", "ogg", "flac", "opus")
+    val preferredNames = setOf(
+      "answering_machine_greeting", "answering_machine", "greeting", "answer_machine"
+    )
+    val candidates = candidateAudioFiles.files
+      .filter { it.isFile && it.extension.lowercase() in supported }
+      .sortedBy { it.name.lowercase() }
+    val custom = candidates.firstOrNull { it.nameWithoutExtension.lowercase() in preferredNames }
+      ?: candidates.singleOrNull()
+
+    val rawDir = outputDirectory.get().asFile.resolve("raw")
+    rawDir.deleteRecursively()
+    rawDir.mkdirs()
+
+    fallbackEnglish.get().asFile.copyTo(
+      rawDir.resolve("answering_machine_greeting_default_en.wav"), overwrite = true
+    )
+    fallbackChinese.get().asFile.copyTo(
+      rawDir.resolve("answering_machine_greeting_default_zh.wav"), overwrite = true
+    )
+
+    val main = custom ?: fallbackEnglish.get().asFile
+    val extension = main.extension.lowercase().ifBlank { "wav" }
+    main.copyTo(rawDir.resolve("answering_machine_greeting.$extension"), overwrite = true)
+    // A tiny marker resource lets the app distinguish a user-provided greeting
+    // from the built-in English fallback without relying on BuildConfig (which
+    // can be stale when the configuration cache is warm).
+    rawDir.resolve("answering_machine_greeting_custom.txt").writeText(
+      if (custom != null) "1" else "0"
+    )
+    logger.lifecycle(
+      "Answering-machine greeting packaged: ${if (custom != null) custom.name else "built-in default"}"
+    )
+  }
 }
 
 android {
@@ -87,6 +156,33 @@ android {
     disable += "ExtraTranslation"
   }
   testOptions { unitTests { isIncludeAndroidResources = true } }
+}
+
+val generateAnsweringMachineGreeting =
+  tasks.register<GenerateAnsweringMachineGreetingTask>("generateAnsweringMachineGreeting") {
+    candidateAudioFiles.from(
+      fileTree(rootProject.projectDir) {
+        include("*.wav", "*.mp3", "*.m4a", "*.aac", "*.ogg", "*.flac", "*.opus")
+      }
+    )
+    fallbackEnglish.set(
+      layout.projectDirectory.file("answering_machine_greeting_default_en.wav")
+    )
+    fallbackChinese.set(
+      layout.projectDirectory.file("answering_machine_greeting_default_zh.wav")
+    )
+    outputDirectory.set(
+      layout.buildDirectory.dir("generated/answeringMachineGreetingRes")
+    )
+  }
+
+androidComponents {
+  onVariants { variant ->
+    variant.sources.res?.addGeneratedSourceDirectory(
+      generateAnsweringMachineGreeting,
+      GenerateAnsweringMachineGreetingTask::outputDirectory
+    )
+  }
 }
 
 configurations.all {

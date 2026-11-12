@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CallEnd
+import androidx.compose.material.icons.filled.Voicemail
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -47,7 +48,9 @@ fun InCallBottomBar(
     onAnswer: () -> Unit,
     onHangUp: () -> Unit,
     onToggleQuickDeclineMenu: () -> Unit,
-    avatarShapeType: String = "squircle"
+    avatarShapeType: String = "squircle",
+    showAnsweringMachine: Boolean = false,
+    onAnsweringMachine: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val buttonShape = AppShapes.Keypad
@@ -111,6 +114,29 @@ fun InCallBottomBar(
                             contentDescription = stringResource(R.string.btn_answer),
                             modifier = Modifier.size(28.dp)
                         )
+                    }
+                }
+
+                if (showAnsweringMachine && onAnsweringMachine != null) {
+                    Surface(
+                        onClick = {
+                            RichHapticEngine.performHaptic(context, RichHapticEngine.HapticStyle.CLICK)
+                            onAnsweringMachine()
+                        },
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        shape = buttonShape,
+                        modifier = Modifier
+                            .size(width = 84.dp, height = 64.dp)
+                            .testTag("answering_machine_button")
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.Voicemail,
+                                contentDescription = stringResource(R.string.answering_machine_button),
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
                     }
                 }
 

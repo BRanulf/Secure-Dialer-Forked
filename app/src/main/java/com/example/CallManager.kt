@@ -28,6 +28,7 @@ import com.example.model.AppSetting
 import com.example.model.CallRecording
 import com.example.model.PostCallData
 import com.example.ui.components.getCurrentLocale
+import com.example.util.AnsweringMachineManager
 import com.example.util.CallAudioHelper
 import com.example.util.CallAudioRecorder
 import com.example.util.MultiSimManager
@@ -478,13 +479,21 @@ object CallManager {
 
     fun autoStartRecordingIfNeeded() {
         if (CallAudioRecorder.isRecording.value) return
+        // The answering machine owns the call and records the caller itself.
+        // Never start a second (mic/speaker) recorder on top of it.
+        if (AnsweringMachineManager.isBusy()) return
         val ctx = appContext ?: inCallService?.applicationContext ?: return
         val prefs = ctx.getSharedPreferences("dialer_prefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("is_auto_record_calls_enabled", false)) {
             val chime = prefs.getBoolean("recording_chime_enabled", false)
             val autoTune = prefs.getBoolean("auto_tune_recording_volume", true)
+            val rootEngine = CallAudioRecorder.isRootEngineSelected(ctx)
             RecordingFeedbackHelper.triggerRecordingStartFeedback(ctx, chime)
-            if (autoTune) CallAudioHelper.prepareSpeakerForRecording(ctx, inCallService, _audioState.value)
+            // The root engine captures the call electrically; switching the call to
+            // speakerphone would only degrade the user's experience.
+            if (autoTune && !rootEngine) {
+                CallAudioHelper.prepareSpeakerForRecording(ctx, inCallService, _audioState.value)
+            }
             CallAudioRecorder.startRecording(ctx, _callerNumber.value.ifEmpty { "Unknown" })
         }
     }
@@ -595,6 +604,7 @@ object CallManager {
     fun updateAudioState(state: CallAudioState?) { _audioState.value = state }
 
     fun answer() {
+        AnsweringMachineManager.cancelAutoAnswer()
         try {
             // When user answers incoming call, only answer the ringing primary call.
             // Waiting calls are NEVER auto-answered by answer(); they require explicit user selection in dialog/notification.

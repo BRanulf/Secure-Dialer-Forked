@@ -59,9 +59,13 @@ import com.example.ui.theme.AppShapes
 import com.example.ui.viewmodel.DialerViewModel
 import com.example.util.CallAudioRecorder
 import com.example.util.RecordingCompressionProfile
+import com.example.util.RecordingEngine
 import com.example.util.RichHapticEngine
+import com.example.util.RootShell
+import com.example.util.RootStatus
 import com.example.util.VaultBiometricAuthHelper
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
 
@@ -221,7 +225,7 @@ fun CallRecordingsSettings(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                         ) {
                             Text(
-                                text = ".M4A",
+                                text = ".${file.extension.uppercase(Locale.ROOT).ifBlank { "M4A" }}",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary,
@@ -248,7 +252,7 @@ fun CallRecordingsSettings(
                                         file
                                     )
                                     val intent = Intent(Intent.ACTION_SEND).apply {
-                                        type = "audio/mp4"
+                                        type = CallAudioRecorder.mimeTypeFor(file)
                                         putExtra(Intent.EXTRA_STREAM, uri)
                                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
                                     }
@@ -455,6 +459,157 @@ fun CallRecordingsSettings(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 16.sp
                     )
+                }
+            }
+        }
+
+        // Recording Engine Selector (Standard vs Root)
+        val selectedEngine by viewModel.recordingEngine
+        val rootStatus by RootShell.status.collectAsStateWithLifecycle()
+        val rootCheckScope = rememberCoroutineScope()
+
+        fun checkRootAccess() {
+            rootCheckScope.launch {
+                val result = RootShell.ensureAccess(context, prepare = true)
+                if (!result.granted) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.root_required_toast),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = cardBgColor,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Surface(
+                        shape = AppShapes.Chip,
+                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f),
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.Security,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.recording_engine_title),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = stringResource(R.string.recording_engine_sub),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            lineHeight = 16.sp
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilterChip(
+                        selected = selectedEngine == RecordingEngine.STANDARD,
+                        onClick = {
+                            RichHapticEngine.performHaptic(context, RichHapticEngine.HapticStyle.KEY_TICK)
+                            viewModel.updateRecordingEngine(RecordingEngine.STANDARD)
+                        },
+                        label = { Text(stringResource(R.string.recording_engine_standard)) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    FilterChip(
+                        selected = selectedEngine == RecordingEngine.ROOT,
+                        onClick = {
+                            RichHapticEngine.performHaptic(context, RichHapticEngine.HapticStyle.KEY_TICK)
+                            viewModel.updateRecordingEngine(RecordingEngine.ROOT)
+                            checkRootAccess()
+                        },
+                        label = { Text(stringResource(R.string.recording_engine_root)) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Text(
+                    text = if (selectedEngine == RecordingEngine.ROOT) {
+                        stringResource(R.string.recording_engine_root_sub)
+                    } else {
+                        stringResource(R.string.recording_engine_standard_sub)
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    lineHeight = 16.sp
+                )
+
+                if (selectedEngine == RecordingEngine.ROOT) {
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.root_status),
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = when (rootStatus) {
+                                    RootStatus.GRANTED -> stringResource(R.string.root_status_granted)
+                                    RootStatus.DENIED -> stringResource(R.string.root_status_denied)
+                                    RootStatus.UNAVAILABLE -> stringResource(R.string.root_status_unavailable)
+                                    RootStatus.CHECKING -> stringResource(R.string.root_status_checking)
+                                    RootStatus.UNKNOWN -> stringResource(R.string.root_status_unknown)
+                                },
+                                style = MaterialTheme.typography.bodySmall,
+                                color = if (rootStatus == RootStatus.GRANTED) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                }
+                            )
+                        }
+                        TextButton(
+                            onClick = { checkRootAccess() },
+                            enabled = rootStatus != RootStatus.CHECKING
+                        ) {
+                            Text(
+                                text = if (rootStatus == RootStatus.CHECKING) {
+                                    stringResource(R.string.root_status_checking)
+                                } else {
+                                    stringResource(R.string.root_check_button)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

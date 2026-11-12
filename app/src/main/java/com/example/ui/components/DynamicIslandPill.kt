@@ -57,6 +57,7 @@ import com.example.data.AppDatabase
 import com.example.model.CallRecording
 import com.example.model.getInitials
 import com.example.ui.theme.AppShapes
+import com.example.util.AnsweringMachineManager
 import com.example.util.CallAudioHelper
 import com.example.util.CallAudioRecorder
 import com.example.util.RecordingFeedbackHelper
@@ -844,11 +845,17 @@ fun DynamicIslandPill(
                                             val prefs = context.getSharedPreferences("dialer_prefs", Context.MODE_PRIVATE)
                                             val chimeEnabled = prefs.getBoolean("recording_chime_enabled", false)
                                             val autoTune = prefs.getBoolean("auto_tune_recording_volume", true)
+                                            val rootEngine = CallAudioRecorder.isRootEngineSelected(context)
+
+                                            if (AnsweringMachineManager.isActive.value) {
+                                                AnsweringMachineManager.takeOver(context)
+                                                return@DynamicIslandActionButton
+                                            }
 
                                             if (isRecording) {
                                                 RecordingFeedbackHelper.triggerRecordingStopFeedback(context, chimeEnabled)
                                                 val result = CallAudioRecorder.stopRecording()
-                                                if (autoTune) {
+                                                if (autoTune && !rootEngine) {
                                                     CallAudioHelper.restoreAudioState(context, CallManager.inCallService)
                                                 }
                                                 val file = result.file
@@ -877,7 +884,7 @@ fun DynamicIslandPill(
                                                 }
                                             } else {
                                                 RecordingFeedbackHelper.triggerRecordingStartFeedback(context, chimeEnabled)
-                                                if (autoTune) {
+                                                if (autoTune && !rootEngine) {
                                                     CallAudioHelper.prepareSpeakerForRecording(context, CallManager.inCallService, audioState)
                                                 }
                                                 val num = callerNumber.ifEmpty { "Unknown" }

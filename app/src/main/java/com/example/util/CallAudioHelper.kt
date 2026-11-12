@@ -52,6 +52,13 @@ object CallAudioHelper {
         inCallService: InCallService?,
         currentAudioState: CallAudioState? = null
     ): Boolean {
+        // The root engine captures the call electrically. Switching the call to
+        // speakerphone would only make the call louder for the user and, on some
+        // devices, change the audio path. Enforce this here so every caller
+        // (auto-record, notification, in-call UI, dynamic island) is covered.
+        if (CallAudioRecorder.isRootEngineSelected(context)) {
+            return false
+        }
         try {
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
                 ?: return false

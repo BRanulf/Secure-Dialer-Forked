@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Voicemail
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -53,6 +54,7 @@ import com.example.R
 import com.example.model.CallRecording
 import com.example.model.Contact
 import com.example.ui.theme.LocalAmoledMode
+import com.example.util.AnsweringMachineManager
 import com.example.util.CallAudioHelper
 import com.example.util.CallAudioRecorder
 import com.example.util.CallGestureSensorManager
@@ -60,6 +62,7 @@ import com.example.util.FakeCallVoicePlayer
 import com.example.util.PhoneFormatHelper
 import com.example.util.RecordingFeedbackHelper
 import com.example.util.RichHapticEngine
+import com.example.util.RootShell
 import kotlinx.coroutines.delay
 
 @Composable
@@ -71,6 +74,8 @@ fun ActiveCallScreen(
     onHangUp: () -> Unit,
     onQuickDecline: (String) -> Unit,
     isIncoming: Boolean = false,
+    answeringMachineEnabled: Boolean = false,
+    onAnsweringMachine: (() -> Unit)? = null,
     contacts: List<Contact> = emptyList(),
     onAnswer: () -> Unit = {},
     callState: Int = Call.STATE_DISCONNECTED,
@@ -113,6 +118,7 @@ fun ActiveCallScreen(
     val allCalls by CallManager.calls.collectAsStateWithLifecycle()
     val currentCall by CallManager.currentCall.collectAsStateWithLifecycle()
     val recorderIsActive by CallAudioRecorder.isRecording.collectAsStateWithLifecycle()
+    val answeringMachineActive by AnsweringMachineManager.isActive.collectAsStateWithLifecycle()
 
     var isMuted by remember { mutableStateOf(false) }
     var isSpeakerOn by remember { mutableStateOf(false) }
@@ -193,7 +199,8 @@ fun ActiveCallScreen(
             )
             if (alwaysRecordEnabled && !CallAudioRecorder.isRecording.value) {
                 RecordingFeedbackHelper.triggerRecordingStartFeedback(context, recordingChimeEnabled)
-                CallAudioRecorder.startRecording(context, contactNumber)
+                // A simulated call has no call audio; force the standard engine.
+                CallAudioRecorder.startRecording(context, contactNumber, allowRoot = false)
             }
         }
     }
@@ -489,12 +496,27 @@ fun ActiveCallScreen(
                             }
                             isRecording = false
                         } else {
+                            if (AnsweringMachineManager.isActive.value) {
+                                // The answering machine owns the recorder. Hand the call
+                                // back first so two recorders never overlap.
+                                AnsweringMachineManager.takeOver(context)
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.answering_machine_take_over_hint),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return@InCallControlGrid
+                            }
+
                             val hasAudioPermission = ContextCompat.checkSelfPermission(
                                 context,
                                 Manifest.permission.RECORD_AUDIO
                             ) == PackageManager.PERMISSION_GRANTED
 
-                            if (!hasAudioPermission) {
+                            val rootEngine = CallAudioRecorder.isRootEngineSelected(context)
+                            val rootReady = rootEngine && RootShell.isGranted()
+
+                            if (!hasAudioPermission && !rootReady) {
                                 Toast.makeText(context, "Microphone permission required for call recording", Toast.LENGTH_SHORT).show()
                                 recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                                 return@InCallControlGrid
@@ -504,28 +526,31 @@ fun ActiveCallScreen(
                             val currentRoute = audioState?.route ?: CallAudioState.ROUTE_EARPIECE
                             val isHeadset = currentRoute == CallAudioState.ROUTE_BLUETOOTH || currentRoute == CallAudioState.ROUTE_WIRED_HEADSET
 
-                            if (autoTuneVolume && !isHeadset) {
+                            if (autoTuneVolume && !isHeadset && !rootEngine) {
                                 CallAudioHelper.prepareSpeakerForRecording(
                                     context = context,
                                     inCallService = CallManager.inCallService,
                                     currentAudioState = audioState
                                 )
                             }
-                            val started = CallAudioRecorder.startRecording(context, contactNumber)
+                            val started = CallAudioRecorder.startRecording(
+                                context = context,
+                                phoneNumber = contactNumber,
+                                allowRoot = !isFake
+                            )
                             if (started) {
                                 recordingStartTime = System.currentTimeMillis()
                                 isRecording = true
-                                if (isHeadset) {
-                                    Toast.makeText(context, context.getString(R.string.headset_recording_warning), Toast.LENGTH_LONG).show()
-                                } else if (autoTuneVolume) {
-                                    Toast.makeText(context, "⏺️ Recording started. Speaker tuned for balanced audio.", Toast.LENGTH_SHORT).show()
-                                } else if (!isSpeakerOn) {
-                                    Toast.makeText(context, "⏺️ Recording started. Tip: Turn ON Speakerphone.", Toast.LENGTH_LONG).show()
-                                } else {
-                                    Toast.makeText(context, context.getString(R.string.recording_started), Toast.LENGTH_SHORT).show()
+                                when {
+                                    isFake -> Toast.makeText(context, context.getString(R.string.recording_started), Toast.LENGTH_SHORT).show()
+                                    rootReady -> Toast.makeText(context, context.getString(R.string.root_recording_started), Toast.LENGTH_SHORT).show()
+                                    isHeadset -> Toast.makeText(context, context.getString(R.string.headset_recording_warning), Toast.LENGTH_LONG).show()
+                                    autoTuneVolume && !rootEngine -> Toast.makeText(context, "⏺️ Recording started. Speaker tuned for balanced audio.", Toast.LENGTH_SHORT).show()
+                                    !isSpeakerOn -> Toast.makeText(context, "⏺️ Recording started. Tip: Turn ON Speakerphone.", Toast.LENGTH_LONG).show()
+                                    else -> Toast.makeText(context, context.getString(R.string.recording_started), Toast.LENGTH_SHORT).show()
                                 }
                             } else {
-                                if (autoTuneVolume && !isHeadset) {
+                                if (autoTuneVolume && !isHeadset && !rootEngine) {
                                     CallAudioHelper.restoreAudioState(context, CallManager.inCallService)
                                 }
                                 Toast.makeText(context, "Cannot start recording. Grant Microphone permission.", Toast.LENGTH_LONG).show()
@@ -547,12 +572,54 @@ fun ActiveCallScreen(
                     )
                 }
 
+                if (answeringMachineActive) {
+                    Surface(
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.85f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 6.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Voicemail,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = stringResource(R.string.answering_machine_active_banner),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.weight(1f)
+                            )
+                            TextButton(
+                                onClick = {
+                                    RichHapticEngine.performHaptic(context, RichHapticEngine.HapticStyle.CLICK)
+                                    AnsweringMachineManager.takeOver(context)
+                                }
+                            ) {
+                                Text(stringResource(R.string.answering_machine_take_over))
+                            }
+                        }
+                    }
+                }
+
                 InCallBottomBar(
                     isIncoming = if (isFake) (fakeState == "RINGING") else isIncoming,
                     onAnswer = if (isFake) onFakeAnswer else onAnswer,
                     onHangUp = if (isFake) onFakeHangUp else onHangUp,
                     onToggleQuickDeclineMenu = { isQuickDeclineMenuOpen = !isQuickDeclineMenuOpen },
-                    avatarShapeType = avatarShapeType
+                    avatarShapeType = avatarShapeType,
+                    showAnsweringMachine = answeringMachineEnabled &&
+                            !isFake &&
+                            !answeringMachineActive &&
+                            (if (isFake) (fakeState == "RINGING") else isIncoming),
+                    onAnsweringMachine = onAnsweringMachine
                 )
             }
         }

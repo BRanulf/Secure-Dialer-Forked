@@ -671,6 +671,12 @@ fun MainScreen(
                         }
                     },
                     isIncoming = if (isFakeCallActive) (fakeCallState == "RINGING") else (systemCallState == android.telecom.Call.STATE_RINGING),
+                    answeringMachineEnabled = viewModel.isAnsweringMachineEnabled.value && !isFakeCallActive,
+                    onAnsweringMachine = {
+                        if (!isFakeCallActive) {
+                            com.example.util.AnsweringMachineManager.trigger(context)
+                        }
+                    },
                     contacts = allContacts,
                     callState = if (isFakeCallActive) {
                         if (fakeCallState == "ACTIVE") android.telecom.Call.STATE_ACTIVE else android.telecom.Call.STATE_RINGING

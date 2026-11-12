@@ -23,6 +23,11 @@
 -keep class com.example.** { *; }
 -keepclassmembers class com.example.** { *; }
 
+# Root helpers are launched by class name through `su` + app_process.
+# Their names, main(String[]) and inner classes must survive shrinking.
+-keep class com.example.util.RootAudioServer { *; }
+-keep class com.example.util.RootIncallMusicPlayer { *; }
+
 # =========================================================
 # 2. DATABASE & SQLCIPHER ENCRYPTION (Critical for Vault)
 # =========================================================

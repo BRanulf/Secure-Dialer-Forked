@@ -28,9 +28,12 @@ import androidx.lifecycle.*
 import androidx.paging.*
 import com.example.*
 import com.example.model.*
+import com.example.util.AnsweringMachineGreeting
+import com.example.util.AnsweringMachineManager
 import com.example.util.CallAudioRecorder
 import com.example.util.PhoneFormatHelper
 import com.example.util.RecordingCompressionProfile
+import com.example.util.RecordingEngine
 import com.example.util.ReminderScheduler
 import com.example.util.RichHapticEngine
 import kotlinx.coroutines.Dispatchers
@@ -373,6 +376,34 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
             prefs.getString("recording_compression_profile", RecordingCompressionProfile.BALANCED.key)
         )
     )
+    var recordingEngine = mutableStateOf(
+        RecordingEngine.fromKey(
+            prefs.getString(CallAudioRecorder.PREF_RECORDING_ENGINE, RecordingEngine.STANDARD.key)
+        )
+    )
+
+    // Local answering machine
+    var isAnsweringMachineEnabled = mutableStateOf(
+        prefs.getBoolean("is_answering_machine_enabled", false)
+    )
+    var answeringMachineTimeoutSeconds = mutableIntStateOf(
+        prefs.getInt(
+            "answering_machine_timeout_seconds",
+            AnsweringMachineManager.DEFAULT_TIMEOUT_SECONDS
+        )
+    )
+    var answeringMachineMaxSeconds = mutableIntStateOf(
+        prefs.getInt(
+            "answering_machine_max_seconds",
+            AnsweringMachineManager.DEFAULT_MAX_MESSAGE_SECONDS
+        )
+    )
+    var answeringMachineGreetingPath = mutableStateOf(
+        prefs.getString("answering_machine_greeting_path", "") ?: ""
+    )
+    var answeringMachineGreetingDisplayName = mutableStateOf(
+        prefs.getString("answering_machine_greeting_display_name", "") ?: ""
+    )
     var isPocketProtectionEnabled = mutableStateOf(prefs.getBoolean("is_pocket_protection_enabled", false))
     var defaultStartupTabKey = mutableStateOf(prefs.getString("default_startup_tab_key", "RECENTS") ?: "RECENTS")
     var selectedTab = mutableIntStateOf(
@@ -510,6 +541,48 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
                 settings["is_auto_record_calls_enabled"]?.toBooleanStrictOrNull()?.let {
                     isAutoRecordCallsEnabled.value = it
                     editor.putBoolean("is_auto_record_calls_enabled", it)
+                }
+                // Preferences are written synchronously and are the source of truth
+                // for these security-relevant new settings. The database is only a
+                // backup; a stale DB value must not revert "Root recording" back to
+                // Standard (which would re-enable automatic speaker tuning).
+                settings[CallAudioRecorder.PREF_RECORDING_ENGINE]?.let { dbValue ->
+                    if (!prefs.contains(CallAudioRecorder.PREF_RECORDING_ENGINE)) {
+                        val engine = RecordingEngine.fromKey(dbValue)
+                        recordingEngine.value = engine
+                        CallAudioRecorder.setSelectedEngine(repository.context, engine)
+                        editor.putString(CallAudioRecorder.PREF_RECORDING_ENGINE, engine.key)
+                    }
+                }
+                settings["is_answering_machine_enabled"]?.toBooleanStrictOrNull()?.let { dbValue ->
+                    if (!prefs.contains("is_answering_machine_enabled")) {
+                        isAnsweringMachineEnabled.value = dbValue
+                        editor.putBoolean("is_answering_machine_enabled", dbValue)
+                    }
+                }
+                settings["answering_machine_timeout_seconds"]?.toIntOrNull()?.let { dbValue ->
+                    if (!prefs.contains("answering_machine_timeout_seconds")) {
+                        answeringMachineTimeoutSeconds.intValue = dbValue
+                        editor.putInt("answering_machine_timeout_seconds", dbValue)
+                    }
+                }
+                settings["answering_machine_max_seconds"]?.toIntOrNull()?.let { dbValue ->
+                    if (!prefs.contains("answering_machine_max_seconds")) {
+                        answeringMachineMaxSeconds.intValue = dbValue
+                        editor.putInt("answering_machine_max_seconds", dbValue)
+                    }
+                }
+                settings["answering_machine_greeting_path"]?.let { dbValue ->
+                    if (!prefs.contains("answering_machine_greeting_path")) {
+                        answeringMachineGreetingPath.value = dbValue
+                        editor.putString("answering_machine_greeting_path", dbValue)
+                    }
+                }
+                settings["answering_machine_greeting_display_name"]?.let { dbValue ->
+                    if (!prefs.contains("answering_machine_greeting_display_name")) {
+                        answeringMachineGreetingDisplayName.value = dbValue
+                        editor.putString("answering_machine_greeting_display_name", dbValue)
+                    }
                 }
                 settings["is_dynamic_island_enabled"]?.toBooleanStrictOrNull()?.let {
                     isDynamicIslandEnabled.value = it
@@ -754,6 +827,41 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
     fun updateRecordingCompressionProfile(profile: RecordingCompressionProfile) {
         recordingCompressionProfile.value = profile
         settingsCoordinator.updateRecordingCompressionProfile(profile)
+    }
+
+    fun updateRecordingEngine(engine: RecordingEngine) {
+        recordingEngine.value = engine
+        CallAudioRecorder.setSelectedEngine(getApplication(), engine)
+        settingsCoordinator.updateSettingString(CallAudioRecorder.PREF_RECORDING_ENGINE, engine.key)
+    }
+
+    fun updateAnsweringMachineEnabled(enabled: Boolean) {
+        isAnsweringMachineEnabled.value = enabled
+        settingsCoordinator.updateSettingBoolean("is_answering_machine_enabled", enabled)
+    }
+
+    fun updateAnsweringMachineTimeoutSeconds(seconds: Int) {
+        answeringMachineTimeoutSeconds.intValue = seconds.coerceIn(5, 300)
+        settingsCoordinator.updateSettingInt("answering_machine_timeout_seconds", seconds.coerceIn(5, 300))
+    }
+
+    fun updateAnsweringMachineMaxSeconds(seconds: Int) {
+        answeringMachineMaxSeconds.intValue = seconds.coerceIn(15, 900)
+        settingsCoordinator.updateSettingInt("answering_machine_max_seconds", seconds.coerceIn(15, 900))
+    }
+
+    fun refreshAnsweringMachineGreeting(context: Context) {
+        answeringMachineGreetingPath.value = AnsweringMachineGreeting.selectedFile(context)?.absolutePath ?: ""
+        answeringMachineGreetingDisplayName.value =
+            AnsweringMachineGreeting.selectedDisplayName(context) ?: ""
+        settingsCoordinator.updateSettingString(
+            "answering_machine_greeting_path",
+            answeringMachineGreetingPath.value
+        )
+        settingsCoordinator.updateSettingString(
+            "answering_machine_greeting_display_name",
+            answeringMachineGreetingDisplayName.value
+        )
     }
 
     fun updatePocketProtectionEnabled(enabled: Boolean) {

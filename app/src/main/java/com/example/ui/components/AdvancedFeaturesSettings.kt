@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.PhoneCallback
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Voicemail
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.Chat
@@ -42,7 +43,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.util.RichHapticEngine
+import com.example.util.RootShell
 import com.example.util.WhatsAppHelper
+import kotlinx.coroutines.launch
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.R
 import com.example.ui.viewmodel.DialerViewModel
@@ -63,9 +66,11 @@ fun AdvancedFeaturesSettings(
     val isCallNotesEnabled by viewModel.isCallNotesEnabled
     val isFakeCallSimulatorEnabled by viewModel.isFakeCallSimulatorEnabled
     val isRecordingEnabled by viewModel.recordingEnabled
+    val isAnsweringMachineEnabled by viewModel.isAnsweringMachineEnabled
     val isPostCallActionsEnabled by viewModel.isPostCallActionsEnabled
     val postCallDismissDuration by viewModel.postCallDismissDurationSeconds
     val context = LocalContext.current
+    val rootCheckScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -104,6 +109,42 @@ fun AdvancedFeaturesSettings(
                         isMatchTitle("Recording Vault", highlightedTitle)
             ) {
                 CallRecordingsSettings(viewModel = viewModel, cardBgColor = cardBgColor)
+            }
+        }
+
+        // Feature Container 1b: Local Answering Machine (root-assisted)
+        HighlightableCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            cardBgColor = cardBgColor,
+            isHighlighted = isMatchTitle("Answering Machine", highlightedTitle) ||
+                    isMatchTitle("Auto Answer", highlightedTitle) ||
+                    isMatchTitle("Answering Machine & Auto Answer", highlightedTitle),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            ExpandableSettingsCard(
+                title = stringResource(R.string.answering_machine_title),
+                subtitle = stringResource(R.string.answering_machine_sub),
+                icon = Icons.Default.Voicemail,
+                iconBgColor = MaterialTheme.colorScheme.secondaryContainer,
+                iconTint = MaterialTheme.colorScheme.onSecondaryContainer,
+                cardBgColor = Color.Transparent,
+                hasSwitch = true,
+                isSwitchChecked = isAnsweringMachineEnabled,
+                onSwitchChange = { enabled ->
+                    viewModel.updateAnsweringMachineEnabled(enabled)
+                    if (enabled) {
+                        rootCheckScope.launch {
+                            RootShell.ensureAccess(context, prepare = true)
+                        }
+                    }
+                },
+                initiallyExpanded = isAnsweringMachineEnabled ||
+                        isMatchTitle("Answering Machine", highlightedTitle) ||
+                        isMatchTitle("Auto Answer", highlightedTitle)
+            ) {
+                AnsweringMachineSettings(viewModel = viewModel, cardBgColor = cardBgColor)
             }
         }
 
