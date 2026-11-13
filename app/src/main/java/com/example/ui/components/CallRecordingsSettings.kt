@@ -878,6 +878,16 @@ fun CallRecordingsSettings(
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     RecordingCompressionProfile.entries.forEach { profile ->
                         val isSelected = profile == selectedProfile
+                        val titleRes = when (profile) {
+                            RecordingCompressionProfile.COMPACT -> R.string.recording_quality_compact_title
+                            RecordingCompressionProfile.BALANCED -> R.string.recording_quality_balanced_title
+                            RecordingCompressionProfile.HIGH_FIDELITY -> R.string.recording_quality_high_title
+                        }
+                        val descriptionRes = when (profile) {
+                            RecordingCompressionProfile.COMPACT -> R.string.recording_quality_compact_desc
+                            RecordingCompressionProfile.BALANCED -> R.string.recording_quality_balanced_desc
+                            RecordingCompressionProfile.HIGH_FIDELITY -> R.string.recording_quality_high_desc
+                        }
                         Surface(
                             shape = RoundedCornerShape(8.dp),
                             color = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
@@ -901,13 +911,13 @@ fun CallRecordingsSettings(
                             ) {
                                 Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
                                     Text(
-                                        text = profile.title,
+                                        text = stringResource(titleRes),
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                                         color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = profile.description,
+                                        text = stringResource(descriptionRes),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontSize = 12.sp

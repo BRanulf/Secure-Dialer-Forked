@@ -193,7 +193,7 @@ fun InCallAddCallDialog(
                 if (onSimulateCallWaiting != null) {
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                     Text(
-                        text = "Call Waiting Simulation",
+                        text = stringResource(R.string.in_call_waiting_simulation),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -211,7 +211,7 @@ fun InCallAddCallDialog(
                             modifier = Modifier.weight(1f),
                             contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                         ) {
-                            Text("New Caller (Waiting)", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.new_caller_waiting), style = MaterialTheme.typography.labelSmall)
                         }
 
                         OutlinedButton(
@@ -224,7 +224,7 @@ fun InCallAddCallDialog(
                             modifier = Modifier.weight(1f),
                             contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                         ) {
-                            Text("Same Caller (Suppress)", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.same_caller_suppress), style = MaterialTheme.typography.labelSmall)
                         }
                     }
                 }

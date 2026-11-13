@@ -166,9 +166,9 @@ fun ActiveCallScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            Toast.makeText(context, "Microphone permission granted. Tap Record to start.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.toast_mic_permission_granted), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "Microphone permission required for call recording", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.toast_mic_permission_required), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -335,7 +335,7 @@ fun ActiveCallScreen(
                     onMerge = {
                         if (isFake || !simulatedHeldName.isNullOrBlank()) {
                             onSimulatedMerge?.invoke()
-                            Toast.makeText(context, "📞 Call merged", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.toast_call_merged), Toast.LENGTH_SHORT).show()
                         } else {
                             CallManager.mergeCalls()
                         }
@@ -492,7 +492,7 @@ fun ActiveCallScreen(
                                 onSaveRecording(result.durationSeconds.coerceAtLeast(1L), file.absolutePath)
                                 Toast.makeText(context, context.getString(R.string.recording_saved), Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(context, "Call recording failed or file empty", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.toast_recording_failed_empty), Toast.LENGTH_SHORT).show()
                             }
                             isRecording = false
                         } else {
@@ -517,7 +517,7 @@ fun ActiveCallScreen(
                             val rootReady = rootEngine && RootShell.isGranted()
 
                             if (!hasAudioPermission && !rootReady) {
-                                Toast.makeText(context, "Microphone permission required for call recording", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.toast_mic_permission_required), Toast.LENGTH_SHORT).show()
                                 recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                                 return@InCallControlGrid
                             }
@@ -545,15 +545,15 @@ fun ActiveCallScreen(
                                     isFake -> Toast.makeText(context, context.getString(R.string.recording_started), Toast.LENGTH_SHORT).show()
                                     rootReady -> Toast.makeText(context, context.getString(R.string.root_recording_started), Toast.LENGTH_SHORT).show()
                                     isHeadset -> Toast.makeText(context, context.getString(R.string.headset_recording_warning), Toast.LENGTH_LONG).show()
-                                    autoTuneVolume && !rootEngine -> Toast.makeText(context, "⏺️ Recording started. Speaker tuned for balanced audio.", Toast.LENGTH_SHORT).show()
-                                    !isSpeakerOn -> Toast.makeText(context, "⏺️ Recording started. Tip: Turn ON Speakerphone.", Toast.LENGTH_LONG).show()
+                                    autoTuneVolume && !rootEngine -> Toast.makeText(context, context.getString(R.string.toast_recording_started_tuned), Toast.LENGTH_SHORT).show()
+                                    !isSpeakerOn -> Toast.makeText(context, context.getString(R.string.toast_recording_started_tip_speaker), Toast.LENGTH_LONG).show()
                                     else -> Toast.makeText(context, context.getString(R.string.recording_started), Toast.LENGTH_SHORT).show()
                                 }
                             } else {
                                 if (autoTuneVolume && !isHeadset && !rootEngine) {
                                     CallAudioHelper.restoreAudioState(context, CallManager.inCallService)
                                 }
-                                Toast.makeText(context, "Cannot start recording. Grant Microphone permission.", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, context.getString(R.string.toast_recording_cannot_start), Toast.LENGTH_LONG).show()
                             }
                         }
                     },
@@ -637,7 +637,7 @@ fun ActiveCallScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Minimize Call",
+                    contentDescription = stringResource(R.string.cd_minimize_call),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(32.dp)
                 )

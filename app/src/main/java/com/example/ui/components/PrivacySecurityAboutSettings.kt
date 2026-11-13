@@ -93,8 +93,8 @@ fun PrivacySecurityAboutSettings(
                                 } else {
                                     VaultBiometricAuthHelper.authenticate(
                                         activity = activity,
-                                        title = "Enable Biometric Lock",
-                                        subtitle = "Authenticate to confirm enabling App Lock",
+                                        title = context.getString(R.string.biometric_enable_title),
+                                        subtitle = context.getString(R.string.biometric_enable_sub),
                                         onSuccess = {
                                             viewModel.updateBiometricLockEnabled(true)
                                         },
@@ -107,8 +107,8 @@ fun PrivacySecurityAboutSettings(
                             } else {
                                 VaultBiometricAuthHelper.authenticate(
                                     activity = activity,
-                                    title = "Disable Biometric Lock",
-                                    subtitle = "Authenticate to confirm disabling App Lock",
+                                    title = context.getString(R.string.biometric_disable_title),
+                                    subtitle = context.getString(R.string.biometric_disable_sub),
                                     onSuccess = {
                                         viewModel.updateBiometricLockEnabled(false)
                                     },

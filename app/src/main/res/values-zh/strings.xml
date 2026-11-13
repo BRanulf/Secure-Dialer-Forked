@@ -686,4 +686,62 @@
     <string name="answering_machine_button">使用答录机接听</string>
     <string name="answering_machine_channel">答录机</string>
     <string name="answering_machine_channel_desc">答录机状态与已保存的留言</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">已授予麦克风权限。点击录音按钮开始。</string>
+    <string name="toast_mic_permission_required">通话录音需要麦克风权限</string>
+    <string name="toast_call_merged">📞 通话已合并</string>
+    <string name="toast_recording_failed_empty">通话录音失败或文件为空</string>
+    <string name="toast_recording_started_tuned">⏺️ 录音已开始。已为平衡音频调节扬声器音量。</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ 录音已开始。提示：请打开扬声器。</string>
+    <string name="toast_recording_cannot_start">无法开始录音。请授予麦克风权限。</string>
+    <string name="toast_export_source_not_found">找不到录音源文件</string>
+    <string name="toast_export_success_downloads">已成功导出到 Downloads！</string>
+    <string name="toast_export_failed_entry">无法创建公共 Downloads 条目</string>
+    <string name="toast_exported_to_path">已导出到 %1$s</string>
+    <string name="toast_export_failed_reason">导出失败：%1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 已在 3.5 秒后模拟来自 %1$s（%2$s）的来电等待</string>
+    <string name="action_unmute">取消静音</string>
+    <string name="audio_route_earpiece">听筒</string>
+    <string name="channel_incoming_calls">来电</string>
+    <string name="channel_incoming_calls_desc">来电提醒和全屏通知</string>
+    <string name="channel_active_calls">进行中的通话</string>
+    <string name="channel_active_calls_desc">通话控制</string>
+    <string name="channel_missed_calls">未接来电</string>
+    <string name="channel_missed_calls_desc">未接来电通知</string>
+    <string name="channel_call_reminders">通话提醒</string>
+    <string name="channel_call_reminders_desc">已预约回拨提醒的通知</string>
+    <string name="fake_call_waiting_title">来电等待与多方通话测试</string>
+    <string name="fake_call_waiting_desc">在通话中模拟第二路来电，以测试来电等待提醒或验证同一主叫抑制。</string>
+    <string name="fake_call_different_caller">不同主叫（提醒）</string>
+    <string name="same_caller_suppress">同一主叫（抑制）</string>
+    <string name="in_call_waiting_simulation">来电等待模拟</string>
+    <string name="new_caller_waiting">新主叫（等待中）</string>
+    <string name="potential_spoofed_number">可能的伪造号码</string>
+    <string name="biometric_enable_title">启用生物识别锁</string>
+    <string name="biometric_enable_sub">验证身份以确认启用应用锁</string>
+    <string name="biometric_disable_title">关闭生物识别锁</string>
+    <string name="biometric_disable_sub">验证身份以确认关闭应用锁</string>
+    <string name="about_zero_telemetry">版本 %1$s • 零遥测</string>
+    <string name="cd_minimize_call">最小化通话</string>
+    <string name="cd_restore_call_pill">恢复通话胶囊</string>
+    <string name="cd_minimize_to_camera">最小化到摄像头圆点</string>
+    <string name="full_screen">全屏</string>
+    <string name="cd_open_dialpad">打开拨号盘</string>
+    <string name="cd_clear_input">清除输入</string>
+    <string name="cd_cancel_call">取消通话</string>
+    <string name="call_recording_default_name">通话录音</string>
+    <string name="quick_response_default_1">现在不方便接听，我稍后回电。</string>
+    <string name="quick_response_default_2">我正在开会，有什么事？</string>
+    <string name="quick_response_default_3">我正在开车，稍后回复你。</string>
+    <string name="quick_response_default_4">抱歉，我现在很忙，可以稍后回电吗？</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">紧凑语音（高压缩）</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • 约 11 MB/小时 • 最大程度节省存储</string>
+    <string name="recording_quality_balanced_title">均衡标准（推荐）</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • 约 22 MB/小时 • 清晰通透的人声</string>
+    <string name="recording_quality_high_title">高保真（录音室）</string>
+    <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • 约 43 MB/小时 • 丰富的声学细节</string>
+    <string name="default_same_as_filter">默认 / 与筛选条件相同</string>
 </resources>

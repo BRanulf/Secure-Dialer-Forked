@@ -629,7 +629,7 @@ class MyInCallService : InCallService() {
             NotificationCompat.Builder(this, CHANNEL_INCOMING)
                 .setSmallIcon(android.R.drawable.sym_call_incoming)
                 .setContentTitle(title)
-                .setContentText("Incoming call from $displayName")
+                .setContentText("${getString(R.string.notification_incoming_call_title)}: $displayName")
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -637,8 +637,16 @@ class MyInCallService : InCallService() {
                 .setOngoing(true)
                 .setAutoCancel(false)
                 .setContentIntent(contentIntent)
-                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Decline", declinePendingIntent)
-                .addAction(android.R.drawable.sym_action_call, "Answer", answerPendingIntent)
+                .addAction(
+                    android.R.drawable.ic_menu_close_clear_cancel,
+                    getString(R.string.btn_decline),
+                    declinePendingIntent
+                )
+                .addAction(
+                    android.R.drawable.sym_action_call,
+                    getString(R.string.btn_answer),
+                    answerPendingIntent
+                )
         } else {
             val caller = Person.Builder().setName(displayName).setKey(number).build()
             val style = NotificationCompat.CallStyle.forIncomingCall(caller, declinePendingIntent, answerPendingIntent)
@@ -705,13 +713,33 @@ class MyInCallService : InCallService() {
         val isRecording = CallAudioRecorder.isRecording.value
         val isConference = CallManager.isConference(call) || CallManager.isConferenceActive.value
 
-        val recordTitle = if (isRecording) "■ Stop Rec" else "● Record"
-        val speakerTitle = if (isSpeaker) "Earpiece" else "Speaker"
-        val muteTitle = if (isMuted) "Unmute" else "Mute"
+        val recordTitle = if (isRecording) {
+            "■ ${getString(R.string.recording)}"
+        } else {
+            "● ${getString(R.string.record)}"
+        }
+        val speakerTitle = if (isSpeaker) {
+            getString(R.string.audio_route_earpiece)
+        } else {
+            getString(R.string.speaker)
+        }
+        val muteTitle = if (isMuted) {
+            getString(R.string.action_unmute)
+        } else {
+            getString(R.string.mute)
+        }
 
-        val titlePrefix = if (isConference) getString(R.string.call_status_conference) else "Ongoing Call"
+        val titlePrefix = if (isConference) {
+            getString(R.string.call_status_conference)
+        } else {
+            getString(R.string.call_status_ongoing)
+        }
         val contentTitle = if (isRecording) "$titlePrefix • [REC]" else titlePrefix
-        val contentText = if (isConference) "Conference call with $displayName is active" else "Call with $displayName is active"
+        val contentText = if (isConference) {
+            "$displayName • ${getString(R.string.call_status_conference)}"
+        } else {
+            "$displayName • ${getString(R.string.call_status_ongoing)}"
+        }
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ACTIVE)
             .setSmallIcon(android.R.drawable.sym_action_call)
@@ -725,7 +753,11 @@ class MyInCallService : InCallService() {
             .addAction(android.R.drawable.ic_btn_speak_now, recordTitle, recordPendingIntent)
             .addAction(android.R.drawable.stat_notify_call_mute, muteTitle, mutePendingIntent)
             .addAction(android.R.drawable.stat_sys_speakerphone, speakerTitle, speakerPendingIntent)
-            .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Hang Up", hangUpPendingIntent)
+            .addAction(
+                android.R.drawable.ic_menu_close_clear_cancel,
+                getString(R.string.btn_hangup),
+                hangUpPendingIntent
+            )
             .build()
 
         startInCallForeground(notification)
@@ -820,7 +852,7 @@ class MyInCallService : InCallService() {
     }
 
     private fun resolveCallerDisplayName(call: Call, number: String): String {
-        if (number.isEmpty()) return "Unknown"
+        if (number.isEmpty()) return getString(R.string.unknown)
         val cnapName = call.details?.callerDisplayName
         val contactName = getContactNameFromNumber(this, number)
         val savedCnap = if (contactName == null && cnapName.isNullOrBlank()) {
@@ -870,8 +902,12 @@ class MyInCallService : InCallService() {
             try { nm.deleteNotificationChannel("incoming_call_channel_v2") } catch (_: Exception) {}
             try { nm.deleteNotificationChannel("incoming_call_channel_v3") } catch (_: Exception) {}
 
-            val incomingChannel = NotificationChannel(CHANNEL_INCOMING, "Incoming Calls", NotificationManager.IMPORTANCE_HIGH).apply {
-                description = "Incoming call alerts and full screen notifications"
+            val incomingChannel = NotificationChannel(
+                CHANNEL_INCOMING,
+                getString(R.string.channel_incoming_calls),
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = getString(R.string.channel_incoming_calls_desc)
                 setSound(null, null)
                 enableVibration(false)
                 lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
@@ -880,12 +916,20 @@ class MyInCallService : InCallService() {
 
             nm.createNotificationChannels(listOf(
                 incomingChannel,
-                NotificationChannel(CHANNEL_ACTIVE, "Active Calls", NotificationManager.IMPORTANCE_LOW).apply {
-                    description = "Ongoing call controls"
+                NotificationChannel(
+                    CHANNEL_ACTIVE,
+                    getString(R.string.channel_active_calls),
+                    NotificationManager.IMPORTANCE_LOW
+                ).apply {
+                    description = getString(R.string.channel_active_calls_desc)
                     setShowBadge(false)
                 },
-                NotificationChannel(CHANNEL_MISSED, "Missed Calls", NotificationManager.IMPORTANCE_DEFAULT).apply {
-                    description = "Missed call notifications"
+                NotificationChannel(
+                    CHANNEL_MISSED,
+                    getString(R.string.channel_missed_calls),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = getString(R.string.channel_missed_calls_desc)
                 }
             ))
         }

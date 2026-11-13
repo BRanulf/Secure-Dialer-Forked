@@ -61,8 +61,12 @@ class ReminderAlarmReceiver : BroadcastReceiver() {
                     val channelId = "call_reminders_channel"
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         nm.createNotificationChannel(
-                            NotificationChannel(channelId, "Call Reminders", NotificationManager.IMPORTANCE_HIGH).apply {
-                                description = "Notifications for scheduled callback reminders"
+                            NotificationChannel(
+                                channelId,
+                                appContext.getString(R.string.channel_call_reminders),
+                                NotificationManager.IMPORTANCE_HIGH
+                            ).apply {
+                                description = appContext.getString(R.string.channel_call_reminders_desc)
                                 enableVibration(true)
                             }
                         )

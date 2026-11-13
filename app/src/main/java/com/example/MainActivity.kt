@@ -213,7 +213,7 @@ class MainActivity : ComponentActivity() {
                                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                                         Icon(
                                             imageVector = Icons.Default.Lock,
-                                            contentDescription = "App Locked",
+                                            contentDescription = stringResource(R.string.app_locked_title),
                                             tint = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.size(48.dp)
                                         )
@@ -223,7 +223,7 @@ class MainActivity : ComponentActivity() {
                                 Spacer(modifier = Modifier.size(24.dp))
 
                                 Text(
-                                    text = "Secure Dialer Locked",
+                                    text = stringResource(R.string.app_locked_title),
                                     style = MaterialTheme.typography.headlineMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onBackground
@@ -232,7 +232,7 @@ class MainActivity : ComponentActivity() {
                                 Spacer(modifier = Modifier.size(12.dp))
 
                                 Text(
-                                    text = "This app is secured to protect your privacy. Please authenticate with your device lock to continue.",
+                                    text = stringResource(R.string.app_locked_desc),
                                     style = MaterialTheme.typography.bodyLarge,
                                     textAlign = TextAlign.Center,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -247,7 +247,7 @@ class MainActivity : ComponentActivity() {
                                     },
                                     modifier = Modifier.fillMaxWidth(0.7f)
                                 ) {
-                                    Text(text = "Unlock Dialer", style = MaterialTheme.typography.titleMedium)
+                                    Text(text = stringResource(R.string.btn_unlock_dialer), style = MaterialTheme.typography.titleMedium)
                                 }
                             }
                         }
@@ -326,8 +326,8 @@ class MainActivity : ComponentActivity() {
         isAuthenticating = true
         VaultBiometricAuthHelper.authenticate(
             activity = this,
-            title = "Secure Dialer",
-            subtitle = "Authenticate to open Secure Dialer",
+            title = getString(R.string.device_auth_title),
+            subtitle = getString(R.string.device_auth_subtitle),
             onSuccess = {
                 isAuthenticating = false
                 isAppAuthenticated.value = true

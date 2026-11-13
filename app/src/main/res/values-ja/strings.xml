@@ -686,4 +686,62 @@
     <string name="answering_machine_button">留守番電話で応答</string>
     <string name="answering_machine_channel">留守番電話</string>
     <string name="answering_machine_channel_desc">留守番電話の状態と保存されたメッセージ</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">マイクの権限が許可されました。録音をタップして開始します。</string>
+    <string name="toast_mic_permission_required">通話録音にはマイクの権限が必要です</string>
+    <string name="toast_call_merged">📞 通話を統合しました</string>
+    <string name="toast_recording_failed_empty">通話録音に失敗したか、ファイルが空です</string>
+    <string name="toast_recording_started_tuned">⏺️ 録音を開始しました。バランスの取れた音声になるようスピーカーを調整しました。</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ 録音を開始しました。ヒント：スピーカーをオンにしてください。</string>
+    <string name="toast_recording_cannot_start">録音を開始できません。マイクの権限を許可してください。</string>
+    <string name="toast_export_source_not_found">録音元ファイルが見つかりません</string>
+    <string name="toast_export_success_downloads">Downloads に正常にエクスポートしました！</string>
+    <string name="toast_export_failed_entry">公開 Downloads エントリを作成できませんでした</string>
+    <string name="toast_exported_to_path">%1$s にエクスポートしました</string>
+    <string name="toast_export_failed_reason">エクスポートに失敗しました：%1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 %1$s（%2$s）からの着信待ちを 3.5 秒後にシミュレートしました</string>
+    <string name="action_unmute">ミュート解除</string>
+    <string name="audio_route_earpiece">受話口</string>
+    <string name="channel_incoming_calls">着信</string>
+    <string name="channel_incoming_calls_desc">着信アラートと全画面通知</string>
+    <string name="channel_active_calls">通話中</string>
+    <string name="channel_active_calls_desc">通話中の操作</string>
+    <string name="channel_missed_calls">不在着信</string>
+    <string name="channel_missed_calls_desc">不在着信の通知</string>
+    <string name="channel_call_reminders">折り返しリマインダー</string>
+    <string name="channel_call_reminders_desc">予約した折り返しリマインダーの通知</string>
+    <string name="fake_call_waiting_title">着信待ちと複数通話のテスト</string>
+    <string name="fake_call_waiting_desc">通話中に2件目の着信をシミュレートして、着信待ちアラートや同じ相手の抑制を確認します。</string>
+    <string name="fake_call_different_caller">別の相手（アラート）</string>
+    <string name="same_caller_suppress">同じ相手（抑制）</string>
+    <string name="in_call_waiting_simulation">着信待ちシミュレーション</string>
+    <string name="new_caller_waiting">新しい相手（待機中）</string>
+    <string name="potential_spoofed_number">偽装された可能性のある番号</string>
+    <string name="biometric_enable_title">生体認証ロックを有効にする</string>
+    <string name="biometric_enable_sub">アプリロックを有効にすることを確認するため認証してください</string>
+    <string name="biometric_disable_title">生体認証ロックを無効にする</string>
+    <string name="biometric_disable_sub">アプリロックを無効にすることを確認するため認証してください</string>
+    <string name="about_zero_telemetry">バージョン %1$s • テレメトリーなし</string>
+    <string name="cd_minimize_call">通話を最小化</string>
+    <string name="cd_restore_call_pill">通話ピルを復元</string>
+    <string name="cd_minimize_to_camera">カメラドットに最小化</string>
+    <string name="full_screen">全画面</string>
+    <string name="cd_open_dialpad">ダイヤルパッドを開く</string>
+    <string name="cd_clear_input">入力をクリア</string>
+    <string name="cd_cancel_call">通話をキャンセル</string>
+    <string name="call_recording_default_name">通話録音</string>
+    <string name="quick_response_default_1">今は話せません。後でかけ直します。</string>
+    <string name="quick_response_default_2">会議中です。どうしましたか？</string>
+    <string name="quick_response_default_3">運転中です。すぐにかけ直します。</string>
+    <string name="quick_response_default_4">すみません、今は忙しいです。後でかけ直してもいいですか？</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">コンパクト音声（高圧縮）</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • 約 11 MB/時 • ストレージを最大限節約</string>
+    <string name="recording_quality_balanced_title">バランス標準（推奨）</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • 約 22 MB/時 • クリアな音声</string>
+    <string name="recording_quality_high_title">高忠実度（スタジオ）</string>
+    <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • 約 43 MB/時 • 豊かな音響忠実度</string>
+    <string name="default_same_as_filter">デフォルト / フィルターと同じ</string>
 </resources>

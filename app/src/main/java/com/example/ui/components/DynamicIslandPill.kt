@@ -242,7 +242,7 @@ fun DynamicIslandPill(
                             isMuted -> Icons.Default.MicOff
                             else -> Icons.Default.Call
                         },
-                        contentDescription = "Restore Call Pill",
+                        contentDescription = stringResource(R.string.cd_restore_call_pill),
                         tint = dotTint,
                         modifier = Modifier.size(16.dp)
                     )
@@ -480,7 +480,7 @@ fun DynamicIslandPill(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.KeyboardArrowUp,
-                                            contentDescription = "Minimize to camera dot",
+                                            contentDescription = stringResource(R.string.cd_minimize_to_camera),
                                             tint = Color.White.copy(alpha = 0.6f),
                                             modifier = Modifier.size(15.dp)
                                         )
@@ -692,7 +692,7 @@ fun DynamicIslandPill(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Close,
-                                            contentDescription = "Minimize to camera dot",
+                                            contentDescription = stringResource(R.string.cd_minimize_to_camera),
                                             tint = Color.White.copy(alpha = 0.8f),
                                             modifier = Modifier.size(18.dp)
                                         )
@@ -759,14 +759,14 @@ fun DynamicIslandPill(
                                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                                 Icon(
                                                     imageVector = Icons.Default.OpenInFull,
-                                                    contentDescription = "Full Screen",
+                                                    contentDescription = stringResource(R.string.full_screen),
                                                     tint = Color.White,
                                                     modifier = Modifier.size(24.dp)
                                                 )
                                             }
                                         }
                                         Text(
-                                            text = "Full Screen",
+                                            text = stringResource(R.string.full_screen),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = Color.White.copy(alpha = 0.8f)
                                         )

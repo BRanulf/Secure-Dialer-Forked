@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.*
 import androidx.paging.*
 import com.example.*
+import com.example.R
 import com.example.model.*
 import com.example.util.AnsweringMachineGreeting
 import com.example.util.AnsweringMachineManager
@@ -333,7 +334,10 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
                     DialpadMatch(
                         number = record.number,
                         name = if (record.name == "Unknown" || record.name.isBlank()) record.name else formatContactName(record.name, nameFormat),
-                        label = "Recent • ${record.label}",
+                        label = repository.context.getString(
+                            R.string.recent_label_format,
+                            record.label
+                        ),
                         avatarText = record.avatarText,
                         avatarBgValue = record.avatarBgValue,
                         avatarTextColorValue = record.avatarTextColorValue,
@@ -673,11 +677,12 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
 
             val currentResponses = repository.getQuickResponses().first()
             if (currentResponses.isEmpty()) {
+                val app = getApplication<Application>()
                 listOf(
-                    "Can't talk right now. I'll call you later.",
-                    "I'm in a meeting. What's up?",
-                    "I'm driving. I'll get back to you shortly.",
-                    "Sorry, I'm busy. Can I call you back?"
+                    app.getString(R.string.quick_response_default_1),
+                    app.getString(R.string.quick_response_default_2),
+                    app.getString(R.string.quick_response_default_3),
+                    app.getString(R.string.quick_response_default_4)
                 ).forEach { repository.addQuickResponse(it) }
             }
 

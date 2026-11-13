@@ -686,4 +686,62 @@
     <string name="answering_machine_button">ऑटो उत्तर मशीन से उत्तर दें</string>
     <string name="answering_machine_channel">ऑटो उत्तर मशीन</string>
     <string name="answering_machine_channel_desc">ऑटो उत्तर मशीन की स्थिति और सहेजे गए संदेश</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">माइक्रोफ़ोन अनुमति दी गई। रिकॉर्ड शुरू करने के लिए टैप करें।</string>
+    <string name="toast_mic_permission_required">कॉल रिकॉर्डिंग के लिए माइक्रोफ़ोन अनुमति आवश्यक है</string>
+    <string name="toast_call_merged">📞 कॉल मिला दी गई</string>
+    <string name="toast_recording_failed_empty">कॉल रिकॉर्डिंग विफल रही या फ़ाइल खाली है</string>
+    <string name="toast_recording_started_tuned">⏺️ रिकॉर्डिंग शुरू हुई। संतुलित ऑडियो के लिए स्पीकर समायोजित किया गया।</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ रिकॉर्डिंग शुरू हुई। सुझाव: स्पीकर चालू करें।</string>
+    <string name="toast_recording_cannot_start">रिकॉर्डिंग शुरू नहीं हो सकती। माइक्रोफ़ोन अनुमति दें।</string>
+    <string name="toast_export_source_not_found">रिकॉर्डिंग का स्रोत फ़ाइल नहीं मिली</string>
+    <string name="toast_export_success_downloads">Downloads में सफलतापूर्वक निर्यात किया गया!</string>
+    <string name="toast_export_failed_entry">सार्वजनिक Downloads प्रविष्टि बनाने में विफल</string>
+    <string name="toast_exported_to_path">%1$s में निर्यात किया गया</string>
+    <string name="toast_export_failed_reason">निर्यात विफल: %1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 %1$s (%2$s) से कॉल वेटिंग 3.5 सेकंड में सिम्युलेट की गई</string>
+    <string name="action_unmute">अनम्यूट करें</string>
+    <string name="audio_route_earpiece">ईयरपीस</string>
+    <string name="channel_incoming_calls">आने वाली कॉल</string>
+    <string name="channel_incoming_calls_desc">आने वाली कॉल अलर्ट और फ़ुल स्क्रीन सूचनाएँ</string>
+    <string name="channel_active_calls">सक्रिय कॉल</string>
+    <string name="channel_active_calls_desc">चल रही कॉल के नियंत्रण</string>
+    <string name="channel_missed_calls">छूटी हुई कॉल</string>
+    <string name="channel_missed_calls_desc">छूटी हुई कॉल की सूचनाएँ</string>
+    <string name="channel_call_reminders">कॉलबैक रिमाइंडर</string>
+    <string name="channel_call_reminders_desc">निर्धारित कॉलबैक रिमाइंडर के लिए सूचनाएँ</string>
+    <string name="fake_call_waiting_title">कॉल वेटिंग और मल्टी-कॉल परीक्षण</string>
+    <string name="fake_call_waiting_desc">सक्रिय कॉल के दौरान दूसरी कॉल सिम्युलेट करें ताकि कॉल वेटिंग अलर्ट या समान कॉलर सप्रेशन का परीक्षण हो सके।</string>
+    <string name="fake_call_different_caller">अलग कॉलर (अलर्ट)</string>
+    <string name="same_caller_suppress">वही कॉलर (दबाएँ)</string>
+    <string name="in_call_waiting_simulation">कॉल वेटिंग सिम्युलेशन</string>
+    <string name="new_caller_waiting">नया कॉलर (प्रतीक्षा में)</string>
+    <string name="potential_spoofed_number">संभावित नकली नंबर</string>
+    <string name="biometric_enable_title">बायोमेट्रिक लॉक सक्षम करें</string>
+    <string name="biometric_enable_sub">ऐप लॉक सक्षम करने की पुष्टि के लिए प्रमाणित करें</string>
+    <string name="biometric_disable_title">बायोमेट्रिक लॉक अक्षम करें</string>
+    <string name="biometric_disable_sub">ऐप लॉक अक्षम करने की पुष्टि के लिए प्रमाणित करें</string>
+    <string name="about_zero_telemetry">संस्करण %1$s • शून्य टेलीमेट्री</string>
+    <string name="cd_minimize_call">कॉल छोटी करें</string>
+    <string name="cd_restore_call_pill">कॉल पिल पुनर्स्थापित करें</string>
+    <string name="cd_minimize_to_camera">कैमरा बिंदु तक छोटा करें</string>
+    <string name="full_screen">पूरी स्क्रीन</string>
+    <string name="cd_open_dialpad">डायलपैड खोलें</string>
+    <string name="cd_clear_input">इनपुट साफ़ करें</string>
+    <string name="cd_cancel_call">कॉल रद्द करें</string>
+    <string name="call_recording_default_name">कॉल रिकॉर्डिंग</string>
+    <string name="quick_response_default_1">अभी बात नहीं कर सकता। मैं बाद में कॉल करूँगा।</string>
+    <string name="quick_response_default_2">मैं मीटिंग में हूँ। क्या बात है?</string>
+    <string name="quick_response_default_3">मैं गाड़ी चला रहा हूँ। मैं जल्द वापस कॉल करूँगा।</string>
+    <string name="quick_response_default_4">क्षमा करें, मैं व्यस्त हूँ। क्या मैं बाद में कॉल कर सकता हूँ?</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">कॉम्पैक्ट आवाज़ (उच्च संपीड़न)</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • ~11 MB/घंटा • अधिकतम संग्रहण बचत</string>
+    <string name="recording_quality_balanced_title">संतुलित मानक (अनुशंसित)</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • ~22 MB/घंटा • क्रिस्टल-क्लियर आवाज़</string>
+    <string name="recording_quality_high_title">उच्च निष्ठा (स्टूडियो)</string>
+    <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • ~43 MB/घंटा • समृद्ध ध्वनि निष्ठा</string>
+    <string name="default_same_as_filter">डिफ़ॉल्ट / फ़िल्टर के समान</string>
 </resources>

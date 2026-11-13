@@ -651,7 +651,7 @@ fun FakeCallSettings(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text = "Call Waiting & Multi-Call Testing",
+                        text = stringResource(R.string.fake_call_waiting_title),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -659,7 +659,7 @@ fun FakeCallSettings(
                 }
 
                 Text(
-                    text = "Simulate receiving a secondary call while on an active call to test Call Waiting alerts or verify same-caller suppression.",
+                    text = stringResource(R.string.fake_call_waiting_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -689,12 +689,20 @@ fun FakeCallSettings(
                                 delayMillis = 3500L,
                                 context = context
                             )
-                            Toast.makeText(context, "📞 Call Waiting simulated from Alice Cooper (+1 555-987-6543) in 3.5s", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                    R.string.toast_fake_call_waiting_simulated,
+                                    "Alice Cooper",
+                                    "+1 (555) 987-6543"
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Different Caller (Alert)", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(R.string.fake_call_different_caller), style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
 
                     OutlinedButton(
@@ -731,7 +739,7 @@ fun FakeCallSettings(
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Same Caller (Suppress)", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(R.string.same_caller_suppress), style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -883,7 +891,7 @@ fun FakeCallSettings(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
-                                        contentDescription = "Cancel call",
+                                        contentDescription = stringResource(R.string.cd_cancel_call),
                                         tint = MaterialTheme.colorScheme.error
                                     )
                                 }

@@ -589,7 +589,11 @@ object CallAudioRecorder {
             result.add(
                 CallRecording(
                     number = extractedNumber,
-                    name = if (extractedNumber == "Unknown") "Call Recording" else extractedNumber,
+                    name = if (extractedNumber == "Unknown") {
+                        context.getString(R.string.call_recording_default_name)
+                    } else {
+                        extractedNumber
+                    },
                     timestamp = timestampStr,
                     duration = durationSeconds,
                     filePath = file.absolutePath

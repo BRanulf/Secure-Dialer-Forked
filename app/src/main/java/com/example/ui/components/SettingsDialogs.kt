@@ -85,7 +85,7 @@ fun exportRecordingToDownloads(context: android.content.Context, filePath: Strin
     try {
         val file = java.io.File(filePath)
         if (!file.exists()) {
-            android.widget.Toast.makeText(context, "Recording source file not found", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(context, context.getString(R.string.toast_export_source_not_found), android.widget.Toast.LENGTH_SHORT).show()
             return
         }
         val fileName = file.name
@@ -109,9 +109,9 @@ fun exportRecordingToDownloads(context: android.content.Context, filePath: Strin
                 resolver.openOutputStream(uri)?.use { out ->
                     file.inputStream().use { input -> input.copyTo(out) }
                 }
-                android.widget.Toast.makeText(context, "Exported successfully to Downloads!", android.widget.Toast.LENGTH_LONG).show()
+                android.widget.Toast.makeText(context, context.getString(R.string.toast_export_success_downloads), android.widget.Toast.LENGTH_LONG).show()
             } else {
-                android.widget.Toast.makeText(context, "Failed to create public downloads entry", android.widget.Toast.LENGTH_SHORT).show()
+                android.widget.Toast.makeText(context, context.getString(R.string.toast_export_failed_entry), android.widget.Toast.LENGTH_SHORT).show()
             }
         } else {
             @Suppress("DEPRECATION")
@@ -122,10 +122,18 @@ fun exportRecordingToDownloads(context: android.content.Context, filePath: Strin
                     input.copyTo(out)
                 }
             }
-            android.widget.Toast.makeText(context, "Exported to ${destFile.absolutePath}", android.widget.Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.toast_exported_to_path, destFile.absolutePath),
+                android.widget.Toast.LENGTH_LONG
+            ).show()
         }
     } catch (e: Exception) {
-        android.widget.Toast.makeText(context, "Export failed: ${e.localizedMessage}", android.widget.Toast.LENGTH_LONG).show()
+        android.widget.Toast.makeText(
+            context,
+            context.getString(R.string.toast_export_failed_reason, e.localizedMessage ?: ""),
+            android.widget.Toast.LENGTH_LONG
+        ).show()
     }
 }
 

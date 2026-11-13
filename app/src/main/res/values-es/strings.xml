@@ -686,4 +686,62 @@ Versión v%1$s (Versión estable)
     <string name="answering_machine_button">Responder con el contestador</string>
     <string name="answering_machine_channel">Contestador automático</string>
     <string name="answering_machine_channel_desc">Estado del contestador y mensajes guardados</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">Permiso de micrófono concedido. Toca Grabar para empezar.</string>
+    <string name="toast_mic_permission_required">Se requiere permiso de micrófono para grabar llamadas</string>
+    <string name="toast_call_merged">📞 Llamada fusionada</string>
+    <string name="toast_recording_failed_empty">La grabación falló o el archivo está vacío</string>
+    <string name="toast_recording_started_tuned">⏺️ Grabación iniciada. Altavoz ajustado para un audio equilibrado.</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ Grabación iniciada. Consejo: activa el altavoz.</string>
+    <string name="toast_recording_cannot_start">No se puede iniciar la grabación. Concede permiso de micrófono.</string>
+    <string name="toast_export_source_not_found">No se encontró el archivo de origen de la grabación</string>
+    <string name="toast_export_success_downloads">¡Exportado correctamente a Downloads!</string>
+    <string name="toast_export_failed_entry">No se pudo crear la entrada pública en Downloads</string>
+    <string name="toast_exported_to_path">Exportado a %1$s</string>
+    <string name="toast_export_failed_reason">Error de exportación: %1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 Llamada en espera simulada de %1$s (%2$s) en 3,5 s</string>
+    <string name="action_unmute">Activar micrófono</string>
+    <string name="audio_route_earpiece">Auricular</string>
+    <string name="channel_incoming_calls">Llamadas entrantes</string>
+    <string name="channel_incoming_calls_desc">Alertas de llamadas entrantes y notificaciones a pantalla completa</string>
+    <string name="channel_active_calls">Llamadas activas</string>
+    <string name="channel_active_calls_desc">Controles de llamada en curso</string>
+    <string name="channel_missed_calls">Llamadas perdidas</string>
+    <string name="channel_missed_calls_desc">Notificaciones de llamadas perdidas</string>
+    <string name="channel_call_reminders">Recordatorios de devolución de llamada</string>
+    <string name="channel_call_reminders_desc">Notificaciones para recordatorios de devolución programados</string>
+    <string name="fake_call_waiting_title">Llamada en espera y pruebas de llamadas múltiples</string>
+    <string name="fake_call_waiting_desc">Simula una segunda llamada durante una llamada activa para probar el aviso de llamada en espera o verificar la supresión del mismo interlocutor.</string>
+    <string name="fake_call_different_caller">Otro interlocutor (Aviso)</string>
+    <string name="same_caller_suppress">Mismo interlocutor (Suprimir)</string>
+    <string name="in_call_waiting_simulation">Simulación de llamada en espera</string>
+    <string name="new_caller_waiting">Nuevo interlocutor (En espera)</string>
+    <string name="potential_spoofed_number">Posible número suplantado</string>
+    <string name="biometric_enable_title">Activar bloqueo biométrico</string>
+    <string name="biometric_enable_sub">Autentícate para confirmar la activación del bloqueo de la app</string>
+    <string name="biometric_disable_title">Desactivar bloqueo biométrico</string>
+    <string name="biometric_disable_sub">Autentícate para confirmar la desactivación del bloqueo de la app</string>
+    <string name="about_zero_telemetry">Versión %1$s • Cero telemetría</string>
+    <string name="cd_minimize_call">Minimizar llamada</string>
+    <string name="cd_restore_call_pill">Restaurar píldora de llamada</string>
+    <string name="cd_minimize_to_camera">Minimizar al punto de cámara</string>
+    <string name="full_screen">Pantalla completa</string>
+    <string name="cd_open_dialpad">Abrir teclado</string>
+    <string name="cd_clear_input">Borrar entrada</string>
+    <string name="cd_cancel_call">Cancelar llamada</string>
+    <string name="call_recording_default_name">Grabación de llamada</string>
+    <string name="quick_response_default_1">Ahora no puedo hablar. Te llamo más tarde.</string>
+    <string name="quick_response_default_2">Estoy en una reunión. ¿Qué pasa?</string>
+    <string name="quick_response_default_3">Estoy conduciendo. Te devolveré la llamada en breve.</string>
+    <string name="quick_response_default_4">Lo siento, estoy ocupado. ¿Puedo llamarte luego?</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">Voz compacta (alta compresión)</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • ~11 MB/h • Máximo ahorro de almacenamiento</string>
+    <string name="recording_quality_balanced_title">Estándar equilibrado (recomendado)</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • ~22 MB/h • Claridad de voz cristalina</string>
+    <string name="recording_quality_high_title">Alta fidelidad (estudio)</string>
+    <string name="recording_quality_high_desc">96 kbps AAC a 44,1 kHz • ~43 MB/h • Rica fidelidad acústica</string>
+    <string name="default_same_as_filter">Predeterminado / Igual que el filtro</string>
 </resources>

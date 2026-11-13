@@ -12,6 +12,10 @@ All notable changes, fixes, and release milestones for Secure Dialer are documen
 - **Uplink Greeting Injection**: The greeting is decoded to 16 kHz mono PCM and played by a root `AudioTrack` helper into the AOSP in-call music uplink (`incall_music_uplink` / `Telephony Tx`, `AUDIO_OUTPUT_FLAG_INCALL_MUSIC`). Vendor mixer controls (`Incall_Music` via `tinymix`) remain as a fallback for older devices. The root recorder no longer switches the call to speakerphone; standard-engine recordings retain their existing speaker auto-tune behavior.
 - **Device Notes**: Android exposes no public API for injecting audio into a carrier call. Root behavior varies by device, ROM, root manager, and audio policy; Only been successfully tested on the OnePlus Ace 5 (PKG110) running Lineage OS 23 and Project Infinity X 4.1; when no uplink route is available the answering machine still records the caller and notifies that the greeting could not be routed.
 
+### Localization Completion
+- Completed the remaining untranslated Arabic privacy introduction and spam CSV example.
+- Moved roughly 50 hardcoded user-facing strings (call-recording toasts, lock screen, notification channels/actions, biometric prompts, fake-call/waiting labels, recording-quality descriptions, default quick replies, and accessibility labels) into localized resources across all 10 supported languages.
+
 ---
 
 ## [1.8.0] - 2026-11-03

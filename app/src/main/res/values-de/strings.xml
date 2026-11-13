@@ -686,4 +686,62 @@ Version v%1$s (Stabile Version)
     <string name="answering_machine_button">Mit Anrufbeantworter annehmen</string>
     <string name="answering_machine_channel">Anrufbeantworter</string>
     <string name="answering_machine_channel_desc">Anrufbeantworter-Status und gespeicherte Nachrichten</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">Mikrofonberechtigung erteilt. Tippen Sie auf Aufnehmen, um zu starten.</string>
+    <string name="toast_mic_permission_required">Mikrofonberechtigung für die Anrufaufzeichnung erforderlich</string>
+    <string name="toast_call_merged">📞 Anruf zusammengeführt</string>
+    <string name="toast_recording_failed_empty">Anrufaufzeichnung fehlgeschlagen oder Datei leer</string>
+    <string name="toast_recording_started_tuned">⏺️ Aufzeichnung gestartet. Lautsprecher für ausgewogenen Klang angepasst.</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ Aufzeichnung gestartet. Tipp: Lautsprecher einschalten.</string>
+    <string name="toast_recording_cannot_start">Aufzeichnung kann nicht gestartet werden. Mikrofonberechtigung erteilen.</string>
+    <string name="toast_export_source_not_found">Quelldatei der Aufzeichnung nicht gefunden</string>
+    <string name="toast_export_success_downloads">Erfolgreich nach Downloads exportiert!</string>
+    <string name="toast_export_failed_entry">Öffentlicher Downloads-Eintrag konnte nicht erstellt werden</string>
+    <string name="toast_exported_to_path">Exportiert nach %1$s</string>
+    <string name="toast_export_failed_reason">Export fehlgeschlagen: %1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 Anklopfen von %1$s (%2$s) in 3,5 s simuliert</string>
+    <string name="action_unmute">Stummschaltung aufheben</string>
+    <string name="audio_route_earpiece">Hörer</string>
+    <string name="channel_incoming_calls">Eingehende Anrufe</string>
+    <string name="channel_incoming_calls_desc">Benachrichtigungen für eingehende Anrufe und Vollbildanzeige</string>
+    <string name="channel_active_calls">Aktive Anrufe</string>
+    <string name="channel_active_calls_desc">Steuerung laufender Anrufe</string>
+    <string name="channel_missed_calls">Verpasste Anrufe</string>
+    <string name="channel_missed_calls_desc">Benachrichtigungen für verpasste Anrufe</string>
+    <string name="channel_call_reminders">Rückruferinnerungen</string>
+    <string name="channel_call_reminders_desc">Benachrichtigungen für geplante Rückruferinnerungen</string>
+    <string name="fake_call_waiting_title">Anklopfen &amp; Mehrfachanruf-Test</string>
+    <string name="fake_call_waiting_desc">Simulieren Sie einen zweiten Anruf während eines aktiven Anrufs, um Anklopfen zu testen oder die Unterdrückung desselben Anrufers zu prüfen.</string>
+    <string name="fake_call_different_caller">Anderer Anrufer (Hinweis)</string>
+    <string name="same_caller_suppress">Gleicher Anrufer (Unterdrücken)</string>
+    <string name="in_call_waiting_simulation">Anklopf-Simulation</string>
+    <string name="new_caller_waiting">Neuer Anrufer (Wartend)</string>
+    <string name="potential_spoofed_number">Möglicherweise gefälschte Nummer</string>
+    <string name="biometric_enable_title">Biometrische Sperre aktivieren</string>
+    <string name="biometric_enable_sub">Authentifizieren, um die App-Sperre zu aktivieren</string>
+    <string name="biometric_disable_title">Biometrische Sperre deaktivieren</string>
+    <string name="biometric_disable_sub">Authentifizieren, um die App-Sperre zu deaktivieren</string>
+    <string name="about_zero_telemetry">Version %1$s • Keine Telemetrie</string>
+    <string name="cd_minimize_call">Anruf minimieren</string>
+    <string name="cd_restore_call_pill">Anruf-Pille wiederherstellen</string>
+    <string name="cd_minimize_to_camera">Auf Kamerapunkt minimieren</string>
+    <string name="full_screen">Vollbild</string>
+    <string name="cd_open_dialpad">Ziffernblock öffnen</string>
+    <string name="cd_clear_input">Eingabe löschen</string>
+    <string name="cd_cancel_call">Anruf abbrechen</string>
+    <string name="call_recording_default_name">Anrufaufzeichnung</string>
+    <string name="quick_response_default_1">Ich kann gerade nicht sprechen. Ich rufe später zurück.</string>
+    <string name="quick_response_default_2">Ich bin in einer Besprechung. Was gibt es?</string>
+    <string name="quick_response_default_3">Ich fahre gerade. Ich melde mich gleich.</string>
+    <string name="quick_response_default_4">Entschuldigung, ich bin beschäftigt. Kann ich später zurückrufen?</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">Kompakte Stimme (Hohe Kompression)</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • ~11 MB/Std. • Maximale Speichereinsparung</string>
+    <string name="recording_quality_balanced_title">Ausgewogener Standard (Empfohlen)</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • ~22 MB/Std. • Kristallklare Sprachqualität</string>
+    <string name="recording_quality_high_title">Hohe Wiedergabetreue (Studio)</string>
+    <string name="recording_quality_high_desc">96 kbps AAC @ 44,1 kHz • ~43 MB/Std. • Reichhaltige Klangtreue</string>
+    <string name="default_same_as_filter">Standard / Wie Filter</string>
 </resources>

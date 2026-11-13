@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.BuildConfig
 import com.example.R
 
 @Composable
@@ -87,7 +88,10 @@ fun AboutAndSupportSettings(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Version 1.4.0 • Zero Telemetry",
+                            text = stringResource(
+                                R.string.about_zero_telemetry,
+                                BuildConfig.VERSION_NAME
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary
                         )

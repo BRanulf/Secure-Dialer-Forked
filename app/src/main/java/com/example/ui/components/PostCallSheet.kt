@@ -241,7 +241,7 @@ fun PostCallSheet(
                 // 2. Call Back Action
                 PostCallActionChip(
                     icon = Icons.Default.Call,
-                    label = "Call Back",
+                    label = stringResource(R.string.btn_call_back),
                     containerColor = getCallGreenColor().copy(alpha = 0.22f),
                     contentColor = getCallGreenColor(),
                     modifier = Modifier.weight(1f),
@@ -277,7 +277,7 @@ fun PostCallSheet(
                 if (data.isUnsaved) {
                     PostCallActionChip(
                         icon = Icons.Default.PersonAdd,
-                        label = "Save",
+                        label = stringResource(R.string.btn_save),
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f),
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier.weight(1f),

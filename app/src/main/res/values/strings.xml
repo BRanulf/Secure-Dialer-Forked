@@ -750,4 +750,62 @@ Version v%1$s (Stable Release)
     <string name="answering_machine_button">Answer with answering machine</string>
     <string name="answering_machine_channel">Answering Machine</string>
     <string name="answering_machine_channel_desc">Answering machine status and saved messages</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">Microphone permission granted. Tap Record to start.</string>
+    <string name="toast_mic_permission_required">Microphone permission required for call recording</string>
+    <string name="toast_call_merged">📞 Call merged</string>
+    <string name="toast_recording_failed_empty">Call recording failed or file empty</string>
+    <string name="toast_recording_started_tuned">⏺️ Recording started. Speaker tuned for balanced audio.</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ Recording started. Tip: Turn ON Speakerphone.</string>
+    <string name="toast_recording_cannot_start">Cannot start recording. Grant Microphone permission.</string>
+    <string name="toast_export_source_not_found">Recording source file not found</string>
+    <string name="toast_export_success_downloads">Exported successfully to Downloads!</string>
+    <string name="toast_export_failed_entry">Failed to create public downloads entry</string>
+    <string name="toast_exported_to_path">Exported to %1$s</string>
+    <string name="toast_export_failed_reason">Export failed: %1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 Call Waiting simulated from %1$s (%2$s) in 3.5s</string>
+    <string name="action_unmute">Unmute</string>
+    <string name="audio_route_earpiece">Earpiece</string>
+    <string name="channel_incoming_calls">Incoming Calls</string>
+    <string name="channel_incoming_calls_desc">Incoming call alerts and full screen notifications</string>
+    <string name="channel_active_calls">Active Calls</string>
+    <string name="channel_active_calls_desc">Ongoing call controls</string>
+    <string name="channel_missed_calls">Missed Calls</string>
+    <string name="channel_missed_calls_desc">Missed call notifications</string>
+    <string name="channel_call_reminders">Call Reminders</string>
+    <string name="channel_call_reminders_desc">Notifications for scheduled callback reminders</string>
+    <string name="fake_call_waiting_title">Call Waiting &amp; Multi-Call Testing</string>
+    <string name="fake_call_waiting_desc">Simulate receiving a secondary call while on an active call to test Call Waiting alerts or verify same-caller suppression.</string>
+    <string name="fake_call_different_caller">Different Caller (Alert)</string>
+    <string name="same_caller_suppress">Same Caller (Suppress)</string>
+    <string name="in_call_waiting_simulation">Call Waiting Simulation</string>
+    <string name="new_caller_waiting">New Caller (Waiting)</string>
+    <string name="potential_spoofed_number">Potential Spoofed Number</string>
+    <string name="biometric_enable_title">Enable Biometric Lock</string>
+    <string name="biometric_enable_sub">Authenticate to confirm enabling App Lock</string>
+    <string name="biometric_disable_title">Disable Biometric Lock</string>
+    <string name="biometric_disable_sub">Authenticate to confirm disabling App Lock</string>
+    <string name="about_zero_telemetry">Version %1$s • Zero Telemetry</string>
+    <string name="cd_minimize_call">Minimize Call</string>
+    <string name="cd_restore_call_pill">Restore Call Pill</string>
+    <string name="cd_minimize_to_camera">Minimize to camera dot</string>
+    <string name="full_screen">Full Screen</string>
+    <string name="cd_open_dialpad">Open Dialpad</string>
+    <string name="cd_clear_input">Clear Input</string>
+    <string name="cd_cancel_call">Cancel call</string>
+    <string name="call_recording_default_name">Call Recording</string>
+    <string name="quick_response_default_1">Can\'t talk right now. I\'ll call you later.</string>
+    <string name="quick_response_default_2">I\'m in a meeting. What\'s up?</string>
+    <string name="quick_response_default_3">I\'m driving. I\'ll get back to you shortly.</string>
+    <string name="quick_response_default_4">Sorry, I\'m busy. Can I call you back?</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">Compact Voice (High Compression)</string>
+    <string name="recording_quality_compact_desc">24 kbps AAC • ~11 MB/hr • Maximum storage savings</string>
+    <string name="recording_quality_balanced_title">Balanced Standard (Recommended)</string>
+    <string name="recording_quality_balanced_desc">48 kbps AAC • ~22 MB/hr • Crystal-clear voice clarity</string>
+    <string name="recording_quality_high_title">High Fidelity (Studio)</string>
+    <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • ~43 MB/hr • Rich acoustic fidelity</string>
+    <string name="default_same_as_filter">Default / Same as Filter</string>
 </resources>

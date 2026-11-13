@@ -313,7 +313,7 @@
     <string name="import_csv_dialog_desc">التنسيق: \'الرقم,التصنيف\' (واحدة في كل سطر). الصق محتوى CSV أدناه:</string>
     <string name="load_sample_dataset">أو تحميل عينة بيانات محلياً:</string>
     <string name="btn_load_sample_list">تحميل قائمة تجريبية</string>
-    <string name="spam_csv_placeholder">18005550199,Spam Telemarketer\n18885550122,Scam Caller</string>
+    <string name="spam_csv_placeholder">18005550199,مسوّق مزعج\n18885550122,محتال هاتفي</string>
     <string name="btn_csv_import">استيراد CSV</string>
     <string name="spam_db_check_updates">التحقق من تحديثات قاعدة البيانات</string>
     <string name="spam_db_checking">جاري فحص تعريفات التهديدات المحلية...</string>
@@ -585,7 +585,7 @@
     <string name="about_mission_desc">توفير تجربة اتصال بسيطة وموثوقة وآمنة دون المساس بخصوصية المستخدم.</string>
     <string name="about_app_desc">Secure Dialer هو أداة اتصال تركز على الخصوصية. جميع الوظائف تعمل محلياً على جهازك فقط.</string>
     <string name="privacy_policy_title">سياسة الخصوصية</string>
-    <string name="privacy_intro">In Secure Dialer, we prioritize your privacy.</string>
+    <string name="privacy_intro">في Secure Dialer، نضع خصوصيتك في المقام الأول.</string>
     <string name="privacy_section_1_title">عدم الاتصال بالإنترنت أولاً</string>
     <string name="privacy_section_1_desc">يعمل التطبيق بدون أي اتصال بالإنترنت، ولا يرسل أي بيانات إلى خوادم خارجية.</string>
     <string name="privacy_section_2_title">تخزين مشفر محلياً</string>
@@ -686,4 +686,62 @@
     <string name="answering_machine_button">الرد باستخدام جهاز الرد الآلي</string>
     <string name="answering_machine_channel">جهاز الرد الآلي</string>
     <string name="answering_machine_channel_desc">حالة جهاز الرد الآلي والرسائل المحفوظة</string>
+
+    <!-- Hardcoded UI strings moved into resources -->
+    <string name="toast_mic_permission_granted">تم منح إذن الميكروفون. اضغط على تسجيل للبدء.</string>
+    <string name="toast_mic_permission_required">إذن الميكروفون مطلوب لتسجيل المكالمات</string>
+    <string name="toast_call_merged">📞 تم دمج المكالمة</string>
+    <string name="toast_recording_failed_empty">فشل تسجيل المكالمة أو أن الملف فارغ</string>
+    <string name="toast_recording_started_tuned">⏺️ بدأ التسجيل. تم ضبط مكبر الصوت لصوت متوازن.</string>
+    <string name="toast_recording_started_tip_speaker">⏺️ بدأ التسجيل. نصيحة: قم بتشغيل مكبر الصوت.</string>
+    <string name="toast_recording_cannot_start">لا يمكن بدء التسجيل. امنح إذن الميكروفون.</string>
+    <string name="toast_export_source_not_found">لم يتم العثور على ملف مصدر التسجيل</string>
+    <string name="toast_export_success_downloads">تم التصدير بنجاح إلى Downloads!</string>
+    <string name="toast_export_failed_entry">فشل إنشاء إدخال عام في Downloads</string>
+    <string name="toast_exported_to_path">تم التصدير إلى %1$s</string>
+    <string name="toast_export_failed_reason">فشل التصدير: %1$s</string>
+    <string name="toast_fake_call_waiting_simulated">📞 تمت محاكاة مكالمة انتظار من %1$s (%2$s) خلال 3.5 ثانية</string>
+    <string name="action_unmute">إلغاء كتم الصوت</string>
+    <string name="audio_route_earpiece">سماعة الأذن</string>
+    <string name="channel_incoming_calls">المكالمات الواردة</string>
+    <string name="channel_incoming_calls_desc">تنبيهات المكالمات الواردة والإشعارات بملء الشاشة</string>
+    <string name="channel_active_calls">المكالمات النشطة</string>
+    <string name="channel_active_calls_desc">التحكم في المكالمة الجارية</string>
+    <string name="channel_missed_calls">المكالمات الفائتة</string>
+    <string name="channel_missed_calls_desc">إشعارات المكالمات الفائتة</string>
+    <string name="channel_call_reminders">تنبيهات معاودة الاتصال</string>
+    <string name="channel_call_reminders_desc">إشعارات تنبيهات معاودة الاتصال المجدولة</string>
+    <string name="fake_call_waiting_title">انتظار المكالمة واختبار المكالمات المتعددة</string>
+    <string name="fake_call_waiting_desc">حاكِ مكالمة ثانية أثناء مكالمة نشطة لاختبار تنبيه انتظار المكالمة أو التحقق من كتم المتصل نفسه.</string>
+    <string name="fake_call_different_caller">متصل مختلف (تنبيه)</string>
+    <string name="same_caller_suppress">نفس المتصل (كتم)</string>
+    <string name="in_call_waiting_simulation">محاكاة انتظار المكالمة</string>
+    <string name="new_caller_waiting">متصل جديد (في الانتظار)</string>
+    <string name="potential_spoofed_number">رقم منتحل محتمل</string>
+    <string name="biometric_enable_title">تفعيل القفل البيومتري</string>
+    <string name="biometric_enable_sub">صادق لتأكيد تفعيل قفل التطبيق</string>
+    <string name="biometric_disable_title">إيقاف القفل البيومتري</string>
+    <string name="biometric_disable_sub">صادق لتأكيد إيقاف قفل التطبيق</string>
+    <string name="about_zero_telemetry">الإصدار %1$s • بدون قياسات</string>
+    <string name="cd_minimize_call">تصغير المكالمة</string>
+    <string name="cd_restore_call_pill">استعادة كبسولة المكالمة</string>
+    <string name="cd_minimize_to_camera">تصغير إلى نقطة الكاميرا</string>
+    <string name="full_screen">ملء الشاشة</string>
+    <string name="cd_open_dialpad">فتح لوحة الاتصال</string>
+    <string name="cd_clear_input">مسح الإدخال</string>
+    <string name="cd_cancel_call">إلغاء المكالمة</string>
+    <string name="call_recording_default_name">تسجيل المكالمة</string>
+    <string name="quick_response_default_1">لا يمكنني التحدث الآن. سأتصل بك لاحقاً.</string>
+    <string name="quick_response_default_2">أنا في اجتماع. ما الأمر؟</string>
+    <string name="quick_response_default_3">أنا أقود. سأعاود الاتصال قريباً.</string>
+    <string name="quick_response_default_4">عذراً، أنا مشغول. هل يمكنني معاودة الاتصال لاحقاً؟</string>
+
+    <!-- Recording quality and filter defaults -->
+    <string name="recording_quality_compact_title">صوت مضغوط (ضغط عالٍ)</string>
+    <string name="recording_quality_compact_desc">24 كيلوبت/ث AAC • ~11 ميجابايت/ساعة • أقصى توفير للمساحة</string>
+    <string name="recording_quality_balanced_title">قياسي متوازن (موصى به)</string>
+    <string name="recording_quality_balanced_desc">48 كيلوبت/ث AAC • ~22 ميجابايت/ساعة • وضوح صوتي فائق</string>
+    <string name="recording_quality_high_title">عالي الدقة (استوديو)</string>
+    <string name="recording_quality_high_desc">96 كيلوبت/ث AAC عند 44.1 كيلوهرتز • ~43 ميجابايت/ساعة • دقة صوتية غنية</string>
+    <string name="default_same_as_filter">افتراضي / مثل عامل التصفية</string>
 </resources>

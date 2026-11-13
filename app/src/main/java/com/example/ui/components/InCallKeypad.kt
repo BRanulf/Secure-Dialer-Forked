@@ -111,7 +111,7 @@ fun InCallKeypad(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Clear Input",
+                            contentDescription = stringResource(R.string.cd_clear_input),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(18.dp)
                         )

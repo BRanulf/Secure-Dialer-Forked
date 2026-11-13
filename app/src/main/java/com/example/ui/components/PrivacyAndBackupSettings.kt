@@ -131,8 +131,8 @@ private fun PrivacyProtectionSection(
                                 } else {
                                     VaultBiometricAuthHelper.authenticate(
                                         activity = activity,
-                                        title = "Enable Biometric Lock",
-                                        subtitle = "Authenticate to confirm enabling App Lock",
+                                        title = context.getString(R.string.biometric_enable_title),
+                                        subtitle = context.getString(R.string.biometric_enable_sub),
                                         onSuccess = {
                                             viewModel.updateBiometricLockEnabled(true)
                                         },
@@ -145,8 +145,8 @@ private fun PrivacyProtectionSection(
                             } else {
                                 VaultBiometricAuthHelper.authenticate(
                                     activity = activity,
-                                    title = "Disable Biometric Lock",
-                                    subtitle = "Authenticate to confirm disabling App Lock",
+                                    title = context.getString(R.string.biometric_disable_title),
+                                    subtitle = context.getString(R.string.biometric_disable_sub),
                                     onSuccess = {
                                         viewModel.updateBiometricLockEnabled(false)
                                     },
@@ -362,7 +362,7 @@ private fun ContactsManagementSection(
                         RadioButton(selected = defaultAccName.isBlank(), onClick = null)
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Default / Same as Filter",
+                            text = stringResource(R.string.default_same_as_filter),
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = if (defaultAccName.isBlank()) FontWeight.Bold else FontWeight.Normal
                         )
