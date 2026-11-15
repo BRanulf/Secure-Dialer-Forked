@@ -744,4 +744,39 @@ Versão v%1$s (Versão estável)
     <string name="recording_quality_high_title">Alta fidelidade (estúdio)</string>
     <string name="recording_quality_high_desc">96 kbps AAC a 44,1 kHz • ~43 MB/h • Rica fidelidade acústica</string>
     <string name="default_same_as_filter">Padrão / Igual ao filtro</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">Painel de sons</string>
+    <string name="soundboard_hint">Toque num efeito para enviá-lo ao interlocutor. Mantenha pressionado um efeito importado para excluí-lo.</string>
+    <string name="soundboard_import">Importar efeito</string>
+    <string name="soundboard_imported">Efeito sonoro importado</string>
+    <string name="soundboard_import_failed">Não foi possível importar esse efeito sonoro</string>
+    <string name="soundboard_import_too_large">Esse arquivo de áudio é muito grande</string>
+    <string name="soundboard_empty">Ainda não há efeitos. Importe um arquivo de áudio para começar.</string>
+    <string name="soundboard_monitor">Reproduzir localmente</string>
+    <string name="soundboard_monitor_desc">Ouve o efeito neste dispositivo para referência</string>
+    <string name="soundboard_root_hint">É necessário acesso root para enviar efeitos sonoros para a chamada.</string>
+    <string name="soundboard_preparing">A preparar áudio root…</string>
+    <string name="soundboard_play_failed">Não foi possível reproduzir esse efeito sonoro</string>
+    <string name="soundboard_route_failed">Não foi possível enviar o efeito para a chamada</string>
+    <string name="soundboard_delete_title">Excluir efeito sonoro?</string>
+    <string name="soundboard_delete_message">Remover “%1$s” do painel de sons?</string>
+    <string name="soundboard_deleted">Efeito sonoro excluído</string>
+    <string name="bleep_hold">Manter para bip</string>
+    <string name="bleep_active">A bipar…</string>
+    <string name="bleep_route_failed">O microfone está silenciado, mas não foi possível enviar o bip ao interlocutor</string>
+    <string name="soundboard_button">Efeitos</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">Painel de sons e bip</string>
+    <string name="soundboard_settings_sub">Efeitos sonoros em chamada, monitorização local e o bip de pressão</string>
+    <string name="soundboard_monitor_title">Monitorização local do painel de sons</string>
+    <string name="bleep_monitor_title">Monitorização local do bip</string>
+    <string name="bleep_monitor_desc">Ouve o bip de 1000 Hz neste dispositivo enquanto é enviado ao interlocutor</string>
+    <string name="soundboard_manage_title">Biblioteca de efeitos sonoros</string>
+    <string name="soundboard_manage_sub">Efeitos integrados e importados disponíveis no painel de chamada</string>
+    <string name="soundboard_preview">Pré-visualizar</string>
+    <string name="soundboard_preview_failed">Não foi possível reproduzir esse efeito sonoro</string>
+    <string name="soundboard_builtin_badge">Integrado</string>
+    <string name="soundboard_delete_effect">Eliminar efeito</string>
 </resources>

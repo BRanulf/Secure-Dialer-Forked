@@ -744,4 +744,39 @@
     <string name="recording_quality_high_title">高保真（录音室）</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • 约 43 MB/小时 • 丰富的声学细节</string>
     <string name="default_same_as_filter">默认 / 与筛选条件相同</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">音效面板</string>
+    <string name="soundboard_hint">点击音效即可向对方播放。长按导入的音效可将其删除。</string>
+    <string name="soundboard_import">导入音效</string>
+    <string name="soundboard_imported">音效已导入</string>
+    <string name="soundboard_import_failed">无法导入该音效</string>
+    <string name="soundboard_import_too_large">该音频文件过大</string>
+    <string name="soundboard_empty">还没有音效。导入一个音频文件即可开始使用。</string>
+    <string name="soundboard_monitor">本机监听</string>
+    <string name="soundboard_monitor_desc">在本机同步播放，便于试听参考</string>
+    <string name="soundboard_root_hint">向通话中发送音效需要 Root 权限。</string>
+    <string name="soundboard_preparing">正在准备 Root 音频通道…</string>
+    <string name="soundboard_play_failed">无法播放该音效</string>
+    <string name="soundboard_route_failed">无法将音效发送到通话中</string>
+    <string name="soundboard_delete_title">删除音效？</string>
+    <string name="soundboard_delete_message">要从音效面板中移除“%1$s”吗？</string>
+    <string name="soundboard_deleted">音效已删除</string>
+    <string name="bleep_hold">按住哔声屏蔽</string>
+    <string name="bleep_active">正在哔声屏蔽…</string>
+    <string name="bleep_route_failed">麦克风已静音，但哔声未能发送给对方</string>
+    <string name="soundboard_button">音效</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">音效面板与哔声</string>
+    <string name="soundboard_settings_sub">通话中的音效、本机监听，以及按住哔声屏蔽</string>
+    <string name="soundboard_monitor_title">音效本机监听</string>
+    <string name="bleep_monitor_title">哔声本机监听</string>
+    <string name="bleep_monitor_desc">在向对方播放 1000 Hz 哔声的同时，也在本机播放</string>
+    <string name="soundboard_manage_title">音效库</string>
+    <string name="soundboard_manage_sub">内置与已导入的音效，可在通话音效面板中使用</string>
+    <string name="soundboard_preview">试听</string>
+    <string name="soundboard_preview_failed">无法试听该音效</string>
+    <string name="soundboard_builtin_badge">内置</string>
+    <string name="soundboard_delete_effect">删除音效</string>
 </resources>

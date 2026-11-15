@@ -744,4 +744,39 @@
     <string name="recording_quality_high_title">उच्च निष्ठा (स्टूडियो)</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • ~43 MB/घंटा • समृद्ध ध्वनि निष्ठा</string>
     <string name="default_same_as_filter">डिफ़ॉल्ट / फ़िल्टर के समान</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">साउंडबोर्ड</string>
+    <string name="soundboard_hint">किसी इफ़ेक्ट को कॉलर तक भेजने के लिए उस पर टैप करें। इम्पोर्ट किए गए इफ़ेक्ट को हटाने के लिए उसे देर तक दबाए रखें।</string>
+    <string name="soundboard_import">इफ़ेक्ट इम्पोर्ट करें</string>
+    <string name="soundboard_imported">साउंड इफ़ेक्ट इम्पोर्ट हो गया</string>
+    <string name="soundboard_import_failed">वह साउंड इफ़ेक्ट इम्पोर्ट नहीं हो सका</string>
+    <string name="soundboard_import_too_large">वह ऑडियो फ़ाइल बहुत बड़ी है</string>
+    <string name="soundboard_empty">अभी कोई इफ़ेक्ट नहीं है। शुरू करने के लिए कोई ऑडियो फ़ाइल इम्पोर्ट करें।</string>
+    <string name="soundboard_monitor">डिवाइस पर सुनें</string>
+    <string name="soundboard_monitor_desc">संदर्भ के लिए इफ़ेक्ट को इस डिवाइस पर भी सुनें</string>
+    <string name="soundboard_root_hint">कॉल में साउंड इफ़ेक्ट भेजने के लिए रूट एक्सेस आवश्यक है।</string>
+    <string name="soundboard_preparing">रूट ऑडियो तैयार हो रहा है…</string>
+    <string name="soundboard_play_failed">वह साउंड इफ़ेक्ट चलाया नहीं जा सका</string>
+    <string name="soundboard_route_failed">इफ़ेक्ट को कॉल में नहीं भेजा जा सका</string>
+    <string name="soundboard_delete_title">साउंड इफ़ेक्ट हटाएँ?</string>
+    <string name="soundboard_delete_message">“%1$s” को साउंडबोर्ड से हटाएँ?</string>
+    <string name="soundboard_deleted">साउंड इफ़ेक्ट हटा दिया गया</string>
+    <string name="bleep_hold">बीप के लिए दबाए रखें</string>
+    <string name="bleep_active">बीप चल रही है…</string>
+    <string name="bleep_route_failed">माइक्रोफ़ोन म्यूट है, लेकिन बीप कॉलर तक नहीं भेजी जा सकी</string>
+    <string name="soundboard_button">इफ़ेक्ट</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">साउंडबोर्ड और बीप</string>
+    <string name="soundboard_settings_sub">कॉल के दौरान साउंड इफ़ेक्ट, स्थानीय मॉनिटरिंग और दबाकर रखने वाली बीप</string>
+    <string name="soundboard_monitor_title">साउंडबोर्ड की स्थानीय मॉनिटरिंग</string>
+    <string name="bleep_monitor_title">बीप की स्थानीय मॉनिटरिंग</string>
+    <string name="bleep_monitor_desc">1000 Hz की बीप को कॉलर तक भेजते समय इस डिवाइस पर भी सुनें</string>
+    <string name="soundboard_manage_title">साउंड इफ़ेक्ट लाइब्रेरी</string>
+    <string name="soundboard_manage_sub">कॉल पैनल में उपलब्ध अंतर्निहित और इम्पोर्ट किए गए इफ़ेक्ट</string>
+    <string name="soundboard_preview">पूर्वावलोकन</string>
+    <string name="soundboard_preview_failed">वह साउंड इफ़ेक्ट सुनाया नहीं जा सका</string>
+    <string name="soundboard_builtin_badge">अंतर्निहित</string>
+    <string name="soundboard_delete_effect">इफ़ेक्ट हटाएँ</string>
 </resources>

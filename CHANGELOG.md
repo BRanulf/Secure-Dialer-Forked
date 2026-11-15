@@ -4,6 +4,24 @@ All notable changes, fixes, and release milestones for Secure Dialer are documen
 
 ## [Forked]
 
+## [1.8.3-fork] - 2026.11.14
+
+### In-Call Soundboard & Bleep Censor
+- **Soundboard Panel**: Added a soundboard button to the in-call controls. The panel opens as a bottom sheet, plays short effects directly into the carrier uplink via the same root Telephony Tx bridge as the answering machine, and supports optional local monitoring for reference.
+- **Built-In & Imported Effects**: Audio files placed in the `app/` directory are packaged as built-in effects by a Gradle task. Additional effects can be imported from the system file picker, stored in app-private storage, and removed again with a long-press.
+- **Low-Latency Root Audio Bridge**: Added a persistent UID 0 `app_process` daemon that keeps one `incall_music_uplink`/Telephony Tx `AudioTrack` open for the duration of the call. Sound effects and tones are triggered through a small command file, so only the first action waits for the root process to start.
+- **Hold-to-Bleep Censor**: Added a hold button that mutes the microphone and plays a continuous 1000 Hz tone to the caller until released, with a synchronized local tone for feedback. The previous mute state is restored on release.
+- **Local Monitoring**: The decoded 16 kHz PCM is also played through the current call route (earpiece, speaker, headset, or Bluetooth) when local monitoring is enabled. It uses a separate app-process track and never routes to the carrier uplink.
+- **Settings & Effect Management**: Added a Soundboard & Bleep card under Advanced Tools with independent local-monitoring switches for the soundboard and the bleep, an in-settings effect library with preview, import, and delete actions, and a master switch that hides the in-call controls.
+
+## [1.8.2] - 2026.11.13
+
+### Localization Completion
+- Completed the remaining untranslated Arabic privacy introduction and spam CSV example.
+- Moved roughly 50 hardcoded user-facing strings (call-recording toasts, lock screen, notification channels/actions, biometric prompts, fake-call/waiting labels, recording-quality descriptions, default quick replies, and accessibility labels) into localized resources across all 10 supported languages.
+
+## [1.8.1] - 2026.11.12
+
 ### Root-Powered Call Recording & Local Answering Machine
 - **Selectable Recording Engine**: Added a Standard / Root (system) engine switch under Advanced Tools → Call Recording. The original MediaRecorder engine remains the default and fully functional; the root engine adds a system-level AudioRecord path and automatically falls back to Standard when the device/ROM cannot expose call audio.
 - **System-Level Audio Capture**: The root engine records the call audio channel through a small `app_process` helper running as UID 0 (with an in-process app-op fallback). Root recordings are stored as 16 kHz PCM WAV and work with the existing player, sharing, export, vault, and recovery flows.
@@ -12,9 +30,6 @@ All notable changes, fixes, and release milestones for Secure Dialer are documen
 - **Uplink Greeting Injection**: The greeting is decoded to 16 kHz mono PCM and played by a root `AudioTrack` helper into the AOSP in-call music uplink (`incall_music_uplink` / `Telephony Tx`, `AUDIO_OUTPUT_FLAG_INCALL_MUSIC`). Vendor mixer controls (`Incall_Music` via `tinymix`) remain as a fallback for older devices. The root recorder no longer switches the call to speakerphone; standard-engine recordings retain their existing speaker auto-tune behavior.
 - **Device Notes**: Android exposes no public API for injecting audio into a carrier call. Root behavior varies by device, ROM, root manager, and audio policy; Only been successfully tested on the OnePlus Ace 5 (PKG110) running Lineage OS 23 and Project Infinity X 4.1; when no uplink route is available the answering machine still records the caller and notifies that the greeting could not be routed.
 
-### Localization Completion
-- Completed the remaining untranslated Arabic privacy introduction and spam CSV example.
-- Moved roughly 50 hardcoded user-facing strings (call-recording toasts, lock screen, notification channels/actions, biometric prompts, fake-call/waiting labels, recording-quality descriptions, default quick replies, and accessibility labels) into localized resources across all 10 supported languages.
 
 ---
 

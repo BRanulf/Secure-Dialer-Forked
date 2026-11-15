@@ -408,6 +408,11 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
     var answeringMachineGreetingDisplayName = mutableStateOf(
         prefs.getString("answering_machine_greeting_display_name", "") ?: ""
     )
+
+    // In-call soundboard & hold-to-bleep
+    var isSoundboardEnabled = mutableStateOf(
+        prefs.getBoolean("soundboard_enabled", true)
+    )
     var isPocketProtectionEnabled = mutableStateOf(prefs.getBoolean("is_pocket_protection_enabled", false))
     var defaultStartupTabKey = mutableStateOf(prefs.getString("default_startup_tab_key", "RECENTS") ?: "RECENTS")
     var selectedTab = mutableIntStateOf(
@@ -586,6 +591,12 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
                     if (!prefs.contains("answering_machine_greeting_display_name")) {
                         answeringMachineGreetingDisplayName.value = dbValue
                         editor.putString("answering_machine_greeting_display_name", dbValue)
+                    }
+                }
+                settings["soundboard_enabled"]?.toBooleanStrictOrNull()?.let { dbValue ->
+                    if (!prefs.contains("soundboard_enabled")) {
+                        isSoundboardEnabled.value = dbValue
+                        editor.putBoolean("soundboard_enabled", dbValue)
                     }
                 }
                 settings["is_dynamic_island_enabled"]?.toBooleanStrictOrNull()?.let {
@@ -843,6 +854,11 @@ class DialerViewModel(application: Application) : AndroidViewModel(application) 
     fun updateAnsweringMachineEnabled(enabled: Boolean) {
         isAnsweringMachineEnabled.value = enabled
         settingsCoordinator.updateSettingBoolean("is_answering_machine_enabled", enabled)
+    }
+
+    fun updateSoundboardEnabled(enabled: Boolean) {
+        isSoundboardEnabled.value = enabled
+        settingsCoordinator.updateSettingBoolean("soundboard_enabled", enabled)
     }
 
     fun updateAnsweringMachineTimeoutSeconds(seconds: Int) {

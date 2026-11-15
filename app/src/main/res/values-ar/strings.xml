@@ -744,4 +744,39 @@
     <string name="recording_quality_high_title">عالي الدقة (استوديو)</string>
     <string name="recording_quality_high_desc">96 كيلوبت/ث AAC عند 44.1 كيلوهرتز • ~43 ميجابايت/ساعة • دقة صوتية غنية</string>
     <string name="default_same_as_filter">افتراضي / مثل عامل التصفية</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">لوحة المؤثرات الصوتية</string>
+    <string name="soundboard_hint">اضغط على مؤثر لإرساله إلى المتصل. اضغط مطوّلًا على مؤثر مستورد لحذفه.</string>
+    <string name="soundboard_import">استيراد مؤثر</string>
+    <string name="soundboard_imported">تم استيراد المؤثر الصوتي</string>
+    <string name="soundboard_import_failed">تعذّر استيراد هذا المؤثر الصوتي</string>
+    <string name="soundboard_import_too_large">هذا الملف الصوتي كبير جدًا</string>
+    <string name="soundboard_empty">لا توجد مؤثرات بعد. استورد ملفًا صوتيًا للبدء.</string>
+    <string name="soundboard_monitor">تشغيل محلي</string>
+    <string name="soundboard_monitor_desc">استمع إلى المؤثر على هذا الجهاز للمراجعة</string>
+    <string name="soundboard_root_hint">يلزم الوصول إلى Root لإرسال المؤثرات الصوتية إلى المكالمة.</string>
+    <string name="soundboard_preparing">جارٍ تجهيز صوت Root…</string>
+    <string name="soundboard_play_failed">تعذّر تشغيل هذا المؤثر الصوتي</string>
+    <string name="soundboard_route_failed">تعذّر إرسال المؤثر إلى المكالمة</string>
+    <string name="soundboard_delete_title">حذف المؤثر الصوتي؟</string>
+    <string name="soundboard_delete_message">إزالة «%1$s» من لوحة المؤثرات؟</string>
+    <string name="soundboard_deleted">تم حذف المؤثر الصوتي</string>
+    <string name="bleep_hold">اضغط مطوّلًا للتنبيه الصوتي</string>
+    <string name="bleep_active">التنبيه الصوتي قيد التشغيل…</string>
+    <string name="bleep_route_failed">الميكروفون مكتوم، لكن تعذّر إرسال التنبيه الصوتي إلى المتصل</string>
+    <string name="soundboard_button">مؤثرات</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">لوحة المؤثرات والتنبيه الصوتي</string>
+    <string name="soundboard_settings_sub">مؤثرات صوتية أثناء المكالمة، ومراقبة محلية، وتنبيه بالضغط المطوّل</string>
+    <string name="soundboard_monitor_title">المراقبة المحلية للوحة المؤثرات</string>
+    <string name="bleep_monitor_title">المراقبة المحلية للتنبيه الصوتي</string>
+    <string name="bleep_monitor_desc">اسمع تنبيه 1000 Hz على هذا الجهاز أثناء إرساله إلى المتصل</string>
+    <string name="soundboard_manage_title">مكتبة المؤثرات الصوتية</string>
+    <string name="soundboard_manage_sub">مؤثرات مدمجة ومستوردة متاحة في لوحة المكالمة</string>
+    <string name="soundboard_preview">معاينة</string>
+    <string name="soundboard_preview_failed">تعذّر تشغيل هذا المؤثر الصوتي للمعاينة</string>
+    <string name="soundboard_builtin_badge">مدمج</string>
+    <string name="soundboard_delete_effect">حذف المؤثر</string>
 </resources>

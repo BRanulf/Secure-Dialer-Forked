@@ -27,6 +27,7 @@
 # Their names, main(String[]) and inner classes must survive shrinking.
 -keep class com.example.util.RootAudioServer { *; }
 -keep class com.example.util.RootIncallMusicPlayer { *; }
+-keep class com.example.util.RootUplinkAudioDaemon { *; }
 
 # =========================================================
 # 2. DATABASE & SQLCIPHER ENCRYPTION (Critical for Vault)

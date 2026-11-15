@@ -49,7 +49,10 @@ fun InCallControlGrid(
     callNotesEnabled: Boolean = true,
     isNoteDialogOpen: Boolean,
     onOpenNoteDialog: () -> Unit,
-    avatarShapeType: String = "squircle"
+    avatarShapeType: String = "squircle",
+    soundboardEnabled: Boolean = false,
+    isSoundboardOpen: Boolean = false,
+    onToggleSoundboard: () -> Unit = {}
 ) {
     val btnShape = AppShapes.Keypad
     val buttonHeight = 68.dp
@@ -124,8 +127,8 @@ fun InCallControlGrid(
             )
         }
 
-        // Row 3: Recording & Note (Clean, balanced 3-slot row with no stretched buttons)
-        if (recordingEnabled || callNotesEnabled) {
+        // Row 3: Recording, Note & Soundboard (three balanced slots)
+        if (recordingEnabled || callNotesEnabled || soundboardEnabled) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -158,7 +161,18 @@ fun InCallControlGrid(
                     Spacer(modifier = Modifier.weight(1f))
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                if (soundboardEnabled) {
+                    InCallButton(
+                        icon = Icons.Default.GraphicEq,
+                        label = stringResource(R.string.soundboard_button),
+                        isActive = isSoundboardOpen,
+                        onClick = onToggleSoundboard,
+                        shape = btnShape,
+                        modifier = Modifier.weight(1f).height(buttonHeight)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }

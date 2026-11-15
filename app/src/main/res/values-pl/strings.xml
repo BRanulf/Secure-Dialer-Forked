@@ -744,4 +744,39 @@ Wersja v%1$s (Wydanie stabilne)
     <string name="recording_quality_high_title">Wysoka wierność (studio)</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44,1 kHz • ~43 MB/godz. • Bogata wierność akustyczna</string>
     <string name="default_same_as_filter">Domyślny / Jak filtr</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">Panel dźwięków</string>
+    <string name="soundboard_hint">Dotknij efektu, aby wysłać go rozmówcy. Przytrzymaj zaimportowany efekt, aby go usunąć.</string>
+    <string name="soundboard_import">Importuj efekt</string>
+    <string name="soundboard_imported">Zaimportowano efekt dźwiękowy</string>
+    <string name="soundboard_import_failed">Nie udało się zaimportować tego efektu dźwiękowego</string>
+    <string name="soundboard_import_too_large">Ten plik audio jest za duży</string>
+    <string name="soundboard_empty">Brak efektów. Zaimportuj plik audio, aby rozpocząć.</string>
+    <string name="soundboard_monitor">Odtwarzaj lokalnie</string>
+    <string name="soundboard_monitor_desc">Odsłuchaj efekt na tym urządzeniu jako odniesienie</string>
+    <string name="soundboard_root_hint">Do wysyłania efektów dźwiękowych do rozmowy wymagany jest dostęp root.</string>
+    <string name="soundboard_preparing">Przygotowywanie dźwięku root…</string>
+    <string name="soundboard_play_failed">Nie udało się odtworzyć tego efektu dźwiękowego</string>
+    <string name="soundboard_route_failed">Nie udało się wysłać efektu do rozmowy</string>
+    <string name="soundboard_delete_title">Usunąć efekt dźwiękowy?</string>
+    <string name="soundboard_delete_message">Usunąć „%1$s” z panelu dźwięków?</string>
+    <string name="soundboard_deleted">Usunięto efekt dźwiękowy</string>
+    <string name="bleep_hold">Przytrzymaj, aby zagłuszyć</string>
+    <string name="bleep_active">Zagłuszanie…</string>
+    <string name="bleep_route_failed">Mikrofon jest wyciszony, ale nie udało się wysłać sygnału rozmówcy</string>
+    <string name="soundboard_button">Efekty</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">Panel dźwięków i sygnał</string>
+    <string name="soundboard_settings_sub">Efekty dźwiękowe w rozmowie, lokalne monitorowanie i sygnał przytrzymania</string>
+    <string name="soundboard_monitor_title">Lokalne monitorowanie panelu dźwięków</string>
+    <string name="bleep_monitor_title">Lokalne monitorowanie sygnału</string>
+    <string name="bleep_monitor_desc">Odsłuchuj sygnał 1000 Hz na tym urządzeniu, gdy jest wysyłany rozmówcy</string>
+    <string name="soundboard_manage_title">Biblioteka efektów dźwiękowych</string>
+    <string name="soundboard_manage_sub">Wbudowane i zaimportowane efekty dostępne w panelu rozmowy</string>
+    <string name="soundboard_preview">Podgląd</string>
+    <string name="soundboard_preview_failed">Nie udało się odtworzyć tego efektu dźwiękowego</string>
+    <string name="soundboard_builtin_badge">Wbudowany</string>
+    <string name="soundboard_delete_effect">Usuń efekt</string>
 </resources>

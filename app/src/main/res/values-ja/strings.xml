@@ -744,4 +744,39 @@
     <string name="recording_quality_high_title">高忠実度（スタジオ）</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • 約 43 MB/時 • 豊かな音響忠実度</string>
     <string name="default_same_as_filter">デフォルト / フィルターと同じ</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">サウンドボード</string>
+    <string name="soundboard_hint">エフェクトをタップすると相手に送信します。インポートしたエフェクトを長押しすると削除できます。</string>
+    <string name="soundboard_import">エフェクトをインポート</string>
+    <string name="soundboard_imported">サウンドエフェクトをインポートしました</string>
+    <string name="soundboard_import_failed">このサウンドエフェクトをインポートできませんでした</string>
+    <string name="soundboard_import_too_large">この音声ファイルは大きすぎます</string>
+    <string name="soundboard_empty">エフェクトはまだありません。音声ファイルをインポートして開始してください。</string>
+    <string name="soundboard_monitor">端末でも再生</string>
+    <string name="soundboard_monitor_desc">確認用にこの端末でもエフェクトを再生します</string>
+    <string name="soundboard_root_hint">通話にサウンドエフェクトを送信するにはRoot権限が必要です。</string>
+    <string name="soundboard_preparing">Rootオーディオを準備中…</string>
+    <string name="soundboard_play_failed">このサウンドエフェクトを再生できませんでした</string>
+    <string name="soundboard_route_failed">エフェクトを通話に送信できませんでした</string>
+    <string name="soundboard_delete_title">サウンドエフェクトを削除しますか？</string>
+    <string name="soundboard_delete_message">「%1$s」をサウンドボードから削除しますか？</string>
+    <string name="soundboard_deleted">サウンドエフェクトを削除しました</string>
+    <string name="bleep_hold">長押しでビープ</string>
+    <string name="bleep_active">ビープ中…</string>
+    <string name="bleep_route_failed">マイクはミュートされていますが、ビープを相手に送信できませんでした</string>
+    <string name="soundboard_button">エフェクト</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">サウンドボードとビープ</string>
+    <string name="soundboard_settings_sub">通話中のサウンドエフェクト、ローカルモニタリング、長押しビープ</string>
+    <string name="soundboard_monitor_title">サウンドボードのローカルモニタリング</string>
+    <string name="bleep_monitor_title">ビープのローカルモニタリング</string>
+    <string name="bleep_monitor_desc">1000 Hzのビープを相手に送りながら、この端末でも再生します</string>
+    <string name="soundboard_manage_title">サウンドエフェクトライブラリ</string>
+    <string name="soundboard_manage_sub">通話パネルで使用できる内蔵およびインポート済みのエフェクト</string>
+    <string name="soundboard_preview">プレビュー</string>
+    <string name="soundboard_preview_failed">このサウンドエフェクトを試聴できませんでした</string>
+    <string name="soundboard_builtin_badge">内蔵</string>
+    <string name="soundboard_delete_effect">エフェクトを削除</string>
 </resources>

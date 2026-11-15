@@ -808,4 +808,39 @@ Version v%1$s (Stable Release)
     <string name="recording_quality_high_title">High Fidelity (Studio)</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44.1 kHz • ~43 MB/hr • Rich acoustic fidelity</string>
     <string name="default_same_as_filter">Default / Same as Filter</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">Soundboard</string>
+    <string name="soundboard_hint">Tap an effect to send it to the caller. Press and hold an imported effect to delete it.</string>
+    <string name="soundboard_import">Import effect</string>
+    <string name="soundboard_imported">Sound effect imported</string>
+    <string name="soundboard_import_failed">Could not import that sound effect</string>
+    <string name="soundboard_import_too_large">That audio file is too large</string>
+    <string name="soundboard_empty">No effects yet. Import an audio file to get started.</string>
+    <string name="soundboard_monitor">Play locally</string>
+    <string name="soundboard_monitor_desc">Hear the effect on this device for reference</string>
+    <string name="soundboard_root_hint">Root access is required to send sound effects into the call.</string>
+    <string name="soundboard_preparing">Preparing root audio…</string>
+    <string name="soundboard_play_failed">Could not play that sound effect</string>
+    <string name="soundboard_route_failed">The effect could not be sent into the call</string>
+    <string name="soundboard_delete_title">Delete sound effect?</string>
+    <string name="soundboard_delete_message">Remove “%1$s” from the soundboard?</string>
+    <string name="soundboard_deleted">Sound effect deleted</string>
+    <string name="bleep_hold">Hold to bleep</string>
+    <string name="bleep_active">Bleeping…</string>
+    <string name="bleep_route_failed">The microphone is muted, but the beep could not be sent to the caller</string>
+    <string name="soundboard_button">Effects</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">Soundboard &amp; Bleep</string>
+    <string name="soundboard_settings_sub">In-call sound effects, local monitoring, and the hold-to-bleep censor</string>
+    <string name="soundboard_monitor_title">Soundboard local monitoring</string>
+    <string name="bleep_monitor_title">Bleep local monitoring</string>
+    <string name="bleep_monitor_desc">Hear the 1000 Hz beep on this device while it is sent to the caller</string>
+    <string name="soundboard_manage_title">Sound effect library</string>
+    <string name="soundboard_manage_sub">Built-in and imported effects available in the in-call panel</string>
+    <string name="soundboard_preview">Preview</string>
+    <string name="soundboard_preview_failed">Could not preview that sound effect</string>
+    <string name="soundboard_builtin_badge">Built-in</string>
+    <string name="soundboard_delete_effect">Delete effect</string>
 </resources>

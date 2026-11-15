@@ -677,6 +677,7 @@ fun MainScreen(
                             com.example.util.AnsweringMachineManager.trigger(context)
                         }
                     },
+                    soundToolsEnabled = viewModel.isSoundboardEnabled.value && !isFakeCallActive,
                     contacts = allContacts,
                     callState = if (isFakeCallActive) {
                         if (fakeCallState == "ACTIVE") android.telecom.Call.STATE_ACTIVE else android.telecom.Call.STATE_RINGING

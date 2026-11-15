@@ -28,10 +28,10 @@ import java.io.FileOutputStream
 import java.io.RandomAccessFile
 
 /**
- * Decodes the answering-machine greeting to the format consumed by
- * [RootIncallMusicPlayer]: raw little-endian 16-bit mono PCM at 16 kHz.
+ * Decodes answering-machine greetings and soundboard effects to the format consumed
+ * by the root uplink helpers: raw little-endian 16-bit mono PCM at 16 kHz.
  *
- * The root helper cannot use MediaPlayer (it would need an application Context),
+ * The root helpers cannot use MediaPlayer (they would need an application Context),
  * so decoding happens in the app process, where MediaExtractor/MediaCodec are
  * available. PCM WAV files are decoded directly; everything else uses the platform
  * decoders. Results are cached until the source file changes.
@@ -47,13 +47,24 @@ object AnsweringMachinePcm {
 
     fun ensure(context: Context): PcmFile? {
         val source = AnsweringMachineGreeting.playableFile(context) ?: return null
+        return ensure(context, source, "greeting")
+    }
+
+    /**
+     * Decodes any supported audio source to the shared uplink PCM format.
+     * [cacheTag] only namespaces the cache entry; it is sanitised before use.
+     */
+    @Synchronized
+    fun ensure(context: Context, source: File, cacheTag: String): PcmFile? {
         if (!source.isFile || source.length() <= 0L) return null
 
         val cacheDir = File(context.cacheDir, "AnsweringMachinePcm").apply { mkdirs() }
         cleanupOldCache(cacheDir)
 
-        val key = "$CACHE_VERSION:${source.absolutePath}:${source.length()}:${source.lastModified()}"
-        val output = File(cacheDir, "greeting_${key.hashCode().toUInt().toString(16)}.pcm")
+        val safeTag = cacheTag.replace(Regex("[^A-Za-z0-9_]"), "_").take(24)
+            .ifBlank { "audio" }
+        val key = "$CACHE_VERSION:$safeTag:${source.absolutePath}:${source.length()}:${source.lastModified()}"
+        val output = File(cacheDir, "${safeTag}_${key.hashCode().toUInt().toString(16)}.pcm")
         if (output.isFile && output.length() >= 2L) {
             return PcmFile(output)
         }

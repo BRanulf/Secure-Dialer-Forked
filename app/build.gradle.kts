@@ -7,6 +7,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import java.util.Locale
 
 plugins {
   alias(libs.plugins.android.application)
@@ -75,6 +76,97 @@ abstract class GenerateAnsweringMachineGreetingTask : DefaultTask() {
   }
 }
 
+abstract class GenerateSoundboardEffectsTask : DefaultTask() {
+  @get:InputFiles
+  @get:PathSensitive(PathSensitivity.NAME_ONLY)
+  abstract val candidateAudioFiles: ConfigurableFileCollection
+
+  @get:OutputDirectory
+  abstract val outputDirectory: DirectoryProperty
+
+  @TaskAction
+  fun generate() {
+    val supported = setOf("wav", "mp3", "m4a", "aac", "ogg", "flac", "opus")
+    val candidates = candidateAudioFiles.files
+      .filter { file ->
+        file.isFile &&
+          file.extension.lowercase(Locale.ROOT) in supported &&
+          !file.name.lowercase(Locale.ROOT).startsWith("answering_machine")
+      }
+      .sortedBy { it.name.lowercase(Locale.ROOT) }
+
+    val rawDir = outputDirectory.get().asFile.resolve("raw")
+    val valuesDir = outputDirectory.get().asFile.resolve("values")
+    rawDir.deleteRecursively()
+    valuesDir.deleteRecursively()
+    rawDir.mkdirs()
+    valuesDir.mkdirs()
+
+    val usedNames = mutableSetOf<String>()
+    val names = mutableListOf<String>()
+    val extensions = mutableListOf<String>()
+    val resources = mutableListOf<String>()
+
+    for (file in candidates) {
+      val base = file.nameWithoutExtension
+      var resourceName = base.lowercase(Locale.ROOT)
+        .replace(Regex("[^a-z0-9_]"), "_")
+        .trim('_')
+        .ifBlank { "effect" }
+      if (resourceName.first().isDigit()) resourceName = "effect_$resourceName"
+      resourceName = "soundboard_$resourceName"
+
+      var unique = resourceName
+      var suffix = 2
+      while (!usedNames.add(unique)) {
+        unique = "${resourceName}_$suffix"
+        suffix++
+      }
+
+      val extension = file.extension.lowercase(Locale.ROOT)
+      file.copyTo(rawDir.resolve("$unique.$extension"), overwrite = true)
+      names.add(displayName(base))
+      extensions.add(extension)
+      resources.add("@raw/$unique")
+    }
+
+    fun escape(value: String): String = value
+      .replace("&", "&amp;")
+      .replace("<", "&lt;")
+      .replace(">", "&gt;")
+      .replace("\"", "&quot;")
+      .replace("'", "&apos;")
+
+    val xml = buildString {
+      appendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+      appendLine("<resources>")
+      appendLine("    <string-array name=\"soundboard_builtin_names\">")
+      for (name in names) appendLine("        <item>${escape(name)}</item>")
+      appendLine("    </string-array>")
+      appendLine("    <string-array name=\"soundboard_builtin_extensions\">")
+      for (extension in extensions) appendLine("        <item>${escape(extension)}</item>")
+      appendLine("    </string-array>")
+      appendLine("    <array name=\"soundboard_builtin_resources\">")
+      for (resource in resources) appendLine("        <item>$resource</item>")
+      appendLine("    </array>")
+      appendLine("</resources>")
+    }
+    valuesDir.resolve("soundboard_builtin.xml").writeText(xml)
+    logger.lifecycle("Soundboard effects packaged: ${candidates.size}")
+  }
+
+  private fun displayName(base: String): String {
+    val spaced = base
+      .replace(Regex("[_-]+"), " ")
+      .replace(Regex("([A-Za-z])(\\d)"), "$1 $2")
+      .trim()
+    return spaced.split(" ")
+      .filter { it.isNotBlank() }
+      .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
+      .ifBlank { base }
+  }
+}
+
 android {
   namespace = "com.example"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
@@ -84,7 +176,7 @@ android {
     minSdk = 24
     targetSdk = 36
     versionCode = 16
-    versionName = "1.8.2"
+    versionName = "1.8.3_fork"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -176,11 +268,27 @@ val generateAnsweringMachineGreeting =
     )
   }
 
+val generateSoundboardEffects =
+  tasks.register<GenerateSoundboardEffectsTask>("generateSoundboardEffects") {
+    candidateAudioFiles.from(
+      fileTree(project.projectDir) {
+        include("*.wav", "*.mp3", "*.m4a", "*.aac", "*.ogg", "*.flac", "*.opus")
+      }
+    )
+    outputDirectory.set(
+      layout.buildDirectory.dir("generated/soundboardEffectsRes")
+    )
+  }
+
 androidComponents {
   onVariants { variant ->
     variant.sources.res?.addGeneratedSourceDirectory(
       generateAnsweringMachineGreeting,
       GenerateAnsweringMachineGreetingTask::outputDirectory
+    )
+    variant.sources.res?.addGeneratedSourceDirectory(
+      generateSoundboardEffects,
+      GenerateSoundboardEffectsTask::outputDirectory
     )
   }
 }

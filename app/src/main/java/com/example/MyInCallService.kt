@@ -39,6 +39,7 @@ import com.example.model.AppSetting
 import com.example.model.CallRecording
 import com.example.ui.components.getCurrentLocale
 import com.example.util.AnsweringMachineManager
+import com.example.util.SoundboardManager
 import com.example.util.CallAudioHelper
 import com.example.util.CallAudioRecorder
 import com.example.util.DynamicIslandOverlayManager
@@ -296,6 +297,7 @@ class MyInCallService : InCallService() {
 
     override fun onDestroy() {
         AnsweringMachineManager.cancelAutoAnswer()
+        SoundboardManager.stopAll(this)
         unregisterScreenOffReceiver()
         stopRinging()
         releaseAllWakeLocks()
@@ -435,6 +437,7 @@ class MyInCallService : InCallService() {
 
         val remainingActiveCalls = CallManager.calls.value.filter { it.state != Call.STATE_DISCONNECTED }
         if (remainingActiveCalls.isEmpty()) {
+            SoundboardManager.stopAll(this)
             releaseAllWakeLocks()
             stopInCallForeground()
             DynamicIslandOverlayManager.stopCallMonitoring()

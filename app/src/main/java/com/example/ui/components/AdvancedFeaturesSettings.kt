@@ -23,6 +23,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.PhoneCallback
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Voicemail
@@ -67,6 +68,7 @@ fun AdvancedFeaturesSettings(
     val isFakeCallSimulatorEnabled by viewModel.isFakeCallSimulatorEnabled
     val isRecordingEnabled by viewModel.recordingEnabled
     val isAnsweringMachineEnabled by viewModel.isAnsweringMachineEnabled
+    val isSoundboardEnabled by viewModel.isSoundboardEnabled
     val isPostCallActionsEnabled by viewModel.isPostCallActionsEnabled
     val postCallDismissDuration by viewModel.postCallDismissDurationSeconds
     val context = LocalContext.current
@@ -145,6 +147,38 @@ fun AdvancedFeaturesSettings(
                         isMatchTitle("Auto Answer", highlightedTitle)
             ) {
                 AnsweringMachineSettings(viewModel = viewModel, cardBgColor = cardBgColor)
+            }
+        }
+
+        // Feature Container 1c: In-call soundboard & bleep censor
+        HighlightableCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            cardBgColor = cardBgColor,
+            isHighlighted = isMatchTitle("Soundboard & Bleep", highlightedTitle) ||
+                    isMatchTitle("Soundboard", highlightedTitle) ||
+                    isMatchTitle("Bleep", highlightedTitle) ||
+                    isMatchTitle("Sound Effects", highlightedTitle),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            ExpandableSettingsCard(
+                title = stringResource(R.string.soundboard_settings_title),
+                subtitle = stringResource(R.string.soundboard_settings_sub),
+                icon = Icons.Default.GraphicEq,
+                iconBgColor = MaterialTheme.colorScheme.primaryContainer,
+                iconTint = MaterialTheme.colorScheme.onPrimaryContainer,
+                cardBgColor = Color.Transparent,
+                hasSwitch = true,
+                isSwitchChecked = isSoundboardEnabled,
+                onSwitchChange = { viewModel.updateSoundboardEnabled(it) },
+                initiallyExpanded = isSoundboardEnabled ||
+                        isMatchTitle("Soundboard & Bleep", highlightedTitle) ||
+                        isMatchTitle("Soundboard", highlightedTitle) ||
+                        isMatchTitle("Bleep", highlightedTitle) ||
+                        isMatchTitle("Sound Effects", highlightedTitle)
+            ) {
+                SoundboardSettings()
             }
         }
 

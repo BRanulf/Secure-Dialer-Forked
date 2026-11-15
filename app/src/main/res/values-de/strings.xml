@@ -744,4 +744,39 @@ Version v%1$s (Stabile Version)
     <string name="recording_quality_high_title">Hohe Wiedergabetreue (Studio)</string>
     <string name="recording_quality_high_desc">96 kbps AAC @ 44,1 kHz • ~43 MB/Std. • Reichhaltige Klangtreue</string>
     <string name="default_same_as_filter">Standard / Wie Filter</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">Soundboard</string>
+    <string name="soundboard_hint">Tippe auf einen Effekt, um ihn an den Anrufer zu senden. Halte einen importierten Effekt gedrückt, um ihn zu löschen.</string>
+    <string name="soundboard_import">Effekt importieren</string>
+    <string name="soundboard_imported">Soundeffekt importiert</string>
+    <string name="soundboard_import_failed">Dieser Soundeffekt konnte nicht importiert werden</string>
+    <string name="soundboard_import_too_large">Diese Audiodatei ist zu groß</string>
+    <string name="soundboard_empty">Noch keine Effekte. Importiere eine Audiodatei, um zu beginnen.</string>
+    <string name="soundboard_monitor">Lokal abspielen</string>
+    <string name="soundboard_monitor_desc">Den Effekt zur Kontrolle auch auf diesem Gerät hören</string>
+    <string name="soundboard_root_hint">Root-Zugriff ist erforderlich, um Soundeffekte in den Anruf zu senden.</string>
+    <string name="soundboard_preparing">Root-Audio wird vorbereitet…</string>
+    <string name="soundboard_play_failed">Dieser Soundeffekt konnte nicht abgespielt werden</string>
+    <string name="soundboard_route_failed">Der Effekt konnte nicht in den Anruf gesendet werden</string>
+    <string name="soundboard_delete_title">Soundeffekt löschen?</string>
+    <string name="soundboard_delete_message">„%1$s“ vom Soundboard entfernen?</string>
+    <string name="soundboard_deleted">Soundeffekt gelöscht</string>
+    <string name="bleep_hold">Zum Piepen halten</string>
+    <string name="bleep_active">Piepton aktiv…</string>
+    <string name="bleep_route_failed">Das Mikrofon ist stummgeschaltet, aber der Piepton konnte nicht an den Anrufer gesendet werden</string>
+    <string name="soundboard_button">Effekte</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">Soundboard &amp; Piepton</string>
+    <string name="soundboard_settings_sub">Soundeffekte im Anruf, lokale Überwachung und der Halte-Piepton</string>
+    <string name="soundboard_monitor_title">Lokale Überwachung des Soundboards</string>
+    <string name="bleep_monitor_title">Lokale Überwachung des Pieptons</string>
+    <string name="bleep_monitor_desc">Den 1000-Hz-Piepton auf diesem Gerät hören, während er an den Anrufer gesendet wird</string>
+    <string name="soundboard_manage_title">Soundeffekt-Bibliothek</string>
+    <string name="soundboard_manage_sub">Integrierte und importierte Effekte für das Anrufpanel</string>
+    <string name="soundboard_preview">Vorschau</string>
+    <string name="soundboard_preview_failed">Dieser Soundeffekt konnte nicht wiedergegeben werden</string>
+    <string name="soundboard_builtin_badge">Integriert</string>
+    <string name="soundboard_delete_effect">Effekt löschen</string>
 </resources>

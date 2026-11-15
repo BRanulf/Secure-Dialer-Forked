@@ -744,4 +744,39 @@ Versión v%1$s (Versión estable)
     <string name="recording_quality_high_title">Alta fidelidad (estudio)</string>
     <string name="recording_quality_high_desc">96 kbps AAC a 44,1 kHz • ~43 MB/h • Rica fidelidad acústica</string>
     <string name="default_same_as_filter">Predeterminado / Igual que el filtro</string>
+
+    <!-- In-call soundboard and bleep censor -->
+    <string name="soundboard_title">Panel de sonidos</string>
+    <string name="soundboard_hint">Toca un efecto para enviarlo al interlocutor. Mantén pulsado un efecto importado para eliminarlo.</string>
+    <string name="soundboard_import">Importar efecto</string>
+    <string name="soundboard_imported">Efecto de sonido importado</string>
+    <string name="soundboard_import_failed">No se pudo importar ese efecto de sonido</string>
+    <string name="soundboard_import_too_large">Ese archivo de audio es demasiado grande</string>
+    <string name="soundboard_empty">Aún no hay efectos. Importa un archivo de audio para empezar.</string>
+    <string name="soundboard_monitor">Reproducir localmente</string>
+    <string name="soundboard_monitor_desc">Escuchar el efecto en este dispositivo como referencia</string>
+    <string name="soundboard_root_hint">Se requiere acceso root para enviar efectos de sonido a la llamada.</string>
+    <string name="soundboard_preparing">Preparando audio root…</string>
+    <string name="soundboard_play_failed">No se pudo reproducir ese efecto de sonido</string>
+    <string name="soundboard_route_failed">No se pudo enviar el efecto a la llamada</string>
+    <string name="soundboard_delete_title">¿Eliminar efecto de sonido?</string>
+    <string name="soundboard_delete_message">¿Quitar «%1$s» del panel de sonidos?</string>
+    <string name="soundboard_deleted">Efecto de sonido eliminado</string>
+    <string name="bleep_hold">Mantener para pitido</string>
+    <string name="bleep_active">Pitido activo…</string>
+    <string name="bleep_route_failed">El micrófono está silenciado, pero no se pudo enviar el pitido al interlocutor</string>
+    <string name="soundboard_button">Efectos</string>
+
+    <!-- Soundboard & bleep settings -->
+    <string name="soundboard_settings_title">Panel de sonidos y pitido</string>
+    <string name="soundboard_settings_sub">Efectos de sonido en llamada, monitorización local y el pitido de pulsación</string>
+    <string name="soundboard_monitor_title">Monitorización local del panel de sonidos</string>
+    <string name="bleep_monitor_title">Monitorización local del pitido</string>
+    <string name="bleep_monitor_desc">Escucha el pitido de 1000 Hz en este dispositivo mientras se envía al interlocutor</string>
+    <string name="soundboard_manage_title">Biblioteca de efectos de sonido</string>
+    <string name="soundboard_manage_sub">Efectos integrados e importados disponibles en el panel de llamada</string>
+    <string name="soundboard_preview">Vista previa</string>
+    <string name="soundboard_preview_failed">No se pudo reproducir ese efecto de sonido</string>
+    <string name="soundboard_builtin_badge">Integrado</string>
+    <string name="soundboard_delete_effect">Eliminar efecto</string>
 </resources>

@@ -43,7 +43,11 @@ object RootHelperDex {
      * dex distribution differs between debug (one class per dex) and release
      * (R8 merges classes), so all matching dex files are extracted.
      */
-    private val CLASS_MARKERS = arrayOf("RootAudioServer", "RootIncallMusicPlayer")
+    private val CLASS_MARKERS = arrayOf(
+        "RootAudioServer",
+        "RootIncallMusicPlayer",
+        "RootUplinkAudioDaemon"
+    )
 
     @Synchronized
     fun prepare(context: Context): String? {

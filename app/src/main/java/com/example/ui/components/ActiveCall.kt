@@ -63,6 +63,7 @@ import com.example.util.PhoneFormatHelper
 import com.example.util.RecordingFeedbackHelper
 import com.example.util.RichHapticEngine
 import com.example.util.RootShell
+import com.example.util.SoundboardManager
 import kotlinx.coroutines.delay
 
 @Composable
@@ -76,6 +77,7 @@ fun ActiveCallScreen(
     isIncoming: Boolean = false,
     answeringMachineEnabled: Boolean = false,
     onAnsweringMachine: (() -> Unit)? = null,
+    soundToolsEnabled: Boolean = true,
     contacts: List<Contact> = emptyList(),
     onAnswer: () -> Unit = {},
     callState: Int = Call.STATE_DISCONNECTED,
@@ -119,6 +121,10 @@ fun ActiveCallScreen(
     val currentCall by CallManager.currentCall.collectAsStateWithLifecycle()
     val recorderIsActive by CallAudioRecorder.isRecording.collectAsStateWithLifecycle()
     val answeringMachineActive by AnsweringMachineManager.isActive.collectAsStateWithLifecycle()
+    val soundboardPreparing by SoundboardManager.isPreparing.collectAsStateWithLifecycle()
+    val soundboardPlayingId by SoundboardManager.playingEffectId.collectAsStateWithLifecycle()
+    val soundboardError by SoundboardManager.lastError.collectAsStateWithLifecycle()
+    val bleeping by SoundboardManager.isBleeping.collectAsStateWithLifecycle()
 
     var isMuted by remember { mutableStateOf(false) }
     var isSpeakerOn by remember { mutableStateOf(false) }
@@ -126,6 +132,7 @@ fun ActiveCallScreen(
     var isOnHold by remember { mutableStateOf(false) }
     var isAddCallDialogOpen by remember { mutableStateOf(false) }
     var isRecording by remember { mutableStateOf(false) }
+    var isSoundboardOpen by remember { mutableStateOf(false) }
     var recordingStartTime by remember { mutableLongStateOf(0L) }
     var fakeActiveStartTimestamp by remember { mutableLongStateOf(0L) }
 
@@ -147,6 +154,27 @@ fun ActiveCallScreen(
 
     LaunchedEffect(currentCallState) {
         isOnHold = (currentCallState == Call.STATE_HOLDING)
+    }
+
+    val isCallToolActive = soundToolsEnabled &&
+            !isFake &&
+            currentCallState == Call.STATE_ACTIVE
+
+    // The soundboard/bleep controls only make sense while the call is fully active.
+    // Do not keep an incall-music stream open for ordinary calls; the bridge is
+    // warmed when the panel opens or when the bleep is first used.
+    LaunchedEffect(isCallToolActive) {
+        if (!isCallToolActive) {
+            isSoundboardOpen = false
+            SoundboardManager.stopAll(context)
+        }
+    }
+
+    LaunchedEffect(answeringMachineActive) {
+        if (answeringMachineActive) {
+            isSoundboardOpen = false
+            SoundboardManager.stopAll(context)
+        }
     }
 
     LaunchedEffect(recorderIsActive) {
@@ -174,6 +202,7 @@ fun ActiveCallScreen(
 
     DisposableEffect(Unit) {
         onDispose {
+            SoundboardManager.stopAll(context)
             FakeCallVoicePlayer.stop()
             if (currentIsRecording || CallAudioRecorder.isRecording.value) {
                 val result = CallAudioRecorder.stopRecording()
@@ -276,6 +305,10 @@ fun ActiveCallScreen(
 
     val shouldActivateProximity = isEarpieceActive && !isSpeakerOn && !isBluetoothOn && !isHeadsetOn &&
             (currentCallState in listOf(Call.STATE_ACTIVE, Call.STATE_DIALING, Call.STATE_CONNECTING, Call.STATE_RINGING))
+
+    LaunchedEffect(isNear) {
+        if (isNear) isSoundboardOpen = false
+    }
 
     DisposableEffect(shouldActivateProximity, powerManager) {
         var wakeLock: PowerManager.WakeLock? = null
@@ -562,8 +595,30 @@ fun ActiveCallScreen(
                         RichHapticEngine.performHaptic(context, RichHapticEngine.HapticStyle.CLICK)
                         isNoteDialogOpen = true
                     },
-                    avatarShapeType = avatarShapeType
+                    avatarShapeType = avatarShapeType,
+                    soundboardEnabled = isCallToolActive && !answeringMachineActive,
+                    isSoundboardOpen = isSoundboardOpen,
+                    onToggleSoundboard = {
+                        RichHapticEngine.performHaptic(
+                            context,
+                            RichHapticEngine.HapticStyle.CLICK
+                        )
+                        isSoundboardOpen = !isSoundboardOpen
+                        if (isSoundboardOpen) {
+                            SoundboardManager.clearError()
+                            SoundboardManager.prepare(context)
+                        }
+                    }
                 )
+
+                if (isCallToolActive && !answeringMachineActive) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    InCallBleepButton(
+                        isBleeping = bleeping,
+                        onStart = { SoundboardManager.startBleep(context) },
+                        onStop = { SoundboardManager.stopBleep(context) }
+                    )
+                }
 
                 if (isNoteDialogOpen) {
                     InCallNoteDialog(
@@ -686,6 +741,15 @@ fun ActiveCallScreen(
                     }
                 }
             }
+        }
+
+        if (isSoundboardOpen) {
+            InCallSoundboardSheet(
+                isPreparing = soundboardPreparing,
+                playingEffectId = soundboardPlayingId,
+                lastError = soundboardError,
+                onDismiss = { isSoundboardOpen = false }
+            )
         }
     }
 }
