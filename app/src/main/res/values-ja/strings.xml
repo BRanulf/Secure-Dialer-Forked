@@ -779,4 +779,16 @@
     <string name="soundboard_preview_failed">このサウンドエフェクトを試聴できませんでした</string>
     <string name="soundboard_builtin_badge">内蔵</string>
     <string name="soundboard_delete_effect">エフェクトを削除</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">通話録音</string>
+    <string name="recordings_library_sub">録音を再生、共有、並べ替え、管理します</string>
+    <string name="recording_sort_title">録音を並べ替え</string>
+    <string name="recording_sort_time">時間</string>
+    <string name="recording_sort_phone">電話</string>
+    <string name="recording_sort_duration">長さ</string>
+    <string name="recording_sort_ascending">昇順</string>
+    <string name="recording_sort_descending">降順</string>
+    <string name="soundboard_library_title">サウンドエフェクト</string>
+    <string name="soundboard_library_sub">サウンドボードのエフェクトを試聴、インポート、削除します</string>
 </resources>

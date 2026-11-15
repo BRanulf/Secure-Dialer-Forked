@@ -843,4 +843,16 @@ Version v%1$s (Stable Release)
     <string name="soundboard_preview_failed">Could not preview that sound effect</string>
     <string name="soundboard_builtin_badge">Built-in</string>
     <string name="soundboard_delete_effect">Delete effect</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">Call Recordings</string>
+    <string name="recordings_library_sub">Play, share, sort, and manage your recordings</string>
+    <string name="recording_sort_title">Sort recordings</string>
+    <string name="recording_sort_time">Time</string>
+    <string name="recording_sort_phone">Phone</string>
+    <string name="recording_sort_duration">Duration</string>
+    <string name="recording_sort_ascending">Ascending</string>
+    <string name="recording_sort_descending">Descending</string>
+    <string name="soundboard_library_title">Sound Effects</string>
+    <string name="soundboard_library_sub">Preview, import, and delete soundboard effects</string>
 </resources>

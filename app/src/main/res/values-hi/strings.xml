@@ -779,4 +779,16 @@
     <string name="soundboard_preview_failed">वह साउंड इफ़ेक्ट सुनाया नहीं जा सका</string>
     <string name="soundboard_builtin_badge">अंतर्निहित</string>
     <string name="soundboard_delete_effect">इफ़ेक्ट हटाएँ</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">कॉल रिकॉर्डिंग</string>
+    <string name="recordings_library_sub">अपनी रिकॉर्डिंग चलाएँ, साझा करें, क्रमबद्ध करें और प्रबंधित करें</string>
+    <string name="recording_sort_title">रिकॉर्डिंग क्रमबद्ध करें</string>
+    <string name="recording_sort_time">समय</string>
+    <string name="recording_sort_phone">फ़ोन</string>
+    <string name="recording_sort_duration">अवधि</string>
+    <string name="recording_sort_ascending">आरोही</string>
+    <string name="recording_sort_descending">अवरोही</string>
+    <string name="soundboard_library_title">साउंड इफ़ेक्ट</string>
+    <string name="soundboard_library_sub">साउंडबोर्ड इफ़ेक्ट सुनें, इम्पोर्ट करें और हटाएँ</string>
 </resources>

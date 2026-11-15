@@ -60,6 +60,9 @@ import com.example.ui.viewmodel.DialerViewModel
 import com.example.util.CallAudioRecorder
 import com.example.util.RecordingCompressionProfile
 import com.example.util.RecordingEngine
+import com.example.util.RecordingSortField
+import com.example.util.RecordingSortPreferences
+import com.example.util.RecordingSorting
 import com.example.util.RichHapticEngine
 import com.example.util.RootShell
 import com.example.util.RootStatus
@@ -91,6 +94,12 @@ fun CallRecordingsSettings(
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
     var noteEditingRecording by remember { mutableStateOf<CallRecording?>(null) }
     var shareSheetRecording by remember { mutableStateOf<CallRecording?>(null) }
+    var sortField by remember {
+        mutableStateOf(RecordingSortPreferences.field(context))
+    }
+    var sortAscending by remember {
+        mutableStateOf(RecordingSortPreferences.ascending(context))
+    }
 
     LaunchedEffect(isVaultLockEnabled) {
         if (!isVaultLockEnabled) {
@@ -1117,6 +1126,51 @@ fun CallRecordingsSettings(
                 }
             }
 
+            val recordingTimeKeys = remember(recordings) {
+                recordings.associate { recording ->
+                    val modified = try {
+                        File(recording.filePath).lastModified()
+                    } catch (_: Exception) {
+                        0L
+                    }
+                    recording.id to (if (modified > 0L) modified else recording.id.toLong())
+                }
+            }
+            val sortedRecordings = remember(
+                recordings,
+                sortField,
+                sortAscending,
+                recordingTimeKeys
+            ) {
+                RecordingSorting.sort(
+                    recordings = recordings,
+                    field = sortField,
+                    ascending = sortAscending,
+                    timeKeys = recordingTimeKeys
+                )
+            }
+
+            if (recordings.isNotEmpty()) {
+                RecordingSortCard(
+                    field = sortField,
+                    ascending = sortAscending,
+                    cardBgColor = cardBgColor,
+                    onFieldSelected = { selected ->
+                        if (selected != sortField) {
+                            val ascending = selected == RecordingSortField.PHONE
+                            sortField = selected
+                            sortAscending = ascending
+                            RecordingSortPreferences.setField(context, selected)
+                            RecordingSortPreferences.setAscending(context, ascending)
+                        }
+                    },
+                    onToggleDirection = {
+                        sortAscending = !sortAscending
+                        RecordingSortPreferences.setAscending(context, sortAscending)
+                    }
+                )
+            }
+
             if (recordings.isEmpty()) {
                 SettingsEmptyState(
                     icon = Icons.Default.Mic,
@@ -1125,7 +1179,7 @@ fun CallRecordingsSettings(
                     tintColor = MaterialTheme.colorScheme.primary
                 )
             } else {
-                recordings.forEach { rec ->
+                sortedRecordings.forEach { rec ->
                     val isPlaying = playingId == rec.id
                     CompactRecordingRow(
                         recording = rec,
@@ -1221,6 +1275,145 @@ fun CallRecordingsSettings(
             }
         }
     }
+}
+
+@Composable
+private fun RecordingSortCard(
+    field: RecordingSortField,
+    ascending: Boolean,
+    cardBgColor: Color,
+    onFieldSelected: (RecordingSortField) -> Unit,
+    onToggleDirection: () -> Unit
+) {
+    val context = LocalContext.current
+    Surface(
+        shape = AppShapes.Card,
+        color = cardBgColor,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Surface(
+                    shape = AppShapes.Chip,
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.SwapVert,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+                Text(
+                    text = stringResource(R.string.recording_sort_title),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f)
+                )
+                AssistChip(
+                    onClick = {
+                        RichHapticEngine.performHaptic(
+                            context,
+                            RichHapticEngine.HapticStyle.KEY_TICK
+                        )
+                        onToggleDirection()
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(
+                                if (ascending) {
+                                    R.string.recording_sort_ascending
+                                } else {
+                                    R.string.recording_sort_descending
+                                }
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = if (ascending) {
+                                Icons.Default.ArrowUpward
+                            } else {
+                                Icons.Default.ArrowDownward
+                            },
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                RecordingSortChip(
+                    labelRes = R.string.recording_sort_time,
+                    selected = field == RecordingSortField.TIME,
+                    onClick = { onFieldSelected(RecordingSortField.TIME) },
+                    modifier = Modifier.weight(1f)
+                )
+                RecordingSortChip(
+                    labelRes = R.string.recording_sort_phone,
+                    selected = field == RecordingSortField.PHONE,
+                    onClick = { onFieldSelected(RecordingSortField.PHONE) },
+                    modifier = Modifier.weight(1f)
+                )
+                RecordingSortChip(
+                    labelRes = R.string.recording_sort_duration,
+                    selected = field == RecordingSortField.DURATION,
+                    onClick = { onFieldSelected(RecordingSortField.DURATION) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecordingSortChip(
+    labelRes: Int,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    FilterChip(
+        selected = selected,
+        onClick = {
+            RichHapticEngine.performHaptic(
+                context,
+                RichHapticEngine.HapticStyle.KEY_TICK
+            )
+            onClick()
+        },
+        label = {
+            Text(
+                text = stringResource(labelRes),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        modifier = modifier
+    )
 }
 
 @Composable

@@ -24,7 +24,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -50,6 +52,11 @@ import com.example.ui.theme.LocalM3Expressive
 import com.example.ui.viewmodel.DialerViewModel
 import com.example.util.RichHapticEngine
 
+private enum class SettingsSubPage {
+    RECORDINGS,
+    SOUNDBOARD_LIBRARY
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsPanel(
@@ -58,14 +65,15 @@ fun SettingsPanel(
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
     var highlightedTitle by remember { mutableStateOf<String?>(null) }
+    var subPage by remember { mutableStateOf<SettingsSubPage?>(null) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
 
     BackHandler(enabled = true) {
-        if (activeTab != 0) {
-            activeTab = 0
-        } else {
-            onClose()
+        when {
+            subPage != null -> subPage = null
+            activeTab != 0 -> activeTab = 0
+            else -> onClose()
         }
     }
 
@@ -86,28 +94,43 @@ fun SettingsPanel(
             TopAppBar(
                 title = {
                     Text(
-                        text = when (activeTab) {
-                            0 -> stringResource(R.string.settings_title)
-                            1 -> stringResource(R.string.cat_appearance_color)
-                            2 -> stringResource(R.string.cat_sound_gestures)
-                            3 -> stringResource(R.string.cat_calling_accounts)
-                            4 -> stringResource(R.string.cat_speed_dial_quick_responses)
-                            5 -> stringResource(R.string.cat_call_blocking)
-                            6 -> stringResource(R.string.cat_contacts_data)
-                            7 -> stringResource(R.string.cat_advanced_features)
-                            8 -> stringResource(R.string.cat_privacy_security_about)
-                            else -> stringResource(R.string.settings_title)
+                        text = when (subPage) {
+                            SettingsSubPage.RECORDINGS ->
+                                stringResource(R.string.recordings_library_title)
+                            SettingsSubPage.SOUNDBOARD_LIBRARY ->
+                                stringResource(R.string.soundboard_library_title)
+                            null -> when (activeTab) {
+                                0 -> stringResource(R.string.settings_title)
+                                1 -> stringResource(R.string.cat_appearance_color)
+                                2 -> stringResource(R.string.cat_sound_gestures)
+                                3 -> stringResource(R.string.cat_calling_accounts)
+                                4 -> stringResource(R.string.cat_speed_dial_quick_responses)
+                                5 -> stringResource(R.string.cat_call_blocking)
+                                6 -> stringResource(R.string.cat_contacts_data)
+                                7 -> stringResource(R.string.cat_advanced_features)
+                                8 -> stringResource(R.string.cat_privacy_security_about)
+                                else -> stringResource(R.string.settings_title)
+                            }
                         },
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
                 },
                 navigationIcon = {
+                    val canNavigateBack = subPage != null || activeTab != 0
                     IconButton(onClick = {
-                        if (activeTab != 0) activeTab = 0 else onClose()
+                        when {
+                            subPage != null -> subPage = null
+                            activeTab != 0 -> activeTab = 0
+                            else -> onClose()
+                        }
                     }) {
                         Icon(
-                            imageVector = if (activeTab != 0) Icons.AutoMirrored.Filled.ArrowBack else Icons.Default.Close,
+                            imageVector = if (canNavigateBack) {
+                                Icons.AutoMirrored.Filled.ArrowBack
+                            } else {
+                                Icons.Default.Close
+                            },
                             contentDescription = stringResource(R.string.settings_back),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
@@ -126,70 +149,106 @@ fun SettingsPanel(
                 .consumeWindowInsets(paddingValues)
         ) {
             AnimatedContent(
-                targetState = activeTab,
+                targetState = subPage,
                 transitionSpec = {
-                    if (targetState > initialState) {
+                    if (targetState != null) {
                         (slideInHorizontally { width -> width } + fadeIn(animationSpec = tween(220)))
-                            .togetherWith(slideOutHorizontally { width -> -width } + fadeOut(animationSpec = tween(220)))
+                            .togetherWith(slideOutHorizontally { width -> -width } + fadeOut(animationSpec = tween(200)))
                     } else {
                         (slideInHorizontally { width -> -width } + fadeIn(animationSpec = tween(220)))
-                            .togetherWith(slideOutHorizontally { width -> width } + fadeOut(animationSpec = tween(220)))
+                            .togetherWith(slideOutHorizontally { width -> width } + fadeOut(animationSpec = tween(200)))
                     }
                 },
-                label = "settings_tab_animation",
+                label = "settings_subpage_animation",
                 modifier = Modifier.fillMaxSize()
-            ) { targetTab ->
-                when (targetTab) {
-                    0 -> GeneralSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        onNavigateToTab = { tab, title ->
-                            highlightedTitle = title
-                            activeTab = tab
+            ) { page ->
+                if (page == null) {
+                    AnimatedContent(
+                        targetState = activeTab,
+                        transitionSpec = {
+                            if (targetState > initialState) {
+                                (slideInHorizontally { width -> width } + fadeIn(animationSpec = tween(220)))
+                                    .togetherWith(slideOutHorizontally { width -> -width } + fadeOut(animationSpec = tween(220)))
+                            } else {
+                                (slideInHorizontally { width -> -width } + fadeIn(animationSpec = tween(220)))
+                                    .togetherWith(slideOutHorizontally { width -> width } + fadeOut(animationSpec = tween(220)))
+                            }
+                        },
+                        label = "settings_tab_animation",
+                        modifier = Modifier.fillMaxSize()
+                    ) { targetTab ->
+                        when (targetTab) {
+                            0 -> GeneralSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                onNavigateToTab = { tab, title ->
+                                    highlightedTitle = title
+                                    subPage = null
+                                    activeTab = tab
+                                }
+                            )
+                            1 -> AppearanceSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            2 -> SoundAndGesturesSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            3 -> CallingAccountsSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            4 -> SpeedDialAndQuickResponsesSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            5 -> CallBlockingSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            6 -> ContactsAndDataSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle
+                            )
+                            7 -> AdvancedFeaturesSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle,
+                                onOpenRecordings = {
+                                    highlightedTitle = null
+                                    subPage = SettingsSubPage.RECORDINGS
+                                },
+                                onOpenSoundboardLibrary = {
+                                    highlightedTitle = null
+                                    subPage = SettingsSubPage.SOUNDBOARD_LIBRARY
+                                }
+                            )
+                            8 -> PrivacySecurityAboutSettings(
+                                viewModel = viewModel,
+                                cardBgColor = cardBgColor,
+                                highlightedTitle = highlightedTitle,
+                                onShowAbout = { showAboutDialog = true },
+                                onShowPrivacy = { showPrivacyDialog = true }
+                            )
                         }
-                    )
-                    1 -> AppearanceSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    2 -> SoundAndGesturesSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    3 -> CallingAccountsSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    4 -> SpeedDialAndQuickResponsesSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    5 -> CallBlockingSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    6 -> ContactsAndDataSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    7 -> AdvancedFeaturesSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle
-                    )
-                    8 -> PrivacySecurityAboutSettings(
-                        viewModel = viewModel,
-                        cardBgColor = cardBgColor,
-                        highlightedTitle = highlightedTitle,
-                        onShowAbout = { showAboutDialog = true },
-                        onShowPrivacy = { showPrivacyDialog = true }
-                    )
+                    }
+                } else {
+                    when (page) {
+                        SettingsSubPage.RECORDINGS -> RecordingsManagementPage(
+                            viewModel = viewModel,
+                            cardBgColor = cardBgColor
+                        )
+                        SettingsSubPage.SOUNDBOARD_LIBRARY -> SoundboardLibraryPage(
+                            cardBgColor = cardBgColor
+                        )
+                    }
                 }
             }
         }
@@ -392,6 +451,24 @@ fun PreferenceHeader(title: String) {
         letterSpacing = 1.sp,
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)
     )
+}
+
+@Composable
+private fun RecordingsManagementPage(
+    viewModel: DialerViewModel,
+    cardBgColor: Color
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 8.dp, vertical = 12.dp)
+    ) {
+        CallRecordingsSettings(
+            viewModel = viewModel,
+            cardBgColor = cardBgColor
+        )
+    }
 }
 
 @Composable

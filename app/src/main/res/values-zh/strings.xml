@@ -779,4 +779,16 @@
     <string name="soundboard_preview_failed">无法试听该音效</string>
     <string name="soundboard_builtin_badge">内置</string>
     <string name="soundboard_delete_effect">删除音效</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">通话录音</string>
+    <string name="recordings_library_sub">播放、分享、排序和管理你的录音</string>
+    <string name="recording_sort_title">录音排序</string>
+    <string name="recording_sort_time">时间</string>
+    <string name="recording_sort_phone">电话</string>
+    <string name="recording_sort_duration">时长</string>
+    <string name="recording_sort_ascending">升序</string>
+    <string name="recording_sort_descending">降序</string>
+    <string name="soundboard_library_title">音效库</string>
+    <string name="soundboard_library_sub">试听、导入和删除音效面板中的音效</string>
 </resources>

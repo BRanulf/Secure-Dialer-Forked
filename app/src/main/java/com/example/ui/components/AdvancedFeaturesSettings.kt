@@ -22,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.PhoneCallback
+import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.Mic
@@ -55,13 +56,14 @@ import com.example.ui.viewmodel.DialerViewModel
 fun AdvancedFeaturesSettings(
     viewModel: DialerViewModel,
     cardBgColor: Color,
-    highlightedTitle: String? = null
+    highlightedTitle: String? = null,
+    onOpenRecordings: () -> Unit = {},
+    onOpenSoundboardLibrary: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     val reminders by viewModel.remindersFlow.collectAsStateWithLifecycle()
     val activeReminders = remember(reminders) { reminders.filter { !it.isCompleted } }
     val allNotes by viewModel.notesFlow.collectAsStateWithLifecycle()
-    val recordings by viewModel.recordingsFlow.collectAsStateWithLifecycle()
 
     val isCallbackRemindersEnabled by viewModel.isCallbackRemindersEnabled
     val isCallNotesEnabled by viewModel.isCallNotesEnabled
@@ -81,7 +83,7 @@ fun AdvancedFeaturesSettings(
             .padding(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Feature Container 1: Automatic Call Recording (Expandable with Switch)
+        // Feature Container 1: Automatic Call Recording (compact; library lives on its own page)
         HighlightableCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -94,23 +96,28 @@ fun AdvancedFeaturesSettings(
                     isMatchTitle("Recording Vault", highlightedTitle),
             shape = MaterialTheme.shapes.medium
         ) {
-            ExpandableSettingsCard(
-                title = stringResource(R.string.header_call_recording),
-                subtitle = stringResource(R.string.settings_call_recording_sub),
-                icon = Icons.Default.Mic,
-                iconBgColor = MaterialTheme.colorScheme.tertiaryContainer,
-                iconTint = MaterialTheme.colorScheme.onTertiaryContainer,
-                cardBgColor = Color.Transparent,
-                badgeText = if (recordings.isNotEmpty()) "${recordings.size}" else null,
-                hasSwitch = true,
-                isSwitchChecked = isRecordingEnabled,
-                onSwitchChange = { viewModel.updateRecordingEnabled(it) },
-                initiallyExpanded = isMatchTitle("Call Recording", highlightedTitle) ||
-                        isMatchTitle("Call Recording & Local Audio Storage", highlightedTitle) ||
-                        isMatchTitle("Lock Recordings with Biometrics", highlightedTitle) ||
-                        isMatchTitle("Recording Vault", highlightedTitle)
-            ) {
-                CallRecordingsSettings(viewModel = viewModel, cardBgColor = cardBgColor)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                SettingsRowToggle(
+                    title = stringResource(R.string.header_call_recording),
+                    subtitle = stringResource(R.string.settings_call_recording_sub),
+                    checked = isRecordingEnabled,
+                    onCheckedChange = { viewModel.updateRecordingEnabled(it) },
+                    icon = Icons.Default.Mic,
+                    iconBgColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    iconTint = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                SettingsRowNav(
+                    title = stringResource(R.string.recordings_library_title),
+                    subtitle = stringResource(R.string.recordings_library_sub),
+                    onClick = onOpenRecordings,
+                    icon = Icons.Default.Audiotrack,
+                    iconBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                    iconTint = MaterialTheme.colorScheme.primary
+                )
             }
         }
 
@@ -172,13 +179,12 @@ fun AdvancedFeaturesSettings(
                 hasSwitch = true,
                 isSwitchChecked = isSoundboardEnabled,
                 onSwitchChange = { viewModel.updateSoundboardEnabled(it) },
-                initiallyExpanded = isSoundboardEnabled ||
-                        isMatchTitle("Soundboard & Bleep", highlightedTitle) ||
+                initiallyExpanded = isMatchTitle("Soundboard & Bleep", highlightedTitle) ||
                         isMatchTitle("Soundboard", highlightedTitle) ||
                         isMatchTitle("Bleep", highlightedTitle) ||
                         isMatchTitle("Sound Effects", highlightedTitle)
             ) {
-                SoundboardSettings()
+                SoundboardSettings(onManageEffects = onOpenSoundboardLibrary)
             }
         }
 

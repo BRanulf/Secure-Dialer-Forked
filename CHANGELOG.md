@@ -13,6 +13,8 @@ All notable changes, fixes, and release milestones for Secure Dialer are documen
 - **Hold-to-Bleep Censor**: Added a hold button that mutes the microphone and plays a continuous 1000 Hz tone to the caller until released, with a synchronized local tone for feedback. The previous mute state is restored on release.
 - **Local Monitoring**: The decoded 16 kHz PCM is also played through the current call route (earpiece, speaker, headset, or Bluetooth) when local monitoring is enabled. It uses a separate app-process track and never routes to the carrier uplink.
 - **Settings & Effect Management**: Added a Soundboard & Bleep card under Advanced Tools with independent local-monitoring switches for the soundboard and the bleep, an in-settings effect library with preview, import, and delete actions, and a master switch that hides the in-call controls.
+- **Dedicated Management Pages**: The full call-recording controls and the soundboard effect library now open on separate settings pages. Advanced Tools keeps a compact recording card with a library shortcut, plus the soundboard monitoring switches and an effect-library shortcut.
+- **Recording Library Sorting**: The call-recording page can sort by time, phone number, or duration in ascending or descending order. The selected field and direction are remembered across sessions.
 
 ## [1.8.2] - 2026.11.13
 

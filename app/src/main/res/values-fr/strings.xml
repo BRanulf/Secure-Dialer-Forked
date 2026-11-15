@@ -779,4 +779,16 @@ Version v%1$s (Version stable)
     <string name="soundboard_preview_failed">Impossible de lire cet effet sonore</string>
     <string name="soundboard_builtin_badge">Intégré</string>
     <string name="soundboard_delete_effect">Supprimer l\'effet</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">Enregistrements d\'appels</string>
+    <string name="recordings_library_sub">Lire, partager, trier et gérer vos enregistrements</string>
+    <string name="recording_sort_title">Trier les enregistrements</string>
+    <string name="recording_sort_time">Temps</string>
+    <string name="recording_sort_phone">Téléphone</string>
+    <string name="recording_sort_duration">Durée</string>
+    <string name="recording_sort_ascending">Croissant</string>
+    <string name="recording_sort_descending">Décroissant</string>
+    <string name="soundboard_library_title">Effets sonores</string>
+    <string name="soundboard_library_sub">Écouter, importer et supprimer les effets de la table de sons</string>
 </resources>

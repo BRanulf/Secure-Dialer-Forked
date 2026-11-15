@@ -779,4 +779,16 @@ Version v%1$s (Stabile Version)
     <string name="soundboard_preview_failed">Dieser Soundeffekt konnte nicht wiedergegeben werden</string>
     <string name="soundboard_builtin_badge">Integriert</string>
     <string name="soundboard_delete_effect">Effekt löschen</string>
+
+    <!-- Library pages and recording sort -->
+    <string name="recordings_library_title">Anrufaufnahmen</string>
+    <string name="recordings_library_sub">Aufnahmen abspielen, teilen, sortieren und verwalten</string>
+    <string name="recording_sort_title">Aufnahmen sortieren</string>
+    <string name="recording_sort_time">Zeit</string>
+    <string name="recording_sort_phone">Telefon</string>
+    <string name="recording_sort_duration">Dauer</string>
+    <string name="recording_sort_ascending">Aufsteigend</string>
+    <string name="recording_sort_descending">Absteigend</string>
+    <string name="soundboard_library_title">Soundeffekte</string>
+    <string name="soundboard_library_sub">Soundeffekte anhören, importieren und löschen</string>
 </resources>

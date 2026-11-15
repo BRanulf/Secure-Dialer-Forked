@@ -22,15 +22,19 @@ import android.media.MediaPlayer
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Add
@@ -58,6 +62,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -71,11 +76,104 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Settings for the in-call soundboard and the hold-to-bleep censor:
- * local monitoring for both tools plus management of the effect library.
+ * Compact Advanced Tools content for the in-call soundboard and the bleep:
+ * local-monitoring switches plus a shortcut to the dedicated effect library page.
  */
 @Composable
-fun SoundboardSettings() {
+fun SoundboardSettings(onManageEffects: () -> Unit) {
+    val context = LocalContext.current
+    var monitorEnabled by remember {
+        mutableStateOf(SoundboardPreferences.isMonitorEnabled(context))
+    }
+    var bleepMonitorEnabled by remember {
+        mutableStateOf(SoundboardPreferences.isBleepMonitorEnabled(context))
+    }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        SettingsRowToggle(
+            title = stringResource(R.string.soundboard_monitor_title),
+            subtitle = stringResource(R.string.soundboard_monitor_desc),
+            checked = monitorEnabled,
+            onCheckedChange = { enabled ->
+                monitorEnabled = enabled
+                SoundboardPreferences.setMonitorEnabled(context, enabled)
+            },
+            icon = Icons.Default.GraphicEq,
+            iconBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+            iconTint = MaterialTheme.colorScheme.primary
+        )
+
+        SettingsRowToggle(
+            title = stringResource(R.string.bleep_monitor_title),
+            subtitle = stringResource(R.string.bleep_monitor_desc),
+            checked = bleepMonitorEnabled,
+            onCheckedChange = { enabled ->
+                bleepMonitorEnabled = enabled
+                SoundboardPreferences.setBleepMonitorEnabled(context, enabled)
+            },
+            icon = Icons.AutoMirrored.Filled.VolumeUp,
+            iconBgColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+            iconTint = MaterialTheme.colorScheme.secondary
+        )
+
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
+        SettingsRowNav(
+            title = stringResource(R.string.soundboard_manage_title),
+            subtitle = stringResource(R.string.soundboard_manage_sub),
+            onClick = onManageEffects,
+            icon = Icons.Default.MusicNote,
+            iconBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+            iconTint = MaterialTheme.colorScheme.primary
+        )
+
+        Text(
+            text = stringResource(R.string.soundboard_root_hint),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+        )
+    }
+}
+
+/**
+ * Dedicated full-page effect library, opened from Advanced Tools. Keeping the
+ * potentially long effect list out of the main settings scroll makes both pages
+ * easier to manage.
+ */
+@Composable
+fun SoundboardLibraryPage(cardBgColor: Color) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.soundboard_library_sub),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
+        )
+        Surface(
+            shape = MaterialTheme.shapes.large,
+            color = cardBgColor,
+            border = BorderStroke(
+                1.dp,
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            SoundboardLibraryContent()
+        }
+    }
+}
+
+@Composable
+private fun SoundboardLibraryContent() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -83,12 +181,6 @@ fun SoundboardSettings() {
         mutableStateOf<List<SoundboardEffects.SoundboardEffect>>(emptyList())
     }
     var refreshKey by remember { mutableIntStateOf(0) }
-    var monitorEnabled by remember {
-        mutableStateOf(SoundboardPreferences.isMonitorEnabled(context))
-    }
-    var bleepMonitorEnabled by remember {
-        mutableStateOf(SoundboardPreferences.isBleepMonitorEnabled(context))
-    }
     var previewingId by remember { mutableStateOf<String?>(null) }
     var previewPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
     var deleteTarget by remember {
@@ -199,41 +291,10 @@ fun SoundboardSettings() {
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        SettingsRowToggle(
-            title = stringResource(R.string.soundboard_monitor_title),
-            subtitle = stringResource(R.string.soundboard_monitor_desc),
-            checked = monitorEnabled,
-            onCheckedChange = { enabled ->
-                monitorEnabled = enabled
-                SoundboardPreferences.setMonitorEnabled(context, enabled)
-            },
-            icon = Icons.Default.GraphicEq,
-            iconBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-            iconTint = MaterialTheme.colorScheme.primary
-        )
-
-        SettingsRowToggle(
-            title = stringResource(R.string.bleep_monitor_title),
-            subtitle = stringResource(R.string.bleep_monitor_desc),
-            checked = bleepMonitorEnabled,
-            onCheckedChange = { enabled ->
-                bleepMonitorEnabled = enabled
-                SoundboardPreferences.setBleepMonitorEnabled(context, enabled)
-            },
-            icon = Icons.AutoMirrored.Filled.VolumeUp,
-            iconBgColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-            iconTint = MaterialTheme.colorScheme.secondary
-        )
-
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 12.dp, top = 2.dp, bottom = 6.dp),
+                .padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -272,7 +333,7 @@ fun SoundboardSettings() {
                 text = stringResource(R.string.soundboard_empty),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)
             )
         } else {
             effects.forEach { effect ->
@@ -295,7 +356,7 @@ fun SoundboardSettings() {
             text = stringResource(R.string.soundboard_root_hint),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)
         )
     }
 
