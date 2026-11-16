@@ -747,7 +747,7 @@ Version v%1$s (Stabile Version)
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">Soundboard</string>
-    <string name="soundboard_hint">Tippe auf einen Effekt, um ihn an den Anrufer zu senden. Halte einen importierten Effekt gedrückt, um ihn zu löschen.</string>
+    <string name="soundboard_hint">Tippe auf einen Effekt, um ihn an den Anrufer zu senden. Halte einen Effekt gedrückt, um ihn zu löschen.</string>
     <string name="soundboard_import">Effekt importieren</string>
     <string name="soundboard_imported">Soundeffekt importiert</string>
     <string name="soundboard_import_failed">Dieser Soundeffekt konnte nicht importiert werden</string>
@@ -774,7 +774,7 @@ Version v%1$s (Stabile Version)
     <string name="bleep_monitor_title">Lokale Überwachung des Pieptons</string>
     <string name="bleep_monitor_desc">Den 1000-Hz-Piepton auf diesem Gerät hören, während er an den Anrufer gesendet wird</string>
     <string name="soundboard_manage_title">Soundeffekt-Bibliothek</string>
-    <string name="soundboard_manage_sub">Integrierte und importierte Effekte für das Anrufpanel</string>
+    <string name="soundboard_manage_sub">Alle im Anrufpanel verfügbaren Effekte</string>
     <string name="soundboard_preview">Vorschau</string>
     <string name="soundboard_preview_failed">Dieser Soundeffekt konnte nicht wiedergegeben werden</string>
     <string name="soundboard_builtin_badge">Integriert</string>

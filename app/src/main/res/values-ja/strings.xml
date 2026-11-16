@@ -747,7 +747,7 @@
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">サウンドボード</string>
-    <string name="soundboard_hint">エフェクトをタップすると相手に送信します。インポートしたエフェクトを長押しすると削除できます。</string>
+    <string name="soundboard_hint">エフェクトをタップすると相手に送信します。エフェクトを長押しすると削除できます。</string>
     <string name="soundboard_import">エフェクトをインポート</string>
     <string name="soundboard_imported">サウンドエフェクトをインポートしました</string>
     <string name="soundboard_import_failed">このサウンドエフェクトをインポートできませんでした</string>
@@ -774,7 +774,7 @@
     <string name="bleep_monitor_title">ビープのローカルモニタリング</string>
     <string name="bleep_monitor_desc">1000 Hzのビープを相手に送りながら、この端末でも再生します</string>
     <string name="soundboard_manage_title">サウンドエフェクトライブラリ</string>
-    <string name="soundboard_manage_sub">通話パネルで使用できる内蔵およびインポート済みのエフェクト</string>
+    <string name="soundboard_manage_sub">通話パネルで使用できるすべてのエフェクト</string>
     <string name="soundboard_preview">プレビュー</string>
     <string name="soundboard_preview_failed">このサウンドエフェクトを試聴できませんでした</string>
     <string name="soundboard_builtin_badge">内蔵</string>

@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
@@ -242,7 +241,7 @@ private fun SoundboardLibraryContent() {
         previewingId = effect.id
         scope.launch {
             val file = withContext(Dispatchers.IO) {
-                SoundboardEffects.playableFile(context, effect)
+                SoundboardEffects.playableFile(effect)
             }
             if (previewingId != effect.id) return@launch
             if (file == null) {
@@ -372,7 +371,7 @@ private fun SoundboardLibraryContent() {
                     onClick = {
                         scope.launch {
                             val deleted = withContext(Dispatchers.IO) {
-                                SoundboardEffects.deleteImported(context, target)
+                                SoundboardEffects.delete(context, target)
                             }
                             deleteTarget = null
                             if (deleted) {
@@ -426,19 +425,6 @@ private fun SoundboardEffectSettingsRow(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
-        if (effect.builtIn) {
-            Surface(
-                shape = RoundedCornerShape(6.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)
-            ) {
-                Text(
-                    text = stringResource(R.string.soundboard_builtin_badge),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                )
-            }
-        }
         IconButton(onClick = onPreview) {
             Icon(
                 imageVector = if (isPreviewing) Icons.Default.Stop else Icons.Default.PlayArrow,
@@ -447,15 +433,13 @@ private fun SoundboardEffectSettingsRow(
                 modifier = Modifier.size(22.dp)
             )
         }
-        if (!effect.builtIn) {
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Default.DeleteOutline,
-                    contentDescription = stringResource(R.string.soundboard_delete_effect),
-                    tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+        IconButton(onClick = onDelete) {
+            Icon(
+                imageVector = Icons.Default.DeleteOutline,
+                contentDescription = stringResource(R.string.soundboard_delete_effect),
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }

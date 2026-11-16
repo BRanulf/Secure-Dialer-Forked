@@ -747,7 +747,7 @@
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">साउंडबोर्ड</string>
-    <string name="soundboard_hint">किसी इफ़ेक्ट को कॉलर तक भेजने के लिए उस पर टैप करें। इम्पोर्ट किए गए इफ़ेक्ट को हटाने के लिए उसे देर तक दबाए रखें।</string>
+    <string name="soundboard_hint">किसी इफ़ेक्ट को कॉलर तक भेजने के लिए उस पर टैप करें। किसी भी इफ़ेक्ट को हटाने के लिए उसे देर तक दबाए रखें।</string>
     <string name="soundboard_import">इफ़ेक्ट इम्पोर्ट करें</string>
     <string name="soundboard_imported">साउंड इफ़ेक्ट इम्पोर्ट हो गया</string>
     <string name="soundboard_import_failed">वह साउंड इफ़ेक्ट इम्पोर्ट नहीं हो सका</string>
@@ -774,7 +774,7 @@
     <string name="bleep_monitor_title">बीप की स्थानीय मॉनिटरिंग</string>
     <string name="bleep_monitor_desc">1000 Hz की बीप को कॉलर तक भेजते समय इस डिवाइस पर भी सुनें</string>
     <string name="soundboard_manage_title">साउंड इफ़ेक्ट लाइब्रेरी</string>
-    <string name="soundboard_manage_sub">कॉल पैनल में उपलब्ध अंतर्निहित और इम्पोर्ट किए गए इफ़ेक्ट</string>
+    <string name="soundboard_manage_sub">कॉल पैनल में उपलब्ध सभी इफ़ेक्ट</string>
     <string name="soundboard_preview">पूर्वावलोकन</string>
     <string name="soundboard_preview_failed">वह साउंड इफ़ेक्ट सुनाया नहीं जा सका</string>
     <string name="soundboard_builtin_badge">अंतर्निहित</string>

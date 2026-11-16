@@ -152,7 +152,7 @@ abstract class GenerateSoundboardEffectsTask : DefaultTask() {
       appendLine("</resources>")
     }
     valuesDir.resolve("soundboard_builtin.xml").writeText(xml)
-    logger.lifecycle("Soundboard effects packaged: ${candidates.size}")
+    logger.lifecycle("Soundboard seed effects packaged: ${candidates.size}")
   }
 
   private fun displayName(base: String): String {

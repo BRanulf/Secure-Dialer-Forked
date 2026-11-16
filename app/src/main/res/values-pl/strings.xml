@@ -747,7 +747,7 @@ Wersja v%1$s (Wydanie stabilne)
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">Panel dźwięków</string>
-    <string name="soundboard_hint">Dotknij efektu, aby wysłać go rozmówcy. Przytrzymaj zaimportowany efekt, aby go usunąć.</string>
+    <string name="soundboard_hint">Dotknij efektu, aby wysłać go rozmówcy. Przytrzymaj dowolny efekt, aby go usunąć.</string>
     <string name="soundboard_import">Importuj efekt</string>
     <string name="soundboard_imported">Zaimportowano efekt dźwiękowy</string>
     <string name="soundboard_import_failed">Nie udało się zaimportować tego efektu dźwiękowego</string>
@@ -774,7 +774,7 @@ Wersja v%1$s (Wydanie stabilne)
     <string name="bleep_monitor_title">Lokalne monitorowanie sygnału</string>
     <string name="bleep_monitor_desc">Odsłuchuj sygnał 1000 Hz na tym urządzeniu, gdy jest wysyłany rozmówcy</string>
     <string name="soundboard_manage_title">Biblioteka efektów dźwiękowych</string>
-    <string name="soundboard_manage_sub">Wbudowane i zaimportowane efekty dostępne w panelu rozmowy</string>
+    <string name="soundboard_manage_sub">Wszystkie efekty dostępne w panelu rozmowy</string>
     <string name="soundboard_preview">Podgląd</string>
     <string name="soundboard_preview_failed">Nie udało się odtworzyć tego efektu dźwiękowego</string>
     <string name="soundboard_builtin_badge">Wbudowany</string>

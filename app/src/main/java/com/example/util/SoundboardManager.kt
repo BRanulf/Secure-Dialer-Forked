@@ -105,7 +105,7 @@ object SoundboardManager {
         effectJob?.cancel()
         _playingEffectId.value = effect.id
         effectJob = scope.launch {
-            val source = SoundboardEffects.playableFile(appContext, effect)
+            val source = SoundboardEffects.playableFile(effect)
             if (source == null) {
                 failEffect(effect, appContext, R.string.soundboard_play_failed)
                 return@launch

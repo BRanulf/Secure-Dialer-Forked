@@ -203,11 +203,7 @@ fun InCallSoundboardSheet(
                             effect = effect,
                             isPlaying = playingEffectId == effect.id,
                             onClick = { SoundboardManager.playEffect(context, effect) },
-                            onLongClick = if (effect.builtIn) {
-                                null
-                            } else {
-                                { deleteTarget = effect }
-                            }
+                            onLongClick = { deleteTarget = effect }
                         )
                     }
                 }
@@ -319,7 +315,7 @@ fun InCallSoundboardSheet(
                     onClick = {
                         scope.launch {
                             val deleted = withContext(Dispatchers.IO) {
-                                SoundboardEffects.deleteImported(context, target)
+                                SoundboardEffects.delete(context, target)
                             }
                             deleteTarget = null
                             if (deleted) {

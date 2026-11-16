@@ -747,7 +747,7 @@ Version v%1$s (Version stable)
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">Table de sons</string>
-    <string name="soundboard_hint">Touchez un effet pour l\'envoyer à votre correspondant. Maintenez un effet importé enfoncé pour le supprimer.</string>
+    <string name="soundboard_hint">Touchez un effet pour l\'envoyer à votre correspondant. Maintenez un effet enfoncé pour le supprimer.</string>
     <string name="soundboard_import">Importer un effet</string>
     <string name="soundboard_imported">Effet sonore importé</string>
     <string name="soundboard_import_failed">Impossible d\'importer cet effet sonore</string>
@@ -774,7 +774,7 @@ Version v%1$s (Version stable)
     <string name="bleep_monitor_title">Écoute locale du bip</string>
     <string name="bleep_monitor_desc">Écouter le bip de 1000 Hz sur cet appareil pendant qu\'il est envoyé au correspondant</string>
     <string name="soundboard_manage_title">Bibliothèque d\'effets sonores</string>
-    <string name="soundboard_manage_sub">Effets intégrés et importés disponibles dans le panneau d\'appel</string>
+    <string name="soundboard_manage_sub">Tous les effets disponibles dans le panneau d\'appel</string>
     <string name="soundboard_preview">Aperçu</string>
     <string name="soundboard_preview_failed">Impossible de lire cet effet sonore</string>
     <string name="soundboard_builtin_badge">Intégré</string>

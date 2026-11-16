@@ -747,7 +747,7 @@
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">音效面板</string>
-    <string name="soundboard_hint">点击音效即可向对方播放。长按导入的音效可将其删除。</string>
+    <string name="soundboard_hint">点击音效即可向对方播放。长按任意音效可将其删除。</string>
     <string name="soundboard_import">导入音效</string>
     <string name="soundboard_imported">音效已导入</string>
     <string name="soundboard_import_failed">无法导入该音效</string>
@@ -774,7 +774,7 @@
     <string name="bleep_monitor_title">哔声本机监听</string>
     <string name="bleep_monitor_desc">在向对方播放 1000 Hz 哔声的同时，也在本机播放</string>
     <string name="soundboard_manage_title">音效库</string>
-    <string name="soundboard_manage_sub">内置与已导入的音效，可在通话音效面板中使用</string>
+    <string name="soundboard_manage_sub">可在通话音效面板中使用的所有音效</string>
     <string name="soundboard_preview">试听</string>
     <string name="soundboard_preview_failed">无法试听该音效</string>
     <string name="soundboard_builtin_badge">内置</string>

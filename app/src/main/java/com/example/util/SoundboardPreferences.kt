@@ -32,6 +32,7 @@ object SoundboardPreferences {
     private const val KEY_ENABLED = "soundboard_enabled"
     private const val KEY_MONITOR = "soundboard_monitor_enabled"
     private const val KEY_BLEEP_MONITOR = "bleep_monitor_enabled"
+    private const val KEY_SEEDED = "soundboard_seeded"
 
     fun isEnabled(context: Context): Boolean {
         return prefs(context).getBoolean(KEY_ENABLED, true)
@@ -55,6 +56,19 @@ object SoundboardPreferences {
 
     fun setBleepMonitorEnabled(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_BLEEP_MONITOR, enabled).apply()
+    }
+
+    /**
+     * The packaged example effects are copied into user storage exactly once. After
+     * that they are ordinary files: deleting them is permanent, and an app update
+     * does not silently bring them back.
+     */
+    fun isSeeded(context: Context): Boolean {
+        return prefs(context).getBoolean(KEY_SEEDED, false)
+    }
+
+    fun markSeeded(context: Context) {
+        prefs(context).edit().putBoolean(KEY_SEEDED, true).apply()
     }
 
     private fun prefs(context: Context) = context.getSharedPreferences(

@@ -811,7 +811,7 @@ Version v%1$s (Stable Release)
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">Soundboard</string>
-    <string name="soundboard_hint">Tap an effect to send it to the caller. Press and hold an imported effect to delete it.</string>
+    <string name="soundboard_hint">Tap an effect to send it to the caller. Press and hold an effect to delete it.</string>
     <string name="soundboard_import">Import effect</string>
     <string name="soundboard_imported">Sound effect imported</string>
     <string name="soundboard_import_failed">Could not import that sound effect</string>
@@ -838,7 +838,7 @@ Version v%1$s (Stable Release)
     <string name="bleep_monitor_title">Bleep local monitoring</string>
     <string name="bleep_monitor_desc">Hear the 1000 Hz beep on this device while it is sent to the caller</string>
     <string name="soundboard_manage_title">Sound effect library</string>
-    <string name="soundboard_manage_sub">Built-in and imported effects available in the in-call panel</string>
+    <string name="soundboard_manage_sub">Effects available in the in-call panel</string>
     <string name="soundboard_preview">Preview</string>
     <string name="soundboard_preview_failed">Could not preview that sound effect</string>
     <string name="soundboard_builtin_badge">Built-in</string>

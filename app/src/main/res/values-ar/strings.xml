@@ -747,7 +747,7 @@
 
     <!-- In-call soundboard and bleep censor -->
     <string name="soundboard_title">لوحة المؤثرات الصوتية</string>
-    <string name="soundboard_hint">اضغط على مؤثر لإرساله إلى المتصل. اضغط مطوّلًا على مؤثر مستورد لحذفه.</string>
+    <string name="soundboard_hint">اضغط على أي مؤثر لإرساله إلى المتصل. اضغط مطوّلًا على أي مؤثر لحذفه.</string>
     <string name="soundboard_import">استيراد مؤثر</string>
     <string name="soundboard_imported">تم استيراد المؤثر الصوتي</string>
     <string name="soundboard_import_failed">تعذّر استيراد هذا المؤثر الصوتي</string>
@@ -774,7 +774,7 @@
     <string name="bleep_monitor_title">المراقبة المحلية للتنبيه الصوتي</string>
     <string name="bleep_monitor_desc">اسمع تنبيه 1000 Hz على هذا الجهاز أثناء إرساله إلى المتصل</string>
     <string name="soundboard_manage_title">مكتبة المؤثرات الصوتية</string>
-    <string name="soundboard_manage_sub">مؤثرات مدمجة ومستوردة متاحة في لوحة المكالمة</string>
+    <string name="soundboard_manage_sub">جميع المؤثرات المتاحة في لوحة المكالمة</string>
     <string name="soundboard_preview">معاينة</string>
     <string name="soundboard_preview_failed">تعذّر تشغيل هذا المؤثر الصوتي للمعاينة</string>
     <string name="soundboard_builtin_badge">مدمج</string>

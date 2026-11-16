@@ -26,16 +26,16 @@ import java.io.File
 import java.util.Locale
 
 /**
- * Built-in and user-imported soundboard effects.
+ * Soundboard effects are ordinary files in `filesDir/Soundboard`.
  *
- * Built-ins are generated from audio files placed in the `app/` directory at build
- * time (see `GenerateSoundboardEffectsTask`). Imported effects live in
- * `filesDir/Soundboard` and are decoded on demand by [AnsweringMachinePcm].
+ * The audio files packaged in the `app/` directory at build time are only *initial
+ * sample data*: on first use they are copied once into user storage, after which they
+ * behave exactly like imported effects and can be deleted. Deleting them is permanent;
+ * an app update does not re-add them.
  */
 object SoundboardEffects {
 
     private const val DIR_NAME = "Soundboard"
-    private const val CACHE_DIR = "SoundboardAssets"
     private const val MAX_IMPORT_BYTES = 32L * 1024L * 1024L
 
     private val supportedExtensions = setOf(
@@ -45,10 +45,13 @@ object SoundboardEffects {
     data class SoundboardEffect(
         val id: String,
         val name: String,
-        val builtIn: Boolean,
-        val file: File? = null,
-        val resId: Int = 0,
-        val extension: String = ""
+        val file: File
+    )
+
+    private data class SeedEffect(
+        val name: String,
+        val extension: String,
+        val resId: Int
     )
 
     sealed class ImportResult {
@@ -62,13 +65,58 @@ object SoundboardEffects {
         IO
     }
 
+    /**
+     * Returns every effect in the user's library, seeding the initial samples if this
+     * is the first time the library has been opened. Blocking; call on IO.
+     */
     fun all(context: Context): List<SoundboardEffect> {
-        val builtIns = builtInEffects(context)
-        val imported = importedEffects(context)
-        return builtIns + imported
+        seedInitialEffects(context)
+        return storedEffects(context)
     }
 
-    fun builtInEffects(context: Context): List<SoundboardEffect> {
+    /**
+     * Copies the packaged sample effects into user storage exactly once. Files that
+     * already exist are left untouched, so deleting a sample is permanent.
+     */
+    @Synchronized
+    fun seedInitialEffects(context: Context) {
+        if (SoundboardPreferences.isSeeded(context)) return
+
+        val dir = soundboardDir(context)
+        val seeds = readSeedEffects(context)
+        var allCopied = true
+
+        for (seed in seeds) {
+            val base = sanitizeBase(seed.name).ifBlank { "effect" }
+            val extension = seed.extension.ifBlank { "audio" }
+            val target = File(dir, "$base.$extension")
+            if (target.isFile && target.length() > 0L) continue
+
+            try {
+                context.resources.openRawResource(seed.resId).use { input ->
+                    target.outputStream().use { output ->
+                        input.copyTo(output, bufferSize = 64 * 1024)
+                    }
+                }
+                if (!target.isFile || target.length() <= 0L) {
+                    target.delete()
+                    allCopied = false
+                }
+            } catch (_: Exception) {
+                try { target.delete() } catch (_: Exception) {}
+                allCopied = false
+            }
+        }
+
+        // If a copy failed (for example, storage was full), leave the marker unset so
+        // the next library load can retry. Existing files are skipped, so this cannot
+        // create duplicates.
+        if (allCopied) {
+            SoundboardPreferences.markSeeded(context)
+        }
+    }
+
+    private fun readSeedEffects(context: Context): List<SeedEffect> {
         val names = try {
             context.resources.getStringArray(R.array.soundboard_builtin_names)
         } catch (_: Exception) {
@@ -79,24 +127,24 @@ object SoundboardEffects {
         } catch (_: Exception) {
             emptyArray()
         }
-        val result = mutableListOf<SoundboardEffect>()
+
+        val result = mutableListOf<SeedEffect>()
         val array = try {
             context.resources.obtainTypedArray(R.array.soundboard_builtin_resources)
         } catch (_: Exception) {
             null
         } ?: return result
+
         try {
             for (index in 0 until array.length()) {
                 val resId = array.getResourceId(index, 0)
                 if (resId == 0) continue
                 result.add(
-                    SoundboardEffect(
-                        id = "builtin:$resId",
+                    SeedEffect(
                         name = names.getOrNull(index)?.takeIf { it.isNotBlank() }
                             ?: "Effect ${index + 1}",
-                        builtIn = true,
-                        resId = resId,
-                        extension = extensions.getOrNull(index).orEmpty()
+                        extension = extensions.getOrNull(index).orEmpty(),
+                        resId = resId
                     )
                 )
             }
@@ -107,7 +155,7 @@ object SoundboardEffects {
         return result
     }
 
-    fun importedEffects(context: Context): List<SoundboardEffect> {
+    private fun storedEffects(context: Context): List<SoundboardEffect> {
         val dir = soundboardDir(context)
         val files = try {
             dir.listFiles()
@@ -121,62 +169,16 @@ object SoundboardEffects {
             .sortedBy { it.name.lowercase(Locale.ROOT) }
             .map { file ->
                 SoundboardEffect(
-                    id = "import:${file.name}",
+                    id = "file:${file.name}",
                     name = file.nameWithoutExtension,
-                    builtIn = false,
-                    file = file,
-                    extension = file.extension.lowercase(Locale.ROOT)
+                    file = file
                 )
             }
             .toList()
     }
 
-    /**
-     * Returns a regular file path for a built-in effect. `app_process` and the PCM
-     * decoder need real files; APK raw resources only expose streams.
-     */
-    @Synchronized
-    fun playableFile(context: Context, effect: SoundboardEffect): File? {
-        if (!effect.builtIn) {
-            return effect.file?.takeIf { it.isFile && it.length() > 0L }
-        }
-
-        val cacheDir = File(context.cacheDir, CACHE_DIR).apply { mkdirs() }
-        val versionCode = try {
-            @Suppress("DEPRECATION")
-            context.packageManager.getPackageInfo(context.packageName, 0).versionCode.toLong()
-        } catch (_: Exception) {
-            0L
-        }
-        val apkTime = try {
-            File(context.applicationInfo.sourceDir).lastModified()
-        } catch (_: Exception) {
-            0L
-        }
-        val extension = effect.extension.ifBlank { "audio" }
-        val versionSuffix = "_${versionCode}_${apkTime}."
-        val prefix = "${effect.resId}_${versionCode}_${apkTime}"
-        cacheDir.listFiles()?.forEach { cached ->
-            if (cached.isFile && !cached.name.contains(versionSuffix)) {
-                try { cached.delete() } catch (_: Exception) {}
-            }
-        }
-        val target = File(cacheDir, "$prefix.$extension")
-        if (target.isFile && target.length() > 0L) {
-            return target
-        }
-
-        return try {
-            context.resources.openRawResource(effect.resId).use { input ->
-                target.outputStream().use { output ->
-                    input.copyTo(output, bufferSize = 64 * 1024)
-                }
-            }
-            target.takeIf { it.isFile && it.length() > 0L }
-        } catch (_: Exception) {
-            try { target.delete() } catch (_: Exception) {}
-            null
-        }
+    fun playableFile(effect: SoundboardEffect): File? {
+        return effect.file.takeIf { it.isFile && it.length() > 0L }
     }
 
     /**
@@ -241,19 +243,17 @@ object SoundboardEffects {
 
         return ImportResult.Success(
             SoundboardEffect(
-                id = "import:${target.name}",
+                id = "file:${target.name}",
                 name = target.nameWithoutExtension,
-                builtIn = false,
-                file = target,
-                extension = extension
+                file = target
             )
         )
     }
 
-    fun deleteImported(context: Context, effect: SoundboardEffect): Boolean {
-        if (effect.builtIn) return false
+    /** Deletes any effect in the user's library, including the initial samples. */
+    fun delete(context: Context, effect: SoundboardEffect): Boolean {
         val dir = soundboardDir(context)
-        val file = effect.file ?: return false
+        val file = effect.file
         return try {
             file.parentFile?.canonicalPath == dir.canonicalPath && file.delete()
         } catch (_: Exception) {
